@@ -15,15 +15,19 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 
+//Theme
 import ExampleComponent from './components/ExampleComponent.vue';
 import SidebarComponent from './components/Admin/Theme/SidebarComponent.vue';
 import HeaderComponent from './components/Admin/Theme/HeaderComponent.vue';
 
-//Dashboard
+//Users
+import UsersIndexComponent from './components/Admin/Users/UsersIndexComponent.vue';
+
 app.component('example-component', ExampleComponent);
 app.component('sidebar-component', SidebarComponent);
 app.component('header-component', HeaderComponent);
 
+app.component('users-index-component', UsersIndexComponent);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

@@ -1,1 +1,1 @@
-<sidebar-component></sidebar-component>
+<sidebar-component url-users="{{ route('index.users') }}"></sidebar-component>

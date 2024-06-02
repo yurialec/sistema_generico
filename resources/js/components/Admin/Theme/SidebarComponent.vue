@@ -2,7 +2,7 @@
     <div :class="['sidebar', { 'sidebar-collapsed': collapsed }]">
         <ul>
             <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Usuários</a></li>
+            <li><a :href="urlUsers">Usuários</a></li>
             <li><a href="#">Perfis</a></li>
             <li><a href="#">Permissões</a></li>
         </ul>
@@ -13,6 +13,7 @@
 export default {
     name: 'Sidebar',
     props: {
+        urlUsers: String,
         collapsed: {
             type: Boolean,
             default: false
