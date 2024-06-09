@@ -1,14 +1,15 @@
 <template>
     <header class="header">
-        <h3>LOGOTIPO</h3>
+        <button @click="toggleSidebar" class="collapse-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
         <div class="dropdown">
             <button class="dropbtn">
                 <i class="fa-regular fa-user fa-lg"></i>
             </button>
             <div class="dropdown-content">
-                <a href="/profile">Profile</a>
-                <a href="/settings">Settings</a>
-                <a href="/logout">Logout</a>
+                <a href="@">Meu Cadastro</a>
+                <a :href="urlSair">Sair</a>
             </div>
         </div>
     </header>
@@ -17,6 +18,9 @@
 <script>
 export default {
     name: 'Header',
+    props: {
+        urlSair: String,
+    },
     methods: {
         toggleSidebar() {
             this.$emit('toggle-sidebar');
@@ -24,6 +28,7 @@ export default {
     }
 };
 </script>
+
 <style scoped>
 .header {
     display: flex;
@@ -35,9 +40,14 @@ export default {
     height: 60px;
     position: fixed;
     top: 0;
-    left: 0;
+    left: 250px;
     right: 0;
-    z-index: 1000;
+    z-index: 999;
+    transition: left 0.3s;
+}
+
+.header-collapsed {
+    left: 60px;
 }
 
 .collapse-btn {

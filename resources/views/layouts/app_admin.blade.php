@@ -21,13 +21,126 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    <style scoped>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: width 0.3s;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .sidebar-collapsed {
+            width: 60px;
+        }
+
+        .sidebar-logo {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sidebar-logo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px 20px;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li a .menu-text {
+            display: inline-block;
+        }
+
+        .sidebar-collapsed .menu-text {
+            display: none;
+        }
+
+        .collapse-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
         .main {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             margin-left: 250px;
-            margin-top: 60px;
+            padding-top: 60px;
             transition: margin-left 0.3s;
         }
 
@@ -44,6 +157,13 @@
         .content {
             flex-grow: 1;
             padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -63,10 +183,30 @@
                 </main>
             </div>
             @section('footer')
-                @include('admin.theme.footer')
+                <footer>
+                    &copy; {{ date('Y') }} Seu Projeto. Todos os direitos reservados.
+                </footer>
             @show
         </div>
     </div>
+
+    <script>
+        // Script para manipular a colapsação da sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const header = document.querySelector('.header');
+            const main = document.querySelector('.main');
+            const collapseBtn = document.querySelector('.collapse-btn');
+            let sidebarCollapsed = false;
+
+            collapseBtn.addEventListener('click', function() {
+                sidebarCollapsed = !sidebarCollapsed;
+                sidebar.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+                header.classList.toggle('header-collapsed', sidebarCollapsed);
+                main.classList.toggle('main-collapsed', sidebarCollapsed);
+            });
+        });
+    </script>
 </body>
 
 </html>
