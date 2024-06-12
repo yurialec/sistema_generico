@@ -18,11 +18,15 @@ const app = createApp({});
 import ExampleComponent from './components/ExampleComponent.vue';
 import SidebarComponent from './components/Admin/Theme/SidebarComponent.vue';
 import HeaderComponent from './components/Admin/Theme/HeaderComponent.vue';
+import UsuariosIndexComponent from './components/Admin/Usuarios/UsuariosIndexComponent.vue';
 
 //Dashboard
 app.component('example-component', ExampleComponent);
 app.component('sidebar-component', SidebarComponent);
 app.component('header-component', HeaderComponent);
+
+//Usuarios
+app.component('usuarios-index-component', UsuariosIndexComponent);
 
 /**
  * The following block of code may be used to automatically register your

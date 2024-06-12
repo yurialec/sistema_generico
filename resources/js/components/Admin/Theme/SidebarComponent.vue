@@ -1,7 +1,7 @@
 <template>
     <div :class="['sidebar', { 'sidebar-collapsed': isCollapsed }]">
         <div class="sidebar-logo">
-            <img src="path/to/your/logo.png" alt="Logo">
+            <img src="#" alt="Logo">
         </div>
         <ul>
             <li v-for="menu in menus" :key="menu.id">
