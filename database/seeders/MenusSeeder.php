@@ -11,47 +11,51 @@ class MenusSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
-        $menus = [
-            'dashboard' => [
-                'label' => 'Dashboard',
-                'icon' => 'fa-solid fa-gauge-high',
-                'url' => '/helpdesk/dashboard/',
-                'active' => 0,
-                'son' => 0,
-            ],
-            'usuarios' => [
+        // Menu principal
+        DB::table('menus')->insert([
+            'label' => 'Administrativo',
+            'icon' => 'fa-solid fa-cogs',
+            'url' => '#',
+            'active' => 1,
+            'son' => null,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Recupera o ID do menu principal
+        $adminMenuId = DB::getPdo()->lastInsertId();
+
+        // Submenus
+        DB::table('menus')->insert([
+            [
                 'label' => 'Usuários',
-                'icon' => 'fa-solid fa-users-gears',
-                'url' => '/helpdesk/usuarios/',
-                'active' => 0,
-                'son' => 0,
+                'icon' => 'fa-solid fa-users',
+                'url' => '/admin/usuarios',
+                'active' => 1,
+                'son' => $adminMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
             ],
-            'perfis' => [
+            [
                 'label' => 'Perfis',
                 'icon' => 'fa-solid fa-id-badge',
-                'url' => '/helpdesk/perfis/',
-                'active' => 0,
-                'son' => 0,
+                'url' => '/admin/perfis',
+                'active' => 1,
+                'son' => $adminMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
             ],
-            'permissoes' => [
+            [
                 'label' => 'Permissões',
-                'icon' => 'fa-solid fa-key',
-                'url' => '/helpdesk/permissoes/',
-                'active' => 0,
-                'son' => 0,
-            ],
-        ];
-
-        foreach ($menus as $key => $menu) {
-            DB::table('menus')->insert([
-                'label' => $menu['label'],
-                'icon' => $menu['icon'],
-                'url' => $menu['url'],
-                'active' => $menu['active'],
-                'son' => $menu['son'],
-            ]);
-        }
+                'icon' => 'fa-solid fa-lock',
+                'url' => '/admin/permissoes',
+                'active' => 1,
+                'son' => $adminMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ]);
     }
 }

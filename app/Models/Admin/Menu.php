@@ -9,8 +9,17 @@ class Menu extends Model
 {
     use HasFactory;
 
-    static public function menus()
+    protected $fillable = [
+        'label', 'icon', 'url', 'active', 'son'
+    ];
+
+    public function children()
     {
-        return self::all();
+        return $this->hasMany(Menu::class, 'son');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Menu::class, 'son');
     }
 }

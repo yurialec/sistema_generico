@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
+    public $usuario;
+    public function __construct(User $usuario)
+    {
+        $this->usuario = $usuario;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -16,9 +21,17 @@ class UsuarioController extends Controller
         return view('admin.usuarios.index');
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $usuarios = User::all();
+        $query = $this->usuario->query();
+
+        if ($request->has('search')) {
+            $searchTerm = $request->query('search');
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('email', 'like', '%' . $searchTerm . '%');
+        }
+
+        $usuarios = $query->paginate(15);
         return response()->json($usuarios);
     }
 

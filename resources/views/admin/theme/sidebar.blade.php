@@ -1,4 +1,3 @@
-<sidebar-component
-    :menus="{{ \App\Models\Admin\Menu::menus() }}"
+<sidebar-component 
     url-sair="{{ route('logout') }}">
 </sidebar-component>

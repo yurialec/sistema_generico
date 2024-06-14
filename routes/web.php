@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\UsuarioController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
@@ -25,6 +26,7 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::prefix('admin/')->group(function () {
         Route::get('home', [HomeController::class, 'index'])->name('home');
+        Route::get('menus', [MenuController::class, 'index'])->name('menus');
 
         Route::prefix('usuarios')->group(function () {
             Route::get('/', [UsuarioController::class, 'index'])->name('index.usuario');
