@@ -1,3 +1,3 @@
-<sidebar-component 
-    url-sair="{{ route('logout') }}">
+<sidebar-component
+    url-home="{{ route('home') }}">
 </sidebar-component>

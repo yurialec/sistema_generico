@@ -1,31 +1,36 @@
 <template>
     <div :class="['sidebar', { 'sidebar-collapsed': isCollapsed }]">
         <div class="sidebar-logo">
-            <img src="../../../../../storage/app/public/images/logo/Logo_RGB_White+Green.png" alt="Logo">
+            <a :href="urlHome">
+                <img src="../../../../../storage/app/public/images/logo/Logo_RGB_White+Green.png" alt="Logo">
+            </a>
         </div>
         <ul>
             <li v-for="menu in menus" :key="menu.id">
                 <template v-if="menu.children && menu.children.length > 0">
                     <!-- Menu with children -->
-                    <div @click="toggleSubmenu(menu)">
-                        <a href="#" class="dropdown">
+                    <div>
+                        <a href="#" class="dropdown" @click.prevent="toggleSubmenu(menu)">
                             <i :class="menu.icon"></i>
-                            <span class="menu-text">{{ menu.label }}</span>
-                            <i class="fa fa-chevron-down" :class="{ 'open': menu.expanded }"></i>
+                            <span class="menu-text" v-if="!isCollapsed">{{ menu.label }}</span>
+                            <i class="fa fa-chevron-down" :class="{ 'open': menu.expanded }" v-if="!isCollapsed"></i>
                         </a>
-                        <ul v-show="menu.expanded">
+                        <ul v-show="menu.expanded && !isCollapsed">
                             <li v-for="child in menu.children" :key="child.id">
-                                <a :href="child.url">{{ child.label }}</a>
+                                <a :href="child.url">
+                                    <i :class="child.icon"></i>
+                                    <span class="menu-text">{{ child.label }}</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </template>
                 <template v-else>
                     <!-- Menu without children -->
-                    <router-link :to="menu.url">
+                    <a :href="menu.url">
                         <i :class="menu.icon"></i>
-                        <span class="menu-text">{{ menu.label }}</span>
-                    </router-link>
+                        <span class="menu-text" v-if="!isCollapsed">{{ menu.label }}</span>
+                    </a>
                 </template>
             </li>
         </ul>
@@ -39,7 +44,8 @@ export default {
         menus: {
             type: Array,
             required: true
-        }
+        },
+        urlHome: String,
     },
     data() {
         return {
@@ -88,6 +94,7 @@ export default {
     height: 100%;
     overflow-y: auto;
     z-index: 1000;
+    transition: width 0.3s ease;
 }
 
 .sidebar-collapsed {
@@ -119,14 +126,7 @@ export default {
     text-decoration: none;
     display: flex;
     align-items: center;
-}
-
-.sidebar ul li a {
-    display: flex;
-    align-items: center;
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
+    padding: 0 10px;
 }
 
 .sidebar ul li a i {
@@ -138,7 +138,11 @@ export default {
 }
 
 .sidebar ul li a:hover {
-    text-decoration: underline;
+    background-color: #0d6efd;
+    border-radius: 05px;
+    display: flex;
+    align-items: center;
+    padding: 10 10px;
 }
 
 .dropdown {
@@ -153,7 +157,8 @@ export default {
     transition: transform 0.3s ease;
 }
 
-.dropdown.open i.fa-chevron-down {
+.dropdown i.open {
+    margin-left: auto;
     transform: rotate(180deg);
 }
 
@@ -163,5 +168,19 @@ ul {
 
 ul ul {
     padding-left: 20px;
+}
+
+.collapse-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.collapse-btn i {
+    font-size: 1.2em;
 }
 </style>
