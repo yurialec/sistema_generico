@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="col-sm-3 text-end">
-                    <button type="button" class="btn btn-primary btn-sm">Cadastrar</button>
+                    <a :href="urlCadastrarUsuario" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -60,6 +60,9 @@
 import axios from 'axios';
 
 export default {
+    props: {
+        urlCadastrarUsuario: String,
+    },
     data() {
         return {
             usuarios: {

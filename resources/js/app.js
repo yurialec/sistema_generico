@@ -18,15 +18,28 @@ const app = createApp({});
 import ExampleComponent from './components/ExampleComponent.vue';
 import SidebarComponent from './components/Admin/Theme/SidebarComponent.vue';
 import HeaderComponent from './components/Admin/Theme/HeaderComponent.vue';
+import AlerComponent from './components/Admin/Theme/AlerComponent.vue';
+
+//USERS
 import UsuariosIndexComponent from './components/Admin/Usuarios/UsuariosIndexComponent.vue';
+import UsuariosCreateComponent from './components/Admin/Usuarios/UsuariosCreateComponent.vue';
+
+//ROLES
+import RolesIndexComponent from './components/Admin/Roles/RolesIndexComponent.vue';
 
 //Dashboard
 app.component('example-component', ExampleComponent);
 app.component('sidebar-component', SidebarComponent);
 app.component('header-component', HeaderComponent);
+app.component('alert-component', AlerComponent);
 
 //Usuarios
 app.component('usuarios-index-component', UsuariosIndexComponent);
+app.component('usuarios-create-component', UsuariosCreateComponent);
+
+//Roles
+app.component('roles-index-component', RolesIndexComponent);
+
 
 /**
  * The following block of code may be used to automatically register your

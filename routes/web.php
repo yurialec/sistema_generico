@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsuarioController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
@@ -29,8 +30,14 @@ Route::middleware('auth')->group(function () {
         Route::get('menus', [MenuController::class, 'index'])->name('menus');
 
         Route::prefix('usuarios')->group(function () {
-            Route::get('/', [UsuarioController::class, 'index'])->name('index.usuario');
-            Route::get('/list', [UsuarioController::class, 'list'])->name('index.list');
+            Route::get('/', [UsuarioController::class, 'index'])->name('usuarios.index');
+            Route::get('/list', [UsuarioController::class, 'list'])->name('usuarios.list');
+            Route::get('/cadastrar', [UsuarioController::class, 'create'])->name('usuarios.cadastrar');
+            Route::post('/cadastrar', [UsuarioController::class, 'store'])->name('usuarios.store');
+        });
+
+        Route::prefix('perfis')->group(function () {
+            Route::get('/', [RoleController::class, 'index'])->name('roles.index');
         });
 
         //AUTH
