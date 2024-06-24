@@ -6,6 +6,17 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
+import axios from 'axios';
+
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+axios.defaults.baseURL = 'http://localhost:8000/';
+window.axios = axios;
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -26,6 +37,8 @@ import UsuariosCreateComponent from './components/Admin/Usuarios/UsuariosCreateC
 
 //ROLES
 import RolesIndexComponent from './components/Admin/Roles/RolesIndexComponent.vue';
+import RolesCreateComponent from './components/Admin/Roles/RolesCreateComponent.vue';
+import RolesEditComponent from './components/Admin/Roles/RolesEditComponent.vue';
 
 //Dashboard
 app.component('example-component', ExampleComponent);
@@ -39,6 +52,8 @@ app.component('usuarios-create-component', UsuariosCreateComponent);
 
 //Roles
 app.component('roles-index-component', RolesIndexComponent);
+app.component('roles-create-component', RolesCreateComponent);
+app.component('roles-edit-component', RolesEditComponent);
 
 
 /**

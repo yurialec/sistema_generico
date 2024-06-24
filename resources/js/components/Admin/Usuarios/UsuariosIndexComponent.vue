@@ -77,14 +77,14 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getUsuarios('http://localhost:8000/admin/usuarios/list', this.filtroPesquisa);
+            this.getUsuarios('admin/usuarios/list', this.filtroPesquisa);
         },
         paginacao(url) {
             if (url) {
                 this.getUsuarios(url);
             }
         },
-        getUsuarios(url = 'http://localhost:8000/admin/usuarios/list') {
+        getUsuarios(url = 'admin/usuarios/list') {
             axios.get(url)
                 .then(response => {
                     this.usuarios = response.data;

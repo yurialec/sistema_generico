@@ -1,4 +1,4 @@
 @extends('layouts.app_admin')
 @section('content')
-    <usuarios-create-component></usuarios-create-component>
+    <roles-create-component></roles-create-component>
 @endsection

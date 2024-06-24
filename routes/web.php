@@ -38,6 +38,12 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('perfis')->group(function () {
             Route::get('/', [RoleController::class, 'index'])->name('roles.index');
+            Route::get('/list', [RoleController::class, 'list'])->name('roles.list');
+            Route::get('/cadastrar', [RoleController::class, 'create'])->name('roles.cadastrar');
+            Route::post('/cadastrar', [RoleController::class, 'store'])->name('roles.store');
+            Route::get('/editar/{id}', [RoleController::class, 'edit'])->name('roles.edit');
+            Route::post('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
+            Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('roles.delete');
         });
 
         //AUTH
