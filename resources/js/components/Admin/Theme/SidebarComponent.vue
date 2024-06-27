@@ -1,5 +1,5 @@
 <template>
-    <div :class="['sidebar', { 'sidebar-collapsed': isCollapsed }]">
+    <div class="sidebar">
         <div class="sidebar-logo">
             <a :href="urlHome">
                 <img src="../../../../../storage/app/public/images/logo/Logo_RGB_White+Green.png" alt="Logo">
@@ -12,10 +12,10 @@
                     <div>
                         <a href="#" class="dropdown" @click.prevent="toggleSubmenu(menu)">
                             <i :class="menu.icon"></i>
-                            <span class="menu-text" v-if="!isCollapsed">{{ menu.label }}</span>
-                            <i class="fa fa-chevron-down" :class="{ 'open': menu.expanded }" v-if="!isCollapsed"></i>
+                            <span class="menu-text">{{ menu.label }}</span>
+                            <i class="fa fa-chevron-down" :class="{ 'open': menu.expanded }"></i>
                         </a>
-                        <ul v-show="menu.expanded && !isCollapsed">
+                        <ul v-show="menu.expanded">
                             <li v-for="child in menu.children" :key="child.id">
                                 <a :href="child.url">
                                     <i :class="child.icon"></i>
@@ -29,7 +29,7 @@
                     <!-- Menu without children -->
                     <a :href="menu.url">
                         <i :class="menu.icon"></i>
-                        <span class="menu-text" v-if="!isCollapsed">{{ menu.label }}</span>
+                        <span class="menu-text">{{ menu.label }}</span>
                     </a>
                 </template>
             </li>
@@ -49,7 +49,6 @@ export default {
     },
     data() {
         return {
-            isCollapsed: this.initialCollapsed,
             menus: [],
             submenuState: {},
         };
@@ -86,19 +85,15 @@ export default {
 <style scoped>
 .sidebar {
     width: 250px;
+    height: 100vh;
     background-color: #333;
     color: #fff;
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    overflow-y: auto;
+    transition: width 0.3s;
     z-index: 1000;
-    transition: width 0.3s ease;
-}
-
-.sidebar-collapsed {
-    width: 60px;
+    overflow: hidden;
 }
 
 .sidebar-logo {
@@ -109,16 +104,19 @@ export default {
 .sidebar-logo img {
     max-width: 100%;
     height: auto;
+    transition: width 0.3s;
 }
 
 .sidebar ul {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
 
 .sidebar ul li {
+    display: flex;
+    align-items: center;
     margin: 10px 0;
+    padding: 10px 20px;
 }
 
 .sidebar ul li a {
@@ -126,7 +124,7 @@ export default {
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    width: 100%;
 }
 
 .sidebar ul li a i {
@@ -135,52 +133,5 @@ export default {
 
 .sidebar ul li a .menu-text {
     display: inline-block;
-}
-
-.sidebar ul li a:hover {
-    background-color: #0d6efd;
-    border-radius: 05px;
-    display: flex;
-    align-items: center;
-    padding: 10 10px;
-}
-
-.dropdown {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.dropdown i.fa-chevron-down {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-}
-
-.dropdown i.open {
-    margin-left: auto;
-    transform: rotate(180deg);
-}
-
-ul {
-    padding-left: 0;
-}
-
-ul ul {
-    padding-left: 20px;
-}
-
-.collapse-btn {
-    background: none;
-    border: none;
-    color: #fff;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.collapse-btn i {
-    font-size: 1.2em;
 }
 </style>

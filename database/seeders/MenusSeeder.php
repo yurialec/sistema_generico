@@ -32,7 +32,7 @@ class MenusSeeder extends Seeder
             [
                 'label' => 'Usuários',
                 'icon' => 'fa-solid fa-users',
-                'url' => '/admin/usuarios',
+                'url' => '/admin/users',
                 'active' => 1,
                 'son' => $adminMenuId,
                 'created_at' => now(),
@@ -41,7 +41,7 @@ class MenusSeeder extends Seeder
             [
                 'label' => 'Perfis',
                 'icon' => 'fa-solid fa-id-badge',
-                'url' => '/admin/perfis',
+                'url' => '/admin/roles',
                 'active' => 1,
                 'son' => $adminMenuId,
                 'created_at' => now(),
@@ -50,7 +50,7 @@ class MenusSeeder extends Seeder
             [
                 'label' => 'Permissões',
                 'icon' => 'fa-solid fa-lock',
-                'url' => '/admin/permissoes',
+                'url' => '/admin/permissions',
                 'active' => 1,
                 'son' => $adminMenuId,
                 'created_at' => now(),

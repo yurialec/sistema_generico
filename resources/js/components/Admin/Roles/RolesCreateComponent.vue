@@ -42,7 +42,7 @@ export default {
                 }
             }
 
-            axios.post('/admin/perfis/cadastrar', this.role, config)
+            axios.post('/admin/roles/store', this.role, config)
                 .then(response => {
                     this.alertStatus = true;
                     this.msg = response;

@@ -32,7 +32,7 @@
                         <th scope="row">{{ role.id }}</th>
                         <td>{{ role.name }}</td>
                         <td>
-                            <a :href="'perfis/editar/' + role.id">
+                            <a :href="'roles/edit/' + role.id">
                                 <i class="fa-regular fa-pen-to-square fa-lg"></i>
                             </a>&nbsp;&nbsp;&nbsp;
 
@@ -105,7 +105,7 @@ export default {
         },
         excluirRegistro() {
             if (this.roleToDelete !== null) {
-                axios.delete(`http://localhost:8000/admin/perfis/delete/${this.roleToDelete}`)
+                axios.delete(`http://localhost:8000/admin/roles/delete/${this.roleToDelete}`)
                     .then(response => {
                         this.getRoles();
                         this.roleToDelete = null;
@@ -121,14 +121,14 @@ export default {
             }
         },
         pesquisar() {
-            this.getRoles(`http://localhost:8000/admin/perfis/list?search=${this.searchFilter}`);
+            this.getRoles(`http://localhost:8000/admin/roles/list?search=${this.searchFilter}`);
         },
         paginacao(url) {
             if (url) {
                 this.getRoles(url);
             }
         },
-        getRoles(url = 'http://localhost:8000/admin/perfis/list') {
+        getRoles(url = 'http://localhost:8000/admin/roles/list') {
             axios.get(url)
                 .then(response => {
                     this.roles = response.data;

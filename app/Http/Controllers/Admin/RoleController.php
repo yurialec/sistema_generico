@@ -14,9 +14,7 @@ class RoleController extends Controller
     {
         $this->role = $role;
     }
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         return view('admin.roles.index');
@@ -34,17 +32,11 @@ class RoleController extends Controller
         return response()->json($role);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.roles.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CreateRoleRequest $request)
     {
         $role = $this->role->create([
@@ -58,18 +50,12 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $role = Roles::where('id', $id)->first();
         return view('admin.roles.edit', compact('role'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $role = Roles::where('id', $id)->first();
@@ -86,9 +72,6 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function delete(string $id)
     {
         $role = Roles::where('id', $id)->first();

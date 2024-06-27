@@ -7,14 +7,14 @@
                 </div>
                 <div class="col-sm-6 text-center">
                     <div class="input-group">
-                        <input type="text" class="form-control" v-model="filtroPesquisa" />
+                        <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
                 </div>
                 <div class="col-sm-3 text-end">
-                    <a :href="urlCadastrarUsuario" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
+                    <a :href="urlCreateUser" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -30,11 +30,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="usuario in usuarios.data" :key="usuario.id">
-                        <th scope="row">{{ usuario.id }}</th>
-                        <td>{{ usuario.name }}</td>
-                        <td>{{ usuario.email }}</td>
-                        <td>{{ usuario.role.name }}</td>
+                    <tr v-for="user in users.data" :key="user.id">
+                        <th scope="row">{{ user.id }}</th>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role.name }}</td>
                         <td>
                             <i class="fa-regular fa-pen-to-square fa-lg"></i>&nbsp;&nbsp;&nbsp;
                             <i class="fa-regular fa-trash-can fa-lg"></i>
@@ -46,9 +46,9 @@
         <div class="card-footer">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li v-for="(link, key) in usuarios.links" :key="key" class="page-item"
+                    <li v-for="(link, key) in users.links" :key="key" class="page-item"
                         :class="{ 'active': link.active }">
-                        <a class="page-link" href="#" @click.prevent="paginacao(link.url)" v-html="link.label"></a>
+                        <a class="page-link" href="#" @click.prevent="pagination(link.url)" v-html="link.label"></a>
                     </li>
                 </ul>
             </nav>
@@ -61,15 +61,15 @@ import axios from 'axios';
 
 export default {
     props: {
-        urlCadastrarUsuario: String,
+        urlCreateUser: String,
     },
     data() {
         return {
-            usuarios: {
+            users: {
                 data: [],
                 links: []
             },
-            filtroPesquisa: '',
+            searchFilter: '',
         };
     },
     mounted() {
@@ -77,17 +77,17 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getUsuarios('admin/usuarios/list', this.filtroPesquisa);
+            this.getUsuarios('admin/users/list', this.searchFilter);
         },
-        paginacao(url) {
+        pagination(url) {
             if (url) {
                 this.getUsuarios(url);
             }
         },
-        getUsuarios(url = 'admin/usuarios/list') {
+        getUsuarios(url = 'admin/users/list') {
             axios.get(url)
                 .then(response => {
-                    this.usuarios = response.data;
+                    this.users = response.data;
                 })
                 .catch(errors => {
                     console.log(errors);

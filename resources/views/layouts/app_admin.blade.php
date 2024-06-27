@@ -20,6 +20,8 @@
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
@@ -44,10 +46,6 @@
             transition: width 0.3s;
             z-index: 1000;
             overflow: hidden;
-        }
-
-        .sidebar-collapsed {
-            width: 60px;
         }
 
         .sidebar-logo {
@@ -86,18 +84,6 @@
 
         .sidebar ul li a .menu-text {
             display: inline-block;
-        }
-
-        .sidebar-collapsed .menu-text {
-            display: none;
-        }
-
-        .collapse-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
         }
 
         .dropdown {
@@ -146,10 +132,6 @@
             transition: margin-left 0.3s;
         }
 
-        .main-collapsed {
-            margin-left: 60px;
-        }
-
         .content-wrapper {
             display: flex;
             flex-direction: column;
@@ -191,24 +173,6 @@
             @show
         </div>
     </div>
-
-    <script>
-        // Script para manipular a colapsação da sidebar
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.querySelector('.sidebar');
-            const header = document.querySelector('.header');
-            const main = document.querySelector('.main');
-            const collapseBtn = document.querySelector('.collapse-btn');
-            let sidebarCollapsed = false;
-
-            collapseBtn.addEventListener('click', function() {
-                sidebarCollapsed = !sidebarCollapsed;
-                sidebar.classList.toggle('sidebar-collapsed', sidebarCollapsed);
-                header.classList.toggle('header-collapsed', sidebarCollapsed);
-                main.classList.toggle('main-collapsed', sidebarCollapsed);
-            });
-        });
-    </script>
 </body>
 
 </html>

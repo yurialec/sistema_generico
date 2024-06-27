@@ -57,7 +57,7 @@ export default {
                 }
             }
 
-            axios.post('/admin/perfis/update/' + this.role.id, this.role, config)
+            axios.post('/admin/roles/update/' + this.role.id, this.role, config)
                 .then(response => {
                     this.alertStatus = true;
                     this.msg = response;

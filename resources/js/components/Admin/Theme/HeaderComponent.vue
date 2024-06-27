@@ -1,15 +1,21 @@
 <template>
     <header class="header">
-        <button @click="toggleSidebar" class="collapse-btn">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <div class="dropdown">
-            <button class="dropbtn">
-                <i class="fa-regular fa-user fa-lg"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="@">Meu Cadastro</a>
-                <a :href="urlSair">Sair</a>
+        <div class="container">
+            <div class="row">
+                <div class="col text-start">
+                    <!-- COLLAPSE SIDEBAR -->
+                </div>
+                <div class="col text-end">
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            <i class="fa-regular fa-user fa-lg"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a :href="urlMe">Meu Cadastro</a>
+                            <a :href="urlSair">Sair</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -20,11 +26,10 @@ export default {
     name: 'Header',
     props: {
         urlSair: String,
+        urlMe: String,
     },
     methods: {
-        toggleSidebar() {
-            this.$emit('toggle-sidebar');
-        }
+
     }
 };
 </script>
@@ -44,18 +49,6 @@ export default {
     right: 0;
     z-index: 999;
     transition: left 0.3s;
-}
-
-.header-collapsed {
-    left: 60px;
-}
-
-.collapse-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
 }
 
 .dropdown {

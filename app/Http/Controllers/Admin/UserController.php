@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CadastrarUsuarioRequest;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class UsuarioController extends Controller
+class UserController extends Controller
 {
     public $usuario;
     public function __construct(User $usuario)
@@ -20,7 +22,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        return view('admin.usuarios.index');
+        return view('admin.users.index');
     }
 
     public function list(Request $request)
@@ -42,7 +44,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('admin.usuarios.cadastrar');
+        return view('admin.users.create');
     }
 
     /**
@@ -94,5 +96,11 @@ class UsuarioController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function me(): View
+    {
+        $user = Auth::user();
+        return view('admin.users.me', compact('user'));
     }
 }

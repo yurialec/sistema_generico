@@ -32,29 +32,26 @@ import HeaderComponent from './components/Admin/Theme/HeaderComponent.vue';
 import AlerComponent from './components/Admin/Theme/AlerComponent.vue';
 
 //USERS
-import UsuariosIndexComponent from './components/Admin/Usuarios/UsuariosIndexComponent.vue';
-import UsuariosCreateComponent from './components/Admin/Usuarios/UsuariosCreateComponent.vue';
+import UsersIndexComponent from './components/Admin/Users/UsersIndexComponent.vue';
+import UsersMeComponent from './components/Admin/Users/UsersMeComponent.vue';
+import UsersCreateComponent from './components/Admin/Users/UsersCreateComponent.vue';
+app.component('users-index-component', UsersIndexComponent);
+app.component('users-me-component', UsersMeComponent);
+app.component('users-create-component', UsersCreateComponent);
 
 //ROLES
 import RolesIndexComponent from './components/Admin/Roles/RolesIndexComponent.vue';
 import RolesCreateComponent from './components/Admin/Roles/RolesCreateComponent.vue';
 import RolesEditComponent from './components/Admin/Roles/RolesEditComponent.vue';
+app.component('roles-index-component', RolesIndexComponent);
+app.component('roles-create-component', RolesCreateComponent);
+app.component('roles-edit-component', RolesEditComponent);
 
 //Dashboard
 app.component('example-component', ExampleComponent);
 app.component('sidebar-component', SidebarComponent);
 app.component('header-component', HeaderComponent);
 app.component('alert-component', AlerComponent);
-
-//Usuarios
-app.component('usuarios-index-component', UsuariosIndexComponent);
-app.component('usuarios-create-component', UsuariosCreateComponent);
-
-//Roles
-app.component('roles-index-component', RolesIndexComponent);
-app.component('roles-create-component', RolesCreateComponent);
-app.component('roles-edit-component', RolesEditComponent);
-
 
 /**
  * The following block of code may be used to automatically register your
