@@ -1,4 +1,4 @@
 <header-component
     url-sair="{{ route('logout') }}"
-    url-me="{{route('me')}}">
+    url-profile="{{route('profile')}}">
 </header-component>

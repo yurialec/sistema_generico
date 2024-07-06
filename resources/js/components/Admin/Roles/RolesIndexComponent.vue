@@ -18,6 +18,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="card-body">
             <table class="table table-sm table-hover">
                 <thead>
@@ -105,7 +106,7 @@ export default {
         },
         excluirRegistro() {
             if (this.roleToDelete !== null) {
-                axios.delete(`http://localhost:8000/admin/roles/delete/${this.roleToDelete}`)
+                axios.delete(`/admin/roles/delete/${this.roleToDelete}`)
                     .then(response => {
                         this.getRoles();
                         this.roleToDelete = null;
@@ -121,14 +122,14 @@ export default {
             }
         },
         pesquisar() {
-            this.getRoles(`http://localhost:8000/admin/roles/list?search=${this.searchFilter}`);
+            this.getRoles(`/admin/roles/list?search=${this.searchFilter}`);
         },
         paginacao(url) {
             if (url) {
                 this.getRoles(url);
             }
         },
-        getRoles(url = 'http://localhost:8000/admin/roles/list') {
+        getRoles(url = '/admin/roles/list') {
             axios.get(url)
                 .then(response => {
                     this.roles = response.data;

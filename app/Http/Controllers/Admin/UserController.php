@@ -87,7 +87,22 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request->all());
+        $user = $this->usuario->where('id', $id)->first();
+        if ($user) {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->role_id = $request->role_id;
+
+            if ($request->password) {
+                $user->password = $request->password;
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Registro não encontrado'
+            ], 404);
+        }
     }
 
     /**
@@ -98,9 +113,18 @@ class UserController extends Controller
         //
     }
 
-    public function me(): View
+    public function profileView()
     {
-        $user = Auth::user();
-        return view('admin.users.me', compact('user'));
+        return view('admin.users.profile');
+    }
+
+    public function profile(): JsonResponse
+    {
+        $profile = Auth::user();
+
+        return response()->json([
+            'status' => true,
+            'profile' => $profile,
+        ], 201);
     }
 }

@@ -11,7 +11,7 @@
                             <i class="fa-regular fa-user fa-lg"></i>
                         </button>
                         <div class="dropdown-content">
-                            <a :href="urlMe">Meu Cadastro</a>
+                            <a :href="urlProfile">Meu Cadastro</a>
                             <a :href="urlSair">Sair</a>
                         </div>
                     </div>
@@ -26,7 +26,7 @@ export default {
     name: 'Header',
     props: {
         urlSair: String,
-        urlMe: String,
+        urlProfile: String,
     },
     methods: {
 

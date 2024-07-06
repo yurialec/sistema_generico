@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/list', [UserController::class, 'list'])->name('users.list');
             Route::get('/create', [UserController::class, 'create'])->name('users.create');
             Route::post('/store', [UserController::class, 'store'])->name('users.store');
+            Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
+            Route::get('/profile', [UserController::class, 'profileView'])->name('profile');
+            Route::get('/profile-view', [UserController::class, 'profile'])->name('profile.view');
         });
 
         Route::prefix('roles')->group(function () {
@@ -48,6 +51,5 @@ Route::middleware('auth')->group(function () {
 
         //AUTH
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-        Route::get('/me', [UserController::class, 'me'])->name('me');
     });
 });

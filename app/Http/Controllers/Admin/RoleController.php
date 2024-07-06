@@ -14,7 +14,7 @@ class RoleController extends Controller
     {
         $this->role = $role;
     }
-    
+
     public function index()
     {
         return view('admin.roles.index');
@@ -77,12 +77,21 @@ class RoleController extends Controller
         $role = Roles::where('id', $id)->first();
         if ($role) {
             if ($role->delete()) {
-                return response()->json(['Registro excluido com sucesso.', 200]);
+                return response()->json([
+                    'message' => 'Registro excluido com sucesso.',
+                    'status' => 200
+                ]);
             } else {
-                return response()->json(['Erro ao excluir registro.', 204]);
+                return response()->json([
+                    'message' => 'Erro ao excluir registro.',
+                    'status' => 204
+                ]);
             }
         } else {
-            return response()->json(['Nenhum resultado encontrado.', 204]);
+            return response()->json([
+                'message' => 'Nenhum resultado encontrado.',
+                'status' => 204
+            ]);
         }
     }
 }
