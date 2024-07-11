@@ -39,7 +39,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #343a40;
     color: white;
     padding: 0 20px;
     height: 60px;

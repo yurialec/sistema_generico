@@ -2,11 +2,13 @@
     <div id="formulario" class="row justify-content-center">
         <div class="col-sm-6">
 
-            <alert-component tipo="success" :detalhes="msg" titulo="Alteração realizada com sucesso"
-                v-if="alertStatus === true"></alert-component>
-            <alert-component tipo="danger" titulo="Erro ao cadastrar Perfil" :detalhes="msg"
-                v-if="alertStatus === false">
-            </alert-component>
+            <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa-regular fa-circle-check"></i> Registro alterado com sucesso
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div v-if="alertStatus === false" class="alert alert-danger" role="alert">
+                <i class="fa-solid fa-triangle-exclamation"></i> Erro ao alterar registro
+            </div>
 
             <form method="POST" action="" @submit.prevent="salvar()">
                 <div class="form-group">
@@ -15,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="text-start" style="margin-top: 10px;">
-                                <a href="#" class="btn btn-secondary btn-sm" @click.prevent="voltar">Voltar</a>
+                                <a :href="this.urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -37,7 +39,8 @@ export default {
     props: {
         roleById: {
             type: Object,
-        }
+        },
+        urlIndexRole: String,
     },
     data() {
         return {
@@ -47,9 +50,6 @@ export default {
         };
     },
     methods: {
-        voltar() {
-            window.history.back();
-        },
         salvar() {
             let config = {
                 headers: {
@@ -61,7 +61,6 @@ export default {
                 .then(response => {
                     this.alertStatus = true;
                     this.msg = response;
-
                 })
                 .catch(errors => {
                     this.alertStatus = false;

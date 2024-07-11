@@ -2,7 +2,7 @@
     <div class="sidebar">
         <div class="sidebar-logo">
             <a :href="urlHome">
-                <img src="../../../../../storage/app/public/images/logo/Logo_RGB_White+Green.png" alt="Logo">
+                LOGOTIPO
             </a>
         </div>
         <ul>
@@ -86,7 +86,7 @@ export default {
 .sidebar {
     width: 250px;
     height: 100vh;
-    background-color: #333;
+    background-color: #343a40;
     color: #fff;
     position: fixed;
     top: 0;

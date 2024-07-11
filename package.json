@@ -15,6 +15,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
+        "bootstrap-vue": "^2.23.1",
         "v-mask": "^2.3.0",
         "vue-simple-alert": "^1.1.1",
         "vue-sweetalert2": "^5.0.11"

@@ -1,4 +1,8 @@
 <template>
+    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -18,33 +22,36 @@
                 </div>
             </div>
         </div>
-        
-        <div class="card-body">
-            <table class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="role in roles.data" :key="role.id">
-                        <th scope="row">{{ role.id }}</th>
-                        <td>{{ role.name }}</td>
-                        <td>
-                            <a :href="'roles/edit/' + role.id">
-                                <i class="fa-regular fa-pen-to-square fa-lg"></i>
-                            </a>&nbsp;&nbsp;&nbsp;
 
-                            <button type="button" style="color: red;" class="btn" @click="confirmarExclusao(role.id)"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="fa-regular fa-trash-can fa-lg"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-4">#</th>
+                            <th class="col-sm-4">Nome</th>
+                            <th class="col-sm-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="role in roles.data" :key="role.id">
+                            <th scope="row">{{ role.id }}</th>
+                            <td>{{ role.name }}</td>
+                            <td>
+                                <a :href="'roles/edit/' + role.id">
+                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                </a>&nbsp;&nbsp;&nbsp;
+
+                                <button type="button" style="color: red;" class="btn"
+                                    @click="confirmarExclusao(role.id)" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    <i class="fa-regular fa-trash-can fa-lg"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="card-footer">
             <nav aria-label="Page navigation example">
@@ -115,6 +122,8 @@ export default {
                         if (modal) {
                             modal.hide();
                         }
+
+                        this.alertStatus = true;
                     })
                     .catch(errors => {
                         console.log(errors);

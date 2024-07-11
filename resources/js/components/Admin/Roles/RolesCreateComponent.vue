@@ -1,21 +1,36 @@
 <template>
     <div id="formulario" class="row justify-content-center">
         <div class="col-sm-6">
-
-            <alert-component tipo="success" :detalhes="msg" titulo="Cadastro realizado com sucesso"
-                v-if="alertStatus === true"></alert-component>
-            <alert-component tipo="danger" titulo="Erro ao cadastrar Perfil" :detalhes="msg"
-                v-if="alertStatus === false">
-            </alert-component>
-
+            <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fa-regular fa-circle-xmark"></i> Erro ao cadastrar registro
+                <hr>
+                <ul v-for="msg in this.messages.data.errors">
+                    <li>{{ msg[0] }}</li>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <form method="POST" action="" @submit.prevent="salvar()">
                 <div class="form-group">
                     <label>Nome</label>
                     <input type="text" class="form-control" v-model="role.name">
                 </div>
-                <div class="text-end" style="margin-top: 10px;">
-                    <a href="#" class="btn btn-primary btn-sm" @click="salvar()">Cadastrar</a>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="text-start" style="margin-top: 10px;">
+                            <a :href="this.urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-end" style="margin-top: 10px;">
+                            <a href="#" class="btn btn-primary btn-sm" @click="salvar()">Cadastrar</a>
+                        </div>
+                    </div>
                 </div>
+
             </form>
         </div>
     </div>
@@ -25,6 +40,9 @@
 import axios from 'axios';
 
 export default {
+    props: {
+        urlIndexRole: String,
+    },
     data() {
         return {
             role: {
@@ -45,12 +63,10 @@ export default {
             axios.post('/admin/roles/store', this.role, config)
                 .then(response => {
                     this.alertStatus = true;
-                    this.msg = response;
-
                 })
                 .catch(errors => {
                     this.alertStatus = false;
-                    this.msg = errors.response;
+                    this.messages = errors.response;
                 });
         }
     }
