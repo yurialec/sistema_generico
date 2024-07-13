@@ -1,6 +1,7 @@
 <template>
     <div id="formulario" class="row justify-content-center">
         <div class="col-sm-6">
+            
             <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -13,6 +14,7 @@
                 </ul>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            
             <form method="POST" action="" @submit.prevent="salvar()">
                 <div class="form-group">
                     <label>Nome</label>
@@ -54,13 +56,7 @@ export default {
     },
     methods: {
         salvar() {
-            let config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            axios.post('/admin/roles/store', this.role, config)
+            axios.post('/admin/roles/store', this.role)
                 .then(response => {
                     this.alertStatus = true;
                 })

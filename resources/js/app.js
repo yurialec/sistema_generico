@@ -10,6 +10,7 @@ if (token) {
 }
 
 axios.defaults.baseURL = 'http://localhost:8000/';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 window.axios = axios;
 
 const app = createApp({});

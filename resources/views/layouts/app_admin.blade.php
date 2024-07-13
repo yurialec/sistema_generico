@@ -24,10 +24,6 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <style>
-        body {
-            margin: 0;
-            background-color: #ebeef6;
-        }
 
         .dashboard {
             display: flex;
@@ -38,27 +34,32 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            margin-left: 250px;
-            padding-top: 60px;
-            transition: margin-left 0.3s;
+            /* margin-left: 250px; */
+            /* padding-top: 60px; */
+            /* transition: margin-left 0.3s; */
+
         }
 
         .content-wrapper {
-            display: flex;
+            /* display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            flex-grow: 1; */
+            padding: 10px;
         }
 
         .content {
-            flex-grow: 1;
-            padding: 20px;
+            /* flex-grow: 1; */
+            /* padding: 20px; */
         }
 
         footer {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
+            background-color: #131b38;
+            color: #ebeef6;
+            box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.12);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
         }
     </style>
 </head>
@@ -73,9 +74,9 @@
                 @include('admin.theme.header')
             @show
             <div class="content-wrapper">
-                <main class="content">
-                    @yield('content')
-                </main>
+                {{-- <main class="content"> --}}
+                @yield('content')
+                {{-- </main> --}}
             </div>
             @section('footer')
                 <footer>

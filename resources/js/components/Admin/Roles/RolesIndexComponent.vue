@@ -28,14 +28,14 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th class="col-sm-4">#</th>
-                            <th class="col-sm-4">Nome</th>
-                            <th class="col-sm-4">Ações</th>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="role in roles.data" :key="role.id">
-                            <th scope="row">{{ role.id }}</th>
+                            <th>{{ role.id }}</th>
                             <td>{{ role.name }}</td>
                             <td>
                                 <a :href="'roles/edit/' + role.id">
@@ -113,7 +113,7 @@ export default {
         },
         excluirRegistro() {
             if (this.roleToDelete !== null) {
-                axios.delete(`/admin/roles/delete/${this.roleToDelete}`)
+                axios.delete('/admin/roles/delete/' + this.roleToDelete)
                     .then(response => {
                         this.getRoles();
                         this.roleToDelete = null;
