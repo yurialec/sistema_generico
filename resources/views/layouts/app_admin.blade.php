@@ -22,46 +22,6 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <style>
-
-        .dashboard {
-            display: flex;
-            height: 100vh;
-        }
-
-        .main {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            /* margin-left: 250px; */
-            /* padding-top: 60px; */
-            /* transition: margin-left 0.3s; */
-
-        }
-
-        .content-wrapper {
-            /* display: flex;
-            flex-direction: column;
-            flex-grow: 1; */
-            padding: 10px;
-        }
-
-        .content {
-            /* flex-grow: 1; */
-            /* padding: 20px; */
-        }
-
-        footer {
-            background-color: #131b38;
-            color: #ebeef6;
-            box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.12);
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 40px;
-        }
-    </style>
 </head>
 
 <body>
@@ -80,7 +40,7 @@
             </div>
             @section('footer')
                 <footer>
-                    &copy; {{ date('Y') }} Seu Projeto. Todos os direitos reservados.
+                    &copy; {{ date('Y') }} ProjetoGenerico. Todos os direitos reservados.
                 </footer>
             @show
         </div>

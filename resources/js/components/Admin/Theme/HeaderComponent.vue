@@ -9,14 +9,12 @@
             <div class="avatar" @click="toggleDropdown">
                 <i class="fa-regular fa-user"></i>
                 <div class="dropdown-menu setting" :class="{ active: showDropdown }">
-                    <div class="item">
-                        <span class="fa-solid fa-user"></span> <a style="text-decoration: none;" :href="urlProfile">Meu
-                            Cadastro</a>
-                    </div>
-                    <div class="item">
-                        <span class="fa-solid fa-arrow-right-from-bracket"></span><a style="text-decoration: none;"
-                            :href="urlSair">Sair</a>
-                    </div>
+                    <a class="item" :href="urlProfile">
+                        <span class="fa-solid fa-user"></span> Meu Cadastro
+                    </a>
+                    <a class="item" :href="urlSair">
+                        <span class="fa-solid fa-arrow-right-from-bracket"></span> Sair
+                    </a>
                 </div>
             </div>
         </div>

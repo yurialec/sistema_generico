@@ -11,6 +11,21 @@ body {
     background-color: #ebeef6;
 }
 
+.dashboard {
+    display: flex;
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.content-wrapper {
+    padding: 10px;
+}
+
 footer {
     background-color: #ebeef6;
     color: #333;
@@ -20,7 +35,6 @@ footer {
 
 .navbar {
     color: #ebeef6;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #131b38;
@@ -74,14 +88,19 @@ footer {
     overflow-y: auto;
 }
 
-.dropdown-menu li,
 .dropdown-menu .item {
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid var(--second-bg-color);
+    border-bottom: 1px solid #1e2746;
     cursor: pointer;
     font-size: 15px;
+    text-decoration: none;
+    color: #f0f0f0;
+}
+
+.dropdown-menu .item:hover {
+    background-color: #f0f0f0;
 }
 
 .dropdown-menu.active {
@@ -126,10 +145,19 @@ footer {
 
 
 /** INICIO SIDEBAR */
+.logo {
+    background-color: #192039;
+    width: 250px;
+    padding: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .sidebar {
     color: #ebeef6;
-    height: calc(100vh - 60px);
-    width: 60px;
+    height: calc(100vh);
+    width: 250px;
     position: sticky;
     top: 60px;
     background-color: #192039;
@@ -140,9 +168,15 @@ footer {
     flex-shrink: 0;
 }
 
-.sidebar-list{
+.sidebar-list {
     list-style-type: none;
     padding: 10px;
+}
+
+.sidebar-submenu-list {
+    list-style-type: none;
+    padding: 0;
+    margin-left: 20px;
 }
 
 @media(max-width: 768px) {
@@ -163,7 +197,7 @@ footer {
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 15px 0;
+    padding: 10px 0;
     position: relative;
     cursor: pointer;
     transition: 0.3s background ease;
@@ -220,4 +254,14 @@ footer {
     justify-content: space-between;
     padding: 5px;
     flex-wrap: wrap;
+}
+
+/** FOOTER */
+footer {
+    background-color: #ebeef6;
+    color: #333;
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.12);
+    height: 40px;
+    text-align: end;
+    margin-top: auto;
 }

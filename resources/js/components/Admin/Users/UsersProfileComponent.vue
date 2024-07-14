@@ -1,9 +1,9 @@
 <template>
-    <div id="formulario" class="row justify-content-center">
-        <div class="col-sm-6">
-
+    <div class="card">
+        <div class="card-header">
             <h4>Meu Cadastro</h4>
-
+        </div>
+        <div class="card-body">
             <alert-component tipo="success" :detalhes="msg" titulo="Alteração realizada com suecesso"
                 v-if="alertStatus === true"></alert-component>
             <alert-component tipo="danger" titulo="Erro ao atualizar cadastro" :detalhes="msg"
@@ -89,7 +89,7 @@ export default {
             }
         },
         validatePassword() {
-            
+
         },
         getProfile() {
             axios.get('admin/users/profile-view')
@@ -128,11 +128,3 @@ export default {
     },
 }
 </script>
-<style>
-#formulario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-}
-</style>
