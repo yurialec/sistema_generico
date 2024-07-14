@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CreateRoleRequest;
+use App\Http\Requests\Admin\Role\CreateRoleRequest;
+use App\Http\Requests\Admin\Role\UpdateRoleRequest;
 use App\Models\Admin\Roles;
+use App\Services\Admin\RoleService;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    public $role;
-    public function __construct(Roles $role)
+    protected $roleService;
+    public function __construct(RoleService $roleService)
     {
-        $this->role = $role;
+        $this->roleService = $roleService;
     }
 
     public function index()
@@ -22,14 +24,19 @@ class RoleController extends Controller
 
     public function list(Request $request)
     {
-        $query = $this->role->query();
-        if ($request->has('search')) {
-            $searchTerm = $request->query('search');
-            $query->where('name', 'like', '%' . $searchTerm . '%');
-        }
+        $roles = $this->roleService->getAllRoles($request->input('search'));
 
-        $role = $query->paginate(15);
-        return response()->json($role);
+        if ($roles) {
+            return response()->json([
+                'status' => true,
+                'roles' => $roles
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Nenhum registro encontrado.',
+                'status' => 204
+            ]);
+        }
     }
 
     public function create()
@@ -39,14 +46,18 @@ class RoleController extends Controller
 
     public function store(CreateRoleRequest $request)
     {
-        $role = $this->role->create([
-            'name' => $request->name,
-        ]);
+        $role = $this->roleService->createRole($request->all());
 
         if ($role) {
-            return response()->json($role, 201);
+            return response()->json([
+                'status' => true,
+                'role' => $role,
+            ], 200);
         } else {
-            return response()->json(['Erro ao incluir registro', 204]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar perfil'
+            ], 204);
         }
     }
 
@@ -56,42 +67,36 @@ class RoleController extends Controller
         return view('admin.roles.edit', compact('role'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateRoleRequest $request, string $id)
     {
-        $role = Roles::where('id', $id)->first();
-        if ($role) {
-            $role->name = $request->name;
+        $role = $this->roleService->updateRole($id, $request->all());
 
-            if ($role->save()) {
-                return response()->json($role, 201);
-            } else {
-                return response()->json(['Erro ao atualizar registro', 204]);
-            }
+        if ($role) {
+            return response()->json([
+                'status' => true,
+                'role' => $role,
+            ], 200);
         } else {
-            return response()->json(['Erro ao localizar registro', 204]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar perfil'
+            ], 204);
         }
     }
 
     public function delete(string $id)
     {
-        $role = Roles::where('id', $id)->first();
+        $role = $this->roleService->deleteRole($id);
         if ($role) {
-            if ($role->delete()) {
-                return response()->json([
-                    'message' => 'Registro excluido com sucesso.',
-                    'status' => 200
-                ]);
-            } else {
-                return response()->json([
-                    'message' => 'Erro ao excluir registro.',
-                    'status' => 204
-                ]);
-            }
+            return response()->json([
+                'status' => true,
+                'message' => 'Perfil excluio com sucesso',
+            ], 200);
         } else {
             return response()->json([
-                'message' => 'Nenhum resultado encontrado.',
-                'status' => 204
-            ]);
+                'status' => false,
+                'message' => 'Erro ao excluir perfil'
+            ], 204);
         }
     }
 }

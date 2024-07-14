@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="role in roles.data" :key="role.id">
+                        <tr v-for="role in this.roles.data" :key="role.id">
                             <th>{{ role.id }}</th>
                             <td>{{ role.name }}</td>
                             <td>
@@ -141,7 +141,7 @@ export default {
         getRoles(url = '/admin/roles/list') {
             axios.get(url)
                 .then(response => {
-                    this.roles = response.data;
+                    this.roles = response.data.roles;
                 })
                 .catch(errors => {
                     console.log(errors);
