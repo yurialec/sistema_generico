@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
@@ -47,6 +48,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('roles.edit');
             Route::post('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
             Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('roles.delete');
+        });
+
+        Route::prefix('permissions')->group(function () {
+            Route::get('/', [PermissionController::class, 'index'])->name('permissions.index');
+            Route::get('/list', [PermissionController::class, 'list'])->name('permissions.list');
+            Route::get('/create', [PermissionController::class, 'create'])->name('permissions.create');
+            Route::post('/store', [PermissionController::class, 'store'])->name('permissions.store');
+            Route::get('/edit/{id}', [PermissionController::class, 'edit'])->name('permissions.edit');
+            Route::post('/update/{id}', [PermissionController::class, 'update'])->name('permissions.update');
+            Route::delete('/delete/{id}', [PermissionController::class, 'delete'])->name('permissions.delete');
         });
 
         //AUTH

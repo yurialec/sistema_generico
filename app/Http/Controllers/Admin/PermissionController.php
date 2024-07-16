@@ -5,31 +5,30 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Role\CreateRoleRequest;
 use App\Http\Requests\Admin\Role\UpdateRoleRequest;
-use App\Models\Admin\Roles;
-use App\Services\Admin\RoleService;
+use App\Services\Admin\PermissionService;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
-    protected $roleService;
-    public function __construct(RoleService $roleService)
+    protected $permissionService;
+    public function __construct(PermissionService $permissionService)
     {
-        $this->roleService = $roleService;
+        $this->permissionService = $permissionService;
     }
 
     public function index()
     {
-        return view('admin.roles.index');
+        return view('admin.permissions.index');
     }
 
     public function list(Request $request)
     {
-        $roles = $this->roleService->getAllRoles($request->input('search'));
+        $permission = $this->permissionService->getAllPermissions($request->input('search'));
 
-        if ($roles) {
+        if ($permission) {
             return response()->json([
                 'status' => true,
-                'roles' => $roles
+                'permission' => $permission
             ], 200);
         } else {
             return response()->json([
@@ -41,66 +40,66 @@ class RoleController extends Controller
 
     public function create()
     {
-        return view('admin.roles.create');
+        return view('admin.permissions.create');
     }
 
     public function store(CreateRoleRequest $request)
     {
-        $role = $this->roleService->createRole($request->all());
+        $permission = $this->permissionService->createPermission($request->all());
 
-        if ($role) {
+        if ($permission) {
             return response()->json([
                 'status' => true,
-                'role' => $role,
+                'permission' => $permission,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao cadastrar perfil'
+                'message' => 'Erro ao cadastrar permissão'
             ], 204);
         }
     }
 
     public function edit(string $id)
     {
-        $role = $this->roleService->getRoleById($id);
-        
-        if ($role) {
-            return view('admin.roles.edit', compact('role'));
+        $permission = $this->permissionService->getPermissionById($id);
+ 
+        if ($permission) {
+            return view('admin.permissions.edit', compact('permission'));
         } else {
-            return redirect(route('roles.index'))->withErrors(['message' => 'Perfil não encontrado']);
+            return redirect(route('permissions.index'))->withErrors(['message' => 'Permissão não encontrado']);
         }
     }
 
     public function update(UpdateRoleRequest $request, string $id)
     {
-        $role = $this->roleService->updateRole($id, $request->all());
+        $permission = $this->permissionService->updatePermission($id, $request->all());
 
-        if ($role) {
+        if ($permission) {
             return response()->json([
                 'status' => true,
-                'role' => $role,
+                'permission' => $permission,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao atualizar perfil'
+                'message' => 'Erro ao atualizar permissão'
             ], 204);
         }
     }
 
     public function delete(string $id)
     {
-        $role = $this->roleService->deleteRole($id);
-        if ($role) {
+        $permission = $this->permissionService->deletePermission($id);
+        if ($permission) {
             return response()->json([
                 'status' => true,
-                'message' => 'Perfil excluio com sucesso',
+                'message' => 'Permissão excluio com sucesso',
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao excluir perfil'
+                'message' => 'Erro ao excluir permissão'
             ], 204);
         }
     }

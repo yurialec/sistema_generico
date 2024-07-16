@@ -21,6 +21,7 @@ class RoleRepository implements RoleRepositoryInterface
             ->when($term, function ($query) use ($term) {
                 return $query->where('name', 'like', '%' . $term . '%');
             })
+            ->where('id', '<>', 1)
             ->paginate(10);
     }
 

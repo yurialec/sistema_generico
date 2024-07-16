@@ -32,6 +32,11 @@ import RolesIndexComponent from './components/Admin/Roles/RolesIndexComponent.vu
 import RolesCreateComponent from './components/Admin/Roles/RolesCreateComponent.vue';
 import RolesEditComponent from './components/Admin/Roles/RolesEditComponent.vue';
 
+//Permissions
+import PermissionsIndexComponent from './components/Admin/Permissions/PermissionsIndexComponent.vue';
+import PermissionsCreateComponent from './components/Admin/Permissions/PermissionsCreateComponent.vue';
+import PermissionsEditComponent from './components/Admin/Permissions/PermissionsEditComponent.vue';
+
 //Theme
 app.component('example-component', ExampleComponent);
 app.component('home-component', HomeHomeComponent);
@@ -48,5 +53,10 @@ app.component('users-profile-component', UsersProfileComponent);
 app.component('roles-index-component', RolesIndexComponent);
 app.component('roles-create-component', RolesCreateComponent);
 app.component('roles-edit-component', RolesEditComponent);
+
+//PERMISSION
+app.component('permissions-index-component', PermissionsIndexComponent);
+app.component('permissions-create-component', PermissionsCreateComponent);
+app.component('permissions-edit-component', PermissionsEditComponent);
 
 app.mount('#app');

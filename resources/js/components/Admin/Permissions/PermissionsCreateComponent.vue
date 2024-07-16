@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h4>Cadastrar perfil</h4>
+            <h4>Cadastrar permissão</h4>
         </div>
         <div class="card-body">
             <div id="formulario" class="row justify-content-center">
@@ -25,12 +25,12 @@
                     <form method="POST" action="" @submit.prevent="salvar()">
                         <div class="form-group">
                             <label>Nome</label>
-                            <input type="text" class="form-control" v-model="role.name">
+                            <input type="text" class="form-control" v-model="permission.name">
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="text-start" style="margin-top: 10px;">
-                                    <a :href="this.urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
+                                    <a :href="this.urlIndexPermission" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -52,11 +52,11 @@ import axios from 'axios';
 
 export default {
     props: {
-        urlIndexRole: String,
+        urlIndexPermission: String,
     },
     data() {
         return {
-            role: {
+            permission: {
                 name: '',
             },
             alertStatus: null,
@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         salvar() {
-            axios.post('/admin/roles/store', this.role)
+            axios.post('/admin/permissions/store', this.permission)
                 .then(response => {
                     this.alertStatus = true;
                 })
