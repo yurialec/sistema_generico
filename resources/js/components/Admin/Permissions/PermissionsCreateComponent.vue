@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h4>Cadastrar permissão</h4>
+            <h4>Cadastrar Permissões</h4>
         </div>
         <div class="card-body">
             <div id="formulario" class="row justify-content-center">
@@ -24,9 +24,28 @@
 
                     <form method="POST" action="" @submit.prevent="salvar()">
                         <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" class="form-control" v-model="permission.name">
+                            <label>Descrição</label>
+                            <input type="text" class="form-control" v-model="permission.label">
                         </div>
+
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <select class="form-select" v-model="permission.name">
+                                <option v-for="routes in this.validRoutes" :value="routes.name">
+                                    {{ routes.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Módulo</label>
+                            <select class="form-select" v-model="permission.module_id">
+                                <option v-for="module in modules" :key="module.id" :value="module.id">
+                                    {{ module.name }}
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="text-start" style="margin-top: 10px;">
@@ -35,11 +54,10 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-end" style="margin-top: 10px;">
-                                    <a href="#" class="btn btn-primary btn-sm" @click="salvar()">Cadastrar</a>
+                                    <a href="#" class="btn btn-primary btn-sm" @click="save()">Cadastrar</a>
                                 </div>
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -56,15 +74,45 @@ export default {
     },
     data() {
         return {
-            permission: {
-                name: '',
-            },
             alertStatus: null,
             msg: [],
+            modules: [],
+            validRoutes: [],
+            permission: {
+                name: '',
+                label: '',
+                module_id: ''
+            }
         };
     },
+    mounted() {
+        this.getModules();
+        this.getValidRoutes();
+    },
     methods: {
-        salvar() {
+        getModules() {
+            axios.get('/admin/modules/list')
+                .then(response => {
+                    this.modules = response.data.modules;
+
+                    console.log();
+                })
+                .catch(errors => {
+                    this.alertStatus = false;
+                    this.messages = errors.response;
+                });
+        },
+        getValidRoutes() {
+            axios.get('/admin/permissions/valid-routes')
+                .then(response => {
+                    this.validRoutes = response.data.routes;
+                })
+                .catch(errors => {
+                    this.alertStatus = false;
+                    this.messages = errors.response;
+                });
+        },
+        save() {
             axios.post('/admin/permissions/store', this.permission)
                 .then(response => {
                     this.alertStatus = true;

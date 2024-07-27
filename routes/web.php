@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ValidRoutesController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SiteController;
@@ -36,6 +38,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', [UserController::class, 'create'])->name('users.create');
             Route::post('/store', [UserController::class, 'store'])->name('users.store');
             Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+            Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('users.delete');
+
             Route::get('/profile', [UserController::class, 'profileView'])->name('profile');
             Route::get('/profile-view', [UserController::class, 'profile'])->name('profile.view');
         });
@@ -58,7 +63,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id}', [PermissionController::class, 'edit'])->name('permissions.edit');
             Route::post('/update/{id}', [PermissionController::class, 'update'])->name('permissions.update');
             Route::delete('/delete/{id}', [PermissionController::class, 'delete'])->name('permissions.delete');
+            Route::get('/valid-routes', [ValidRoutesController::class, 'index'])->name('valid.routes.index');
         });
+
+        Route::prefix('modules')->group(function () {
+            Route::get('/list', [ModuleController::class, 'list'])->name('modules.list');
+        });
+
 
         //AUTH
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

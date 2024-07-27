@@ -30,6 +30,7 @@
                         <tr>
                             <th>#</th>
                             <th>Nome</th>
+                            <th>Permissões</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -37,16 +38,16 @@
                         <tr v-for="role in this.roles.data" :key="role.id">
                             <th>{{ role.id }}</th>
                             <td>{{ role.name }}</td>
+
+                            <td>
+                                <span v-for="permission in role['permissions']" class="badge bg-success"
+                                    id="span-role-permissions">{{ permission.label }}</span>&nbsp;
+                            </td>
+
                             <td>
                                 <a :href="'roles/edit/' + role.id">
                                     <i class="fa-regular fa-pen-to-square fa-lg"></i>
-                                </a>&nbsp;&nbsp;&nbsp;
-
-                                <button type="button" style="color: red;" class="btn"
-                                    @click="confirmarExclusao(role.id)" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    <i class="fa-regular fa-trash-can fa-lg"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -150,3 +151,12 @@ export default {
     }
 }
 </script>
+<style>
+#span-role-permissions {
+    bottom: 1px;
+    text-transform: uppercase;
+    background: #d22;
+    margin-right: 2px;
+    border-radius: 2px;
+}
+</style>

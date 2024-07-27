@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Role\CreateRoleRequest;
 use App\Http\Requests\Admin\Role\UpdateRoleRequest;
 use App\Services\Admin\PermissionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class PermissionController extends Controller
 {
@@ -43,9 +43,9 @@ class PermissionController extends Controller
         return view('admin.permissions.create');
     }
 
-    public function store(CreateRoleRequest $request)
+    public function store(Request $request)
     {
-        $permission = $this->permissionService->createPermission($request->all());
+        $permission = $this->permissionService->storePermission($request->all());
 
         if ($permission) {
             return response()->json([
@@ -63,7 +63,6 @@ class PermissionController extends Controller
     public function edit(string $id)
     {
         $permission = $this->permissionService->getPermissionById($id);
- 
         if ($permission) {
             return view('admin.permissions.edit', compact('permission'));
         } else {

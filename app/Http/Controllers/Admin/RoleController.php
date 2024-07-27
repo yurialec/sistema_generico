@@ -64,7 +64,7 @@ class RoleController extends Controller
     public function edit(string $id)
     {
         $role = $this->roleService->getRoleById($id);
-        
+
         if ($role) {
             return view('admin.roles.edit', compact('role'));
         } else {

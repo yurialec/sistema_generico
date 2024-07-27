@@ -22,32 +22,19 @@
                 </div>
             </div>
         </div>
-
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Nome</th>
-                            <th>Ações</th>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">Nome</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="permission in this.permissions.data" :key="permission.id">
-                            <th>{{ permission.id }}</th>
-                            <td>{{ permission.name }}</td>
-                            <td>
-                                <a :href="'permissions/edit/' + permission.id">
-                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
-                                </a>&nbsp;&nbsp;&nbsp;
-
-                                <button type="button" style="color: red;" class="btn"
-                                    @click="confirmarExclusao(permission.id)" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    <i class="fa-regular fa-trash-can fa-lg"></i>
-                                </button>
-                            </td>
+                        <tr v-for="permission in permissions.data" :key="permission.id">
+                            <td class="text-center">{{ permission.id }}</td>
+                            <td class="text-center">{{ permission.label }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -142,11 +129,12 @@ export default {
             axios.get(url)
                 .then(response => {
                     this.permissions = response.data.permission;
+                    console.log(this.permissions);
                 })
                 .catch(errors => {
                     console.log(errors);
                 });
-        }
+        },
     }
 }
 </script>

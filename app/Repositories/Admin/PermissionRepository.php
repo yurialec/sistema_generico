@@ -14,7 +14,7 @@ class PermissionRepository implements PermissionRepositoryInterface
         $this->permission = $permission;
     }
 
-    public function all($term)
+    public function all($term = null)
     {
         return $this->permission
             ->when($term, function ($query) use ($term) {

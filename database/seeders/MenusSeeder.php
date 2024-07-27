@@ -16,7 +16,7 @@ class MenusSeeder extends Seeder
         // Menu principal
         DB::table('menus')->insert([
             'label' => 'Administrativo',
-            'icon' => 'fa-solid fa-cogs',
+            'icon' => 'fa-solid fa-gear',
             'url' => '#',
             'active' => 1,
             'son' => null,
