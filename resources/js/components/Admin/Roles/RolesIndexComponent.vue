@@ -9,16 +9,13 @@
                 <div class="col-sm-3 text-left">
                     <h3>Perfis</h3>
                 </div>
-                <div class="col-sm-6 text-center">
+                <div class="col-sm-6">
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                </div>
-                <div class="col-sm-3 text-end">
-                    <a :href="urlCreateRole" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -65,29 +62,10 @@
             </nav>
         </div>
     </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação de Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Tem certeza que deseja deletar este registro?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" @click="excluirRegistro">Excluir</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { Modal } from 'bootstrap';
 
 export default {
     props: {
@@ -100,7 +78,6 @@ export default {
                 links: []
             },
             searchFilter: '',
-            roleToDelete: null,
             alertStatus: null,
             msg: [],
         };
@@ -111,25 +88,6 @@ export default {
     methods: {
         confirmarExclusao(roleId) {
             this.roleToDelete = roleId;
-        },
-        excluirRegistro() {
-            if (this.roleToDelete !== null) {
-                axios.delete('/admin/roles/delete/' + this.roleToDelete)
-                    .then(response => {
-                        this.getRoles();
-                        this.roleToDelete = null;
-                        // Fecha a modal
-                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        this.alertStatus = true;
-                    })
-                    .catch(errors => {
-                        console.log(errors);
-                    });
-            }
         },
         pesquisar() {
             this.getRoles(`/admin/roles/list?search=${this.searchFilter}`);

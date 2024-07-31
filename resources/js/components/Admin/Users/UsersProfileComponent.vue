@@ -92,9 +92,11 @@ export default {
 
         },
         getProfile() {
-            axios.get('admin/users/profile-view')
+            axios.get('admin/users/profile')
                 .then(response => {
                     this.user = response.data.profile;
+
+                    console.log(this.user);
                 })
                 .catch(error => {
                     console.log(error);

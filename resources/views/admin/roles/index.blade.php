@@ -6,7 +6,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    <roles-index-component
-        url-create-role="{{ route('roles.create') }}">
+    <roles-index-component>
     </roles-index-component>
 @endsection
