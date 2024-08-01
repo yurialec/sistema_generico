@@ -1,0 +1,35 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+body {
+    background-color: #e3f2fd;
+}
+
+.navbar {
+    background-color: #ff5733;
+    /* Laranja */
+}
+
+.navbar-brand,
+.nav-link {
+    color: #ffffff !important;
+}
+
+.main-content {
+    background-color: #e3f2fd;
+    /* Azul claro */
+    padding: 60px 15px;
+}
+
+.footer {
+    background-color: #ff5733;
+    /* Laranja */
+    color: #ffffff;
+    padding: 20px 0;
+}
