@@ -1,4 +1,8 @@
 <template>
+    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -36,8 +40,15 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.role.name }}</td>
                         <td>
-                            <i class="fa-regular fa-pen-to-square fa-lg"></i>&nbsp;&nbsp;&nbsp;
-                            <i class="fa-regular fa-trash-can fa-lg"></i>
+                            <a :href="'users/edit/' + user.id">
+                                <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                            </a>
+                            &nbsp;&nbsp;&nbsp;
+
+                            <button type="button" style="color: red;" class="btn" @click="confirmarExclusao(user.id)"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="fa-regular fa-trash-can fa-lg"></i>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -54,10 +65,29 @@
             </nav>
         </div>
     </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmação de Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja deletar este registro?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" @click="excluirRegistro">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { Modal } from 'bootstrap';
 
 export default {
     props: {
@@ -70,6 +100,9 @@ export default {
                 links: []
             },
             searchFilter: '',
+            userToDelete: null,
+            alertStatus: null,
+            msg: [],
         };
     },
     mounted() {
@@ -87,12 +120,35 @@ export default {
         getUsuarios(url = 'admin/users/list') {
             axios.get(url)
                 .then(response => {
-                    this.users = response.data;
+                    this.users = response.data.users;
                 })
                 .catch(errors => {
                     console.log(errors);
                 });
-        }
+        },
+        confirmarExclusao(userId) {
+            this.userToDelete = userId;
+        },
+        excluirRegistro() {
+            if (this.userToDelete !== null) {
+                axios.delete('/admin/users/delete/' + this.userToDelete)
+                    .then(response => {
+                        this.getRoles();
+                        this.userToDelete = null;
+                        // Fecha a modal
+
+                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
+                        if (modal) {
+                            modal.hide();
+                        }
+
+                        this.alertStatus = true;
+                    })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            }
+        },
     }
 }
 </script>

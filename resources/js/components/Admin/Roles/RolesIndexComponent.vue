@@ -109,12 +109,3 @@ export default {
     }
 }
 </script>
-<style>
-#span-role-permissions {
-    bottom: 1px;
-    text-transform: uppercase;
-    background: #d22;
-    margin-right: 2px;
-    border-radius: 2px;
-}
-</style>

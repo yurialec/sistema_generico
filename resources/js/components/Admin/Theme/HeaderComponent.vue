@@ -7,7 +7,7 @@
         </div>
         <div class="navbar-content">
             <div class="avatar" @click="toggleDropdown">
-                <i class="fa-regular fa-user"></i>
+                {{ this.user.name }}&nbsp;&nbsp;&nbsp;<i class="fa-regular fa-user"></i>
                 <div class="dropdown-menu setting" :class="{ active: showDropdown }">
                     <a class="item" :href="urlProfile">
                         <span class="fa-solid fa-user"></span> Meu Cadastro
@@ -30,13 +30,25 @@ export default {
     },
     data() {
         return {
-            showDropdown: false
+            showDropdown: false,
+            user: [],
         };
+    },
+    mounted() {
+        this.getProfile();
     },
     methods: {
         toggleDropdown() {
             this.showDropdown = !this.showDropdown;
-        }
+        },
+        getProfile() {
+            axios.get('admin/users/profile')
+                .then(response => {
+                    this.user = response.data.profile;
+                })
+                .catch(error => {
+                });
+        },
     }
 };
 </script>

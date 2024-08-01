@@ -63,7 +63,7 @@ class ValidRouteService
         });
 
         $permissions = $this->permissionRepository->all();
-        $permissionsIndexed = [];
+
         foreach ($permissions as $permission) {
             $permissionsIndexed[] = $permission->name;
         }

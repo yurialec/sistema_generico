@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h4>Cadastrar novo usuário</h4>
+            <h4>Editar Usuário</h4>
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
@@ -12,7 +12,7 @@
                         <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-
+                    
                     <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
                         role="alert">
                         <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
@@ -23,62 +23,51 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-
                     <form method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
-                        <div v-if="equalPasswords === false" class="alert alert-danger alert-dismissible fade show"
-                            role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> As senha precisam ser iguais
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-
                         <div class="form-group">
                             <label>Nome</label>
-                            <input type="text" class="form-control" v-model="user.name">
+                            <input type="text" class="form-control" v-model="user.user.name">
                         </div>
 
                         <div class="form-group">
                             <label>E-mail</label>
-                            <input type="text" class="form-control" v-model="user.email" @input="validateEmail"
+                            <input type="text" class="form-control" v-model="user.user.email" @input="validateEmail"
                                 autocomplete="off">
 
-                            <div v-if="validEmail === false" class="alert alert-danger mt-3" role="alert">
+                            <div style="margin-top: 10px;" v-if="validEmail === false" class="alert alert-danger"
+                                role="alert">
                                 E-mail inválido.
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Perfil</label>
-                            <select class="form-control" v-model="user.role_id">
-                                <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
-                            </select>
-                        </div>
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <label>Senha</label>
-                                    <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                        v-model="user.password" @input="passwordCheck" autocomplete="new-password">
-                                </div>
-                                <div class="col-sm">
-                                    <label>Confirmar senha</label>
-                                    
-                                    <div class="input-group">
+                        <div class="form-group" v-show="changePassword">
+                            <hr>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <label>Senha</label>
                                         <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                            v-model="confirmPassword" autocomplete="new-password">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                    @click="showPassword()" id="button-addon2">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </button>
+                                            v-model="user.password" @input="passwordCheck" autocomplete="new-password">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label>Confirmar senha</label>
+                                        <div class="input-group">
+                                            <input :type="inputPass ? 'text' : 'password'" class="form-control"
+                                                v-model="confirmPassword" autocomplete="new-password">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <button class="btn btn-outline-secondary btn-sm" type="button"
+                                                        @click="showPassword()" id="button-addon2">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm mt-2">
+                            <div class="col-sm" style="margin-top: 5px;">
                                 <div>
                                     <h6>Requisitos mínimos para a senha:</h6>
                                 </div>
@@ -115,6 +104,16 @@
                             </div>
                         </div>
 
+                        <div class="container" style="margin-top: 10px;">
+                            <div class="row">
+                                <div class="col text-end">
+                                    <button class="btn btn-primary btn-sm" @click.prevent="changePass()">
+                                        Alterar senha
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row mt-5">
                             <div class="col-sm-6">
                                 <div class="text-start">
@@ -136,20 +135,23 @@
 
 <script>
 import axios from 'axios';
+import Multiselect from 'vue-multiselect';
 
 export default {
+    components: { Multiselect },
     props: {
+        userById: {
+            type: Object,
+            required: true
+        },
         urlIndexUser: String,
     },
     data() {
         return {
-            roles: [],
             user: {
-                name: '',
-                email: '',
-                role_id: '',
+                user: JSON.parse(this.userById),
+                password: '',
             },
-            validEmail: null,
             confirmPassword: '',
             inputPass: false,
             has_number: '',
@@ -157,42 +159,39 @@ export default {
             has_special: '',
             has_six_chars: '',
             alertStatus: null,
-            equalPasswords: null,
-            msg: [],
+            messages: [],
+            changePassword: false,
+            validEmail: null,
         };
-    },
-    mounted() {
-        this.getRoles();
     },
     methods: {
         validateEmail() {
             const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            this.validEmail = emailPattern.test(this.user.email);
-        },
-        getRoles() {
-            axios.get('/admin/roles/list')
-                .then(response => {
-                    this.roles = response.data.roles.data;
-                })
-                .catch(errors => {
-                    console.log(errors);
-                });
+            this.validEmail = emailPattern.test(this.user.user.email);
         },
         save() {
-
-            this.user.password == this.confirmPassword ? this.equalPasswords = true : this.equalPasswords = false;
-
-            if (this.equalPasswords == true) {
-                axios.post('/admin/users/store', this.usuario)
-                    .then(response => {
-                        this.alertStatus = true;
-                        this.msg = response;
-
-                    })
-                    .catch(errors => {
-                        this.alertStatus = false;
-                        this.msg = errors.response;
-                    });
+            const payload = {
+                name: this.user.user.name,
+                email: this.user.user.email,
+            };
+            if (this.user.password) {
+                payload.password = this.user.password;
+            }
+            axios.post('/admin/users/update/' + this.user.user.id, payload)
+                .then(response => {
+                    this.alertStatus = true;
+                    this.messages = response.data;
+                })
+                .catch(errors => {
+                    this.alertStatus = false;
+                    this.messages = errors.response;
+                });
+        },
+        changePass() {
+            this.changePassword = !this.changePassword;
+            if (!this.changePassword) {
+                this.user.password = '';
+                this.confirmPassword = '';
             }
         },
         passwordCheck() {

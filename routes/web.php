@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin/')->group(function () {
         Route::get('home', [HomeController::class, 'index'])->name('home');
         Route::get('menus', [MenuController::class, 'index'])->name('menus');
+        Route::get('modules/list', [ModuleController::class, 'list'])->name('modules.list');
 
         
         Route::middleware('acl')->group(function () {
@@ -40,11 +41,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('/list', [UserController::class, 'list'])->name('users.list');
                 Route::get('/create', [UserController::class, 'create'])->name('users.create');
                 Route::post('/store', [UserController::class, 'store'])->name('users.store');
-                Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
                 Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-                Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('users.delete');
+                Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
+                Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
                 
-                Route::get('/profile', [UserController::class, 'profileView'])->name('profile');
+                Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
+                Route::get('/profile', [UserController::class, 'profile'])->name('profile');
             });
 
             Route::prefix('roles')->group(function () {
@@ -67,10 +69,6 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/delete/{id}', [PermissionController::class, 'delete'])->name('permissions.delete');
                 Route::get('/valid-routes', [ValidRoutesController::class, 'index'])->name('valid.routes.index');
             });
-        });
-
-        Route::prefix('modules')->group(function () {
-            Route::get('/list', [ModuleController::class, 'list'])->name('modules.list');
         });
 
         //AUTH

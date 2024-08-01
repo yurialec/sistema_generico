@@ -4,22 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CadastrarUsuarioRequest;
-use App\Models\User;
-use Illuminate\Contracts\View\View;
+use App\Services\Admin\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public $usuario;
-    public function __construct(User $usuario)
+    protected $userService;
+    public function __construct(UserService $userService)
     {
-        $this->usuario = $usuario;
+        $this->userService = $userService;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return view('admin.users.index');
@@ -27,89 +24,82 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        $query = $this->usuario->query();
+        $users = $this->userService->getAllUsers($request->input('search'));
 
-        if ($request->has('search')) {
-            $searchTerm = $request->query('search');
-            $query->where('name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('email', 'like', '%' . $searchTerm . '%');
+        if ($users) {
+            return response()->json([
+                'status' => true,
+                'users' => $users
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Nenhum registro encontrado.',
+                'status' => 204
+            ]);
         }
-
-        $usuarios = $query->paginate(15);
-        return response()->json($usuarios);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CadastrarUsuarioRequest $request): JsonResponse
     {
-        $usuario = $this->usuario->create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role_id' => (int)$request->role_id,
-            'password' => bcrypt('123456'),
-        ]);
+        $user = $this->userService->createUser($request->all());
 
-        if ($usuario) {
-            return response()->json($usuario, 201);
-        } else {
-            return response()->json(['Erro ao incluir registro', 204]);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $user = $this->usuario->where('id', $id)->first();
         if ($user) {
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->role_id = $request->role_id;
-
-            if ($request->password) {
-                $user->password = $request->password;
-            }
+            return response()->json([
+                'status' => true,
+                'user' => $user,
+            ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Registro não encontrado'
-            ], 404);
+                'message' => 'Erro ao cadastrar usuário'
+            ], 204);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function edit(string $id)
     {
-        //
+        $user = $this->userService->getUserById($id);
+        
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $user = $this->userService->updateUser($id, $request->all());
+
+        if ($user) {
+            return response()->json([
+                'status' => true,
+                'user' => $user,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar usuário'
+            ], 204);
+        }
+    }
+
+    public function delete(string $id)
+    {
+        $user = $this->userService->deleteUser($id);
+
+        if ($user) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário excluio com sucesso',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir usuário'
+            ], 204);
+        }
     }
 
     public function profileView()

@@ -21,6 +21,8 @@ class AclMiddleware
         'permissions.create',
         'permissions.update',
         'profile',
+        'profile.view',
+        'modules.list',
     ];
 
     public function handle(Request $request, Closure $next): Response

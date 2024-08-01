@@ -25,6 +25,7 @@ import AlerComponent from './components/Admin/Theme/AlerComponent.vue';
 //User
 import UsersIndexComponent from './components/Admin/Users/UsersIndexComponent.vue';
 import UsersCreateComponent from './components/Admin/Users/UsersCreateComponent.vue';
+import UsersEditComponent from './components/Admin/Users/UsersEditComponent.vue';
 import UsersProfileComponent from './components/Admin/Users/UsersProfileComponent.vue';
 
 //Role
@@ -48,6 +49,7 @@ app.component('alert-component', AlerComponent);
 app.component('users-index-component', UsersIndexComponent);
 app.component('users-create-component', UsersCreateComponent);
 app.component('users-profile-component', UsersProfileComponent);
+app.component('users-edit-component', UsersEditComponent);
 
 //ROLES
 app.component('roles-index-component', RolesIndexComponent);

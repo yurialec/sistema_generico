@@ -4,7 +4,7 @@
             <h4>Cadastrar Permissões</h4>
         </div>
         <div class="card-body">
-            <div id="formulario" class="row justify-content-center">
+            <div v-if="this.validRoutes" id="formulario" class="row justify-content-center">
                 <div class="col-sm-6">
 
                     <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
@@ -61,6 +61,12 @@
                     </form>
                 </div>
             </div>
+
+            <div v-if="!this.validRoutes" class="d-flex justify-content-center align-items-center" style="height:100px;">
+                <div class="alert alert-primary" role="alert">
+                    <h4 class="alert-heading">Todas as permissões disponíveis já foram cadastradas!</h4>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -106,6 +112,8 @@ export default {
             axios.get('/admin/permissions/valid-routes')
                 .then(response => {
                     this.validRoutes = response.data.routes;
+
+                    console.log(!this.validRoutes);
                 })
                 .catch(errors => {
                     this.alertStatus = false;
