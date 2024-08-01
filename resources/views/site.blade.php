@@ -24,7 +24,7 @@
     <div class="main-content container">
         <div class="container">
             <!-- Main Section -->
-            <div class="row">
+            <div class="row" style="background-color: #fff;">
                 <div class="col-md-8">
                     <h1>Título da Página</h1>
                     <p>Texto genérico alinhado à esquerda. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -32,7 +32,7 @@
             </div>
 
             <!-- Carousel Section -->
-            <div class="d-flex justify-content-center my-5">
+            <div class="d-flex justify-content-center my-5" style="background-color: #fff;">
                 <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 450px;">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -61,11 +61,11 @@
                 </div>
             </div>
 
-            <div class="container my-5">
+            <div class="container my-5" style="background-color: #fff;">
                 <h3>BLOG</h3>
             </div>
 
-            <div class="container my-5">
+            <div class="container my-5" style="background-color: #fff;">
                 <div class="row">
                     <div class="col-lg-6">
                         <h2 class="mb-3">Assine</h2>
