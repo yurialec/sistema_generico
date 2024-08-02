@@ -48,4 +48,21 @@ class MenuController extends Controller
         $menu = $this->menuService->getMenuById($id);
         return view('admin.menus.edit', compact('menu'));
     }
+
+    public function update(Request $request, string $id)
+    {
+        $user = $this->menuService->updateMenu($id, $request->all());
+
+        if ($user) {
+            return response()->json([
+                'status' => true,
+                'user' => $user,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar usuário'
+            ], 204);
+        }
+    }
 }

@@ -28,6 +28,19 @@
                             <label>Nome</label>
                             <input type="text" class="form-control" v-model="menu.menu[0].label">
                         </div>
+
+                        <div class="row mt-5">
+                            <div class="col-sm-6">
+                                <div class="text-start">
+                                    <a :href="urlIndexMenu" class="btn btn-secondary btn-sm">Voltar</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col text-end">
+                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -58,7 +71,7 @@ export default {
     },
     methods: {
         save() {
-            axios.post('/admin/menu/update/' + this.menu.menu.id, this.menu)
+            axios.post('/admin/menu/update/' + this.menu.menu[0].id, this.menu.menu[0])
                 .then(response => {
                     this.alertStatus = true;
                     this.messages = response.data;
