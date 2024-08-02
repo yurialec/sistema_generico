@@ -38,6 +38,10 @@ import PermissionsIndexComponent from './components/Admin/Permissions/Permission
 import PermissionsCreateComponent from './components/Admin/Permissions/PermissionsCreateComponent.vue';
 import PermissionsEditComponent from './components/Admin/Permissions/PermissionsEditComponent.vue';
 
+//Menus
+import MenusIndexComponent from './components/Admin/Menus/MenusIndexComponent.vue';
+import MenusEditComponent from './components/Admin/Menus/MenusEditComponent.vue';
+
 //Theme
 app.component('example-component', ExampleComponent);
 app.component('home-component', HomeHomeComponent);
@@ -60,5 +64,9 @@ app.component('roles-edit-component', RolesEditComponent);
 app.component('permissions-index-component', PermissionsIndexComponent);
 app.component('permissions-create-component', PermissionsCreateComponent);
 app.component('permissions-edit-component', PermissionsEditComponent);
+
+//MENUS
+app.component('menus-index-component', MenusIndexComponent);
+app.component('menus-edit-component', MenusEditComponent);
 
 app.mount('#app');

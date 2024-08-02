@@ -6,7 +6,7 @@ use App\Interfaces\Admin\MenuRepositoryInterface;
 use App\Models\Admin\Menu;
 use Exception;
 
-class UserRepository implements MenuRepositoryInterface
+class MenuRepository implements MenuRepositoryInterface
 {
     protected $menu;
 
@@ -21,12 +21,17 @@ class UserRepository implements MenuRepositoryInterface
             ->when($term, function ($query) use ($term) {
                 return $query->where('name', 'like', '%' . $term . '%');
             })
+            ->whereNull('son')
             ->paginate(10);
     }
 
     public function find($id)
     {
-        return $this->menu->find($id);
+        return $this->menu
+            ->find($id)
+            ->with('children')
+            ->whereNull('son')
+            ->get();
     }
 
     public function create(array $data)
