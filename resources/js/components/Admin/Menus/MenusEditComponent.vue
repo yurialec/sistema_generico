@@ -1,7 +1,19 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h4>Editar Menu</h4>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <h4>Editar Menu</h4>
+                    </div>
+                    <div class="col-sm text-end">
+                        <a href="https://fontawesome.com/icons" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
+                        <i class="fa-solid fa-circle-exclamation fa-lg" style="color: #00a803;" data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Ao adicionar o nome do ícone, você deve inserir sem as tags HTML"></i>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
@@ -17,16 +29,57 @@
                         role="alert">
                         <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
                         <hr>
-                        <ul v-for="msg in messages.data.errors">
+                        <ul v-for="msg in messages.data.errors" :key="msg[0]">
                             <li>{{ msg[0] }}</li>
                         </ul>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-                    <form method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
+                    <form method="POST" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
                         <div class="form-group">
                             <label>Nome</label>
                             <input type="text" class="form-control" v-model="menu.menu[0].label">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ícone</label>
+                            <input type="text" class="form-control" v-model="menu.menu[0].icon">
+                        </div>
+
+                        <div class="container mt-3">
+                            <div class="row">
+                                <div class="col-sm text-start">
+                                    Adicionar submenu
+                                </div>
+                                <div class="col-sm text-end">
+                                    <button type="button" @click="addRow" class="btn btn-primary">
+                                        <i class="fa-regular fa-square-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group row mt-3" v-for="(child, index) in menu.menu[0].children" :key="index">
+                            <div class="col-lg-3">
+                                <input type="text" :name="'children[' + index + '][label]'" class="form-control"
+                                    placeholder="Nome" v-model="child.label">
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" :name="'children[' + index + '][icon]'" class="form-control"
+                                    placeholder="Ícone" v-model="child.icon">
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" :name="'children[' + index + '][url]'" class="form-control"
+                                    placeholder="URL" v-model="child.url">
+                            </div>
+                            <div class="col-lg-1">
+                                <button type="button" @click="deleteRow(index)"
+                                    class="btn btn-outline-danger rounded-circle">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="row mt-5">
@@ -61,17 +114,21 @@ export default {
         },
         urlIndexMenu: String,
     },
+    created() {
+
+    },
     data() {
         return {
             menu: {
                 menu: JSON.parse(this.menuById),
             },
             alertStatus: null,
+            messages: null,
         };
     },
     methods: {
         save() {
-            axios.post('/admin/menu/update/' + this.menu.menu[0].id, this.menu.menu[0])
+            axios.post('/admin/menu/update/' + this.menu.menu[0].id, this.menu)
                 .then(response => {
                     this.alertStatus = true;
                     this.messages = response.data;
@@ -81,6 +138,18 @@ export default {
                     this.messages = errors.response;
                 });
         },
+        addRow() {
+            this.menu.menu[0].children.push({
+                label: "",
+                icon: "",
+                url: "",
+                active: 1,
+                son: this.menu.menu[0].id
+            });
+        },
+        deleteRow(index) {
+            this.menu.menu[0].children.splice(index, 1);
+        }
     }
 }
 </script>

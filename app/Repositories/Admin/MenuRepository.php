@@ -42,7 +42,18 @@ class MenuRepository implements MenuRepositoryInterface
     public function update($id, $data)
     {
         $menu = $this->menu->find($id);
-        $menu->update($data);
+
+        if (isset($data['children'])) {
+            foreach ($data['children'] as $childData) {
+                $child = $this->menu->children()->find($childData['id'] ?? null);
+                if ($child) {
+                    $child->update($childData);
+                } else {
+                    $menu->children()->create($childData);
+                }
+            }
+        }
+
         return $menu;
     }
 

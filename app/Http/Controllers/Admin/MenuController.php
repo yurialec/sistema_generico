@@ -61,7 +61,7 @@ class MenuController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao atualizar usuário'
+                'message' => 'Erro ao atualizar menu'
             ], 204);
         }
     }
