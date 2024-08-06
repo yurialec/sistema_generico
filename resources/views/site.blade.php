@@ -35,7 +35,7 @@
             <!-- Carousel Section -->
             <div class="container carousel-container">
                 <div class="d-flex justify-content-center my-5">
-                    <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 350px;">
+                    <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -66,48 +66,55 @@
 
             <div class="container blog-section text-center">
                 <h2>Blog</h2>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card blog-card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Thumbnail">
+                <div class="row justify-content-center">
+
+                    <div class="col-md-4 d-flex align-items-stretch">
+                        <div class="card blog-card mb-4">
+                            <img class="card-img-top" alt="thumbnail-blog" src="https://i.pinimg.com/564x/22/2a/5b/222a5b172d9bb69c4c4780261fa2f494.jpg">
                             <div class="card-body">
-                                <h5 class="card-title">Blog Post 1</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <a href="#" class="btn btn-primary">View</a>
-                                <a href="#" class="btn btn-secondary">Edit</a>
+                                <p class="card-text">This is a wider card with supporting text below.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary">View</button>
+                                    </div>
+                                    <small class="text-muted">9 mins</small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card blog-card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Thumbnail">
+
+                    <div class="col-md-4 d-flex align-items-stretch">
+                        <div class="card blog-card mb-4">
+                            <img class="card-img-top" alt="thumbnail-blog" src="https://upload.wikimedia.org/wikipedia/commons/6/68/Szczenie_Jack_Russell_Terrier3.jpg">
                             <div class="card-body">
-                                <h5 class="card-title">Blog Post 2</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <a href="#" class="btn btn-primary">View</a>
-                                <a href="#" class="btn btn-secondary">Edit</a>
+                                <p class="card-text">This is a wider card with supporting text below.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary">View</button>
+                                    </div>
+                                    <small class="text-muted">9 mins</small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card blog-card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Thumbnail">
+
+                    <div class="col-md-4 d-flex align-items-stretch">
+                        <div class="card blog-card mb-4">
+                            <img class="card-img-top" alt="thumbnail-blog" src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg">
                             <div class="card-body">
-                                <h5 class="card-title">Blog Post 3</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <a href="#" class="btn btn-primary">View</a>
-                                <a href="#" class="btn btn-secondary">Edit</a>
+                                <p class="card-text">This is a wider card with supporting text below.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary">View</button>
+                                    </div>
+                                    <small class="text-muted">9 mins</small>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-
-            <div class="container my-5  bg-light">
-                <h3>** SESSÃO TRANSPARÊSNCIA **</h3>
-            </div>
-
-
 
             <div class="container newsletter text-center py-5">
                 <h2 class="display-4 font-weight-bold mb-4">Assine</h2>
@@ -126,6 +133,62 @@
                 </form>
             </div>
 
+        </div>
+    </div>
+
+    <div class="kv-content" data-padding-top="0" style="margin-top: 0px;">
+        <div class="kv-ee-container kv-ee-main">
+            <div class="kv-ee-row">
+                <div class="kv-ee-col-lg-4 kv-ee-col-sm-12">
+                    <div class="kv-ee-contact-about">
+                        <h4 class="kv-ee-header" data-type="text" tabindex="0">LOREM IPSUM<span data-prop="titleDescription" class="ck-editable-element" data-editable="basic" style="display:none;"></span></h4>
+                        <p class="kv-ee-description" data-type="text" tabindex="0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        </p>
+                    </div>
+                    <div class="kv-ee-logo-group">
+                        <h3 class="kv-ee-logo-title kv-ee-title--md kv-ee-header" data-type="text" tabindex="0">
+                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="kv-ee-footer-navigation kv-ee-col-lg-4 kv-ee-col-md-6">
+                    <p class="kv-ee-header" data-type="text" tabindex="0">Páginas<span data-prop="titleNavigation" class="ck-editable-element" data-editable="basic" style="display:none;"></span></p>
+                    <nav class="kv-ee-links kv-ee-body-text">
+                        <ul>
+                            <li class="kv-ee-nav-title"><a href="/" data-uri-path="/" target="_self" class="">Início</a></li>
+                            <li class="kv-ee-nav-title"><a href="/sobre" data-uri-path="/sobre" target="_self" class="">Sobre</a></li>
+                            <li class="kv-ee-nav-title"><a href="/contato" data-uri-path="/contato" target="_self" class="">Contato</a></li>
+                            <li class="kv-ee-nav-title"><a href="/blog" data-uri-path="/blog" target="_self" class="kv-ee-active">Blog</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="kv-ee-footer-social kv-ee-col-lg-4 kv-ee-col-md-6">
+                    <p class="kv-ee-header" data-type="text" tabindex="0">Siga-nos<span data-prop="titleSocial" class="ck-editable-element" data-editable="basic" style="display:none;"></span></p>
+                    <ul class="kv-ee-links kv-ee-body-text" data-type="social">
+                        <li><a href="https://www.facebook.com/groups/404361246637936/?ref=share" target="_blank" aria-label="Social link Facebook"> <i class="fa-brands fa-facebook"></i> <span class="kv-ee-social-provider">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/apemigos/" target="_blank" aria-label="Social link Instagram"> <i class="fa-brands fa-instagram"></i> <span class="kv-ee-social-provider">Instagram</span></a></li>
+                        <li><a href="https://youtube.com/channel/UC7nM7FEhWhs9CYBJKJKVkcA" target="_blank" aria-label="Social link YouTube"> <i class="fa-brands fa-youtube"></i> <span class="kv-ee-social-provider">YouTube</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="kv-ee-row">
+                <div class="kv-ee-col-sm-6 kv-ee-footer-address" data-type="address">
+                    <p class="kv-ee-body--sm">Brasília - DF, BR</p>
+                </div>
+                <div>
+                    <a href="mailto:contato@apemigos.org" data-type="email">email@email.com</a>
+                </div>
+            </div>
+            <div class="kv-ee-row kv-ee-legal">
+                <div class="kv-ee-col-12"><a href="/sitemap.xml" target="_blank">Mapa do site</a></div>
+                <div class="kv-ee-col-12">
+                    <div class="kv-ee-legal-placeholder"></div>
+                </div>
+            </div>
         </div>
     </div>
 

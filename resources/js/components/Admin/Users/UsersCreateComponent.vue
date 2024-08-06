@@ -123,7 +123,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
+                                    <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@ export default {
             this.user.password == this.confirmPassword ? this.equalPasswords = true : this.equalPasswords = false;
 
             if (this.equalPasswords == true) {
-                axios.post('/admin/users/store', this.usuario)
+                axios.post('/admin/users/store', this.user)
                     .then(response => {
                         this.alertStatus = true;
                         this.msg = response;

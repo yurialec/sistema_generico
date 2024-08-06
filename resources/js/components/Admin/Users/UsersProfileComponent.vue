@@ -178,8 +178,6 @@ export default {
                 .then(response => {
                     this.alertStatus = true;
                     this.msg = response.data;
-
-                    console.log(this.alertStatus);
                 })
                 .catch(errors => {
                     this.alertStatus = false;

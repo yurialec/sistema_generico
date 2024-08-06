@@ -23,7 +23,7 @@ class CadastrarUsuarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
+            'name' => 'required',
             'email' => ['required', Rule::unique('users')],
             'role_id' => 'required',
         ];

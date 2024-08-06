@@ -8,7 +8,7 @@
 @import 'bootstrap/scss/bootstrap';
 
 body {
-    background-color: #f0f8ff;
+    background-color: #c4cfff;
     color: #333;
     font-family: 'Arial', sans-serif;
 }
@@ -42,20 +42,52 @@ body {
     font-size: 1.2rem;
 }
 
+//INICIO CARROUSEL
+
 .carousel {
     margin: 50px 0;
 }
 
 .carousel-item img {
     margin: 0 auto;
-    width: 80%;
-    height: auto;
+    height: 450px;
+    width: auto;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease;
 }
 
+.carousel-item img:hover {
+    transform: scale(1.05);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #007bff;
+    border-radius: 50%;
+}
+
+.carousel-control-prev-icon:active,
+.carousel-control-next-icon:active {
+    background-color: #0056b3;
+}
+
+.carousel-control-prev-icon::after,
+.carousel-control-next-icon::after {
+    background-color: #007bff;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+//FIM CARROUSEL
+
+//INICIO BLOG
+
 .blog-section {
-    padding: 50px 0;
+    padding: 20px;
 }
 
 .blog-card {
@@ -69,10 +101,30 @@ body {
     transform: translateY(-5px);
 }
 
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 225px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.card-text {
+    font-size: 15px;
+    text-align: left;
+}
+
+.btn-group {
+    text-align: left;
+}
+
+//FIM BLOG
+
+//INICIO NEWLETTER
 .newsletter {
     background-color: #f8f9fa;
-    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     padding: 40px;
     margin: 20px 0;
 }
@@ -104,6 +156,197 @@ body {
     color: #6c757d;
 }
 
+//FIM NEWLETTER
+
+//INICIO DIV CONTATO
+.kv-content {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-top: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.kv-ee-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.kv-ee-col-lg-4,
+.kv-ee-col-sm-12,
+.kv-ee-col-md-6 {
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.kv-ee-col-lg-4 {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+}
+
+.kv-ee-col-sm-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.kv-ee-col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.kv-ee-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.kv-ee-description {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+.kv-ee-logo-title {
+    font-size: 1.25em;
+    margin-top: 20px;
+}
+
+.kv-ee-links {
+    list-style: none;
+    padding: 0;
+    list-style-type: none;
+}
+
+.kv-ee-links li {
+    margin-bottom: 10px;
+}
+
+.kv-ee-links a {
+    text-decoration: none;
+    color: #dee2e6;
+}
+
+.kv-ee-links a:hover {
+    text-decoration: none;
+}
+
+.kv-ee-social-provider {
+    margin-left: 5px;
+}
+
+.kv-ee-line {
+    border: 0;
+    border-top: 1px solid #dee2e6;
+    margin: 20px 0;
+}
+
+.kv-ee-footer-address,
+.kv-ee-footer-contact {
+    font-size: 0.875em;
+}
+
+.kv-ee-text-sm-right {
+    text-align: right;
+}
+
+.kv-ee-legal {
+    margin-top: 20px;
+}
+
+.kv-ee-legal a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.kv-ee-legal a:hover {
+    text-decoration: underline;
+}
+
+.kv-ee-footer-navigation {
+    padding: 15px;
+}
+
+.kv-ee-footer-navigation .kv-ee-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.kv-ee-footer-navigation nav.kv-ee-links {
+    padding: 0;
+}
+
+.kv-ee-footer-navigation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.kv-ee-footer-navigation ul li {
+    margin-bottom: 10px;
+}
+
+.kv-ee-footer-navigation ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1em;
+    padding: 4px;
+}
+
+.kv-ee-footer-navigation ul li a:hover {
+    background-color: #007bff;
+    text-decoration: none;
+    color: #333;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.kv-ee-footer-social {
+    padding: 15px;
+}
+
+.kv-ee-footer-social .kv-ee-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.kv-ee-footer-social ul {
+    list-style: none;
+    padding: 0;
+}
+
+.kv-ee-footer-social ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.kv-ee-footer-social ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+
+.kv-ee-footer-social ul li a i {
+    font-size: 1.25em;
+    margin-right: 5px;
+}
+
+.kv-ee-footer-social ul li a:hover {
+    text-decoration: none;
+    background-color: #007bff;
+    text-decoration: none;
+    color: #333;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+//FIM DIV CONTATO
+
+// INICIO FOOTER
 .footer {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #003366;

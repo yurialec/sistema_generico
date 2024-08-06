@@ -19,23 +19,23 @@
             <div class="row justify-content-center">
                 <div class="col-sm-6">
 
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in messages.data.errors" :key="msg[0]">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
                     <form method="POST" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
+                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
+                            <hr>
+                            <ul v-for="msg in messages.data.errors" :key="msg[0]">
+                                <li>{{ msg[0] }}</li>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
                         <div class="form-group">
                             <label>Nome</label>
                             <input type="text" class="form-control" v-model="menu.menu[0].label">

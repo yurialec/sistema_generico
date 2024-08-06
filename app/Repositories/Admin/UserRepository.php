@@ -2,22 +2,23 @@
 
 namespace App\Repositories\Admin;
 
-use App\Interfaces\Admin\MenuRepositoryInterface;
-use App\Models\Admin\Menu;
+use App\Interfaces\Admin\UserRepositoryInterface;
+use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 
-class UserRepository implements MenuRepositoryInterface
+class UserRepository implements UserRepositoryInterface
 {
-    protected $menu;
+    protected $user;
 
-    public function __construct(Menu $menu)
+    public function __construct(User $user)
     {
-        $this->menu = $menu;
+        $this->user = $user;
     }
 
     public function all($term)
     {
-        return $this->menu
+        return $this->user
             ->when($term, function ($query) use ($term) {
                 return $query->where('name', 'like', '%' . $term . '%');
             })
@@ -26,26 +27,41 @@ class UserRepository implements MenuRepositoryInterface
 
     public function find($id)
     {
-        return $this->menu->find($id);
+        return $this->user->find($id);
     }
 
     public function create(array $data)
     {
-        return $this->menu->create($data);
+        return $this->user->create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'role_id' => $data['role_id']
+        ]);
     }
 
     public function update($id, $data)
     {
-        $menu = $this->menu->find($id);
-        $menu->update($data);
-        return $menu;
+        $user = $this->user->find($id);
+        $updateData = [
+            'name' => $data['name'],
+            'email' => $data['email']
+        ];
+
+        if (isset($data['password'])) {
+            $updateData['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($updateData);
+
+        return $user;
     }
 
     public function delete($id)
     {
-        $menu = $this->menu->find($id);
-        if ($menu) {
-            $menu->delete();
+        $user = $this->user->find($id);
+        if ($user) {
+            $user->delete();
             return true;
         }
         return false;

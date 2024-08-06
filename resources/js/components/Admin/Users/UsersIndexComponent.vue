@@ -3,6 +3,12 @@
         <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    <div v-if="this.alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa funcionalidade
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -106,18 +112,18 @@ export default {
         };
     },
     mounted() {
-        this.getUsuarios();
+        this.getUsers();
     },
     methods: {
         pesquisar() {
-            this.getUsuarios('admin/users/list', this.searchFilter);
+            this.getUsers('admin/users/list', this.searchFilter);
         },
         pagination(url) {
             if (url) {
-                this.getUsuarios(url);
+                this.getUsers(url);
             }
         },
-        getUsuarios(url = 'admin/users/list') {
+        getUsers(url = 'admin/users/list') {
             axios.get(url)
                 .then(response => {
                     this.users = response.data.users;
@@ -133,9 +139,8 @@ export default {
             if (this.userToDelete !== null) {
                 axios.delete('/admin/users/delete/' + this.userToDelete)
                     .then(response => {
-                        this.getRoles();
+                        this.getUsers();
                         this.userToDelete = null;
-                        // Fecha a modal
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
@@ -145,7 +150,14 @@ export default {
                         this.alertStatus = true;
                     })
                     .catch(errors => {
-                        console.log(errors);
+                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
+                        if (modal) {
+                            modal.hide();
+                        }
+                        
+                        if (errors.response.status == 401) {
+                            this.alertStatus = 'notAllowed';
+                        }
                     });
             }
         },

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +24,7 @@ class AclMiddleware
         'modules.list',
     ];
 
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
         $routeName = Route::currentRouteName();
 
@@ -36,7 +35,11 @@ class AclMiddleware
         $permissions = $request->user()->role->permissions->pluck('name')->toArray();
 
         if (!in_array($routeName, $permissions) and $request->user()->role->name != 'Desenvolvedor') {
-            return redirect(route('home'))->withErrors(['message' => 'Você não tem permissão para acessar essa funcionalidade']);
+            // return redirect(route('home'))->withErrors(['message' => 'Você não tem permissão para acessar essa funcionalidade']);
+            return response()->json([
+                'status' => false,
+                'message' => 'Você não tem permissão para acessar essa funcionalidade'
+            ], 401);
         }
 
         return $next($request);

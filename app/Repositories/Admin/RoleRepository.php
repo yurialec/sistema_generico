@@ -6,6 +6,7 @@ use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Models\Admin\Roles;
 use App\Models\Role;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class RoleRepository implements RoleRepositoryInterface
 {
@@ -24,7 +25,7 @@ class RoleRepository implements RoleRepositoryInterface
             ->when($term, function ($query) use ($term) {
                 return $query->where('name', 'like', '%' . $term . '%');
             })
-            ->where('id', '<>', 1)
+            ->where('id', '>=', Auth::id())
             ->paginate(10);
     }
 
