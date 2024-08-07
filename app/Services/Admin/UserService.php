@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Repositories\Admin\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -35,6 +36,6 @@ class UserService
 
     public function deleteUser($id)
     {
-        return $this->userRepository->delete($id);
+        return Auth::id() != $id  ? $this->userRepository->delete($id) : false;
     }
 }

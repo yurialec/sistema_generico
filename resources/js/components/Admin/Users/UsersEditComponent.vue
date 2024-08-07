@@ -29,6 +29,16 @@
                             <input type="text" class="form-control" v-model="user.user.name">
                         </div>
 
+                        <div v-show="user.user.role.id == 1 || user.user.role.id == 2" class="form-group">
+                            <label>Perfil</label>
+
+                            <select class="form-control">
+                                <option>Desenvolvedor</option>
+                                <option>Admin</option>
+                                <option>Auxiliar</option>
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label>E-mail</label>
                             <input type="text" class="form-control" v-model="user.user.email" @input="validateEmail"
@@ -39,6 +49,7 @@
                                 E-mail inválido.
                             </div>
                         </div>
+
 
                         <div class="form-group" v-show="changePassword">
                             <hr>

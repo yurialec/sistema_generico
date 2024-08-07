@@ -147,14 +147,19 @@ export default {
                             modal.hide();
                         }
 
-                        this.alertStatus = true;
+                        if (response.data == '') {
+                            this.alertStatus = 'notAllowed';
+                        } else {
+                            this.alertStatus = true;
+                        }
+
                     })
                     .catch(errors => {
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
                             modal.hide();
                         }
-                        
+
                         if (errors.response.status == 401) {
                             this.alertStatus = 'notAllowed';
                         }
