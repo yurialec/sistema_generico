@@ -11,14 +11,14 @@
                     <!-- Menu with children -->
                     <div>
                         <a href="#" class="sidebar-nav" @click.prevent="toggleSubmenu(menu)">
-                            <i :class="menu.icon"></i>
+                            <i id="icon" :class="menu.icon"></i>
                             <span style="margin-left: 10px;">{{ menu.label }}</span>
                             <i class="fa fa-chevron-down" :class="{ 'open': menu.expanded }"></i>
                         </a>
                         <ul class="sidebar-submenu-list" v-show="menu.expanded">
                             <li v-for="child in menu.children" :key="child.id">
                                 <a class="sidebar-nav" :href="child.url">
-                                    <i :class="child.icon"></i>
+                                    <i id="icon" :class="child.icon"></i>
                                     <span style="margin-left: 10px;">{{ child.label }}</span>
                                 </a>
                             </li>
@@ -28,7 +28,7 @@
                 <template v-else>
                     <!-- Menu without children -->
                     <a class="sidebar-nav" :href="menu.url">
-                        <i :class="menu.icon"></i>
+                        <i id="icon" :class="menu.icon"></i>
                         <span style="margin-left: 10px;">{{ menu.label }}</span>
                     </a>
                 </template>

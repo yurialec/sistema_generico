@@ -8,12 +8,13 @@
 @import 'bootstrap/scss/bootstrap';
 
 body {
-    background-color: #c4cfff;
+    background-color: #fff;
     color: #333;
     font-family: 'Arial', sans-serif;
 }
 
 .navbar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #003366;
 }
 

@@ -1,9 +1,9 @@
 <template>
     <nav class="navbar">
         <div class="navbar-content">
-            <div class="bars">
+            <button class="btn custom-btn" @click="handleClick">
                 <i class="fa-solid fa-bars"></i>
-            </div>
+            </button>
         </div>
         <div class="navbar-content">
             <div class="avatar" @click="toggleDropdown">
@@ -49,6 +49,10 @@ export default {
                 .catch(error => {
                 });
         },
+        handleClick() {
+            let sidebar = document.querySelector(".sidebar");
+            sidebar.classList.contains("active") ? sidebar.classList.remove("active") : sidebar.classList.add("active");
+        }
     }
 };
 </script>
