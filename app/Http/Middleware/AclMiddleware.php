@@ -35,11 +35,15 @@ class AclMiddleware
         $permissions = $request->user()->role->permissions->pluck('name')->toArray();
 
         if (!in_array($routeName, $permissions) and $request->user()->role->name != 'Desenvolvedor') {
-            // return redirect(route('home'))->withErrors(['message' => 'Você não tem permissão para acessar essa funcionalidade']);
-            return response()->json([
-                'status' => false,
-                'message' => 'Você não tem permissão para acessar essa funcionalidade'
-            ], 401);
+            return redirect()
+                ->route('home')
+                ->withErrors([
+                    'message' => 'Você não tem permissão para acessar essa funcionalidade'
+                ]);
+            // return response()->json([
+            //     'status' => false,
+            //     'message' => 'Você não tem permissão para acessar essa funcionalidade'
+            // ], 401);
         }
 
         return $next($request);
