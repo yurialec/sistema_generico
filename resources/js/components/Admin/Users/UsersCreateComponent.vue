@@ -180,7 +180,7 @@ export default {
                     this.roles = response.data.roles.data;
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    
                 });
         },
         save() {
@@ -195,12 +195,6 @@ export default {
                     })
                     .catch(errors => {
                         this.alertStatus = false;
-
-                        if (errors.response.data.status == false) {
-                            this.alertStatus = 'notAllowed';
-                        }
-
-
                         this.msg = errors.response;
                     });
             }

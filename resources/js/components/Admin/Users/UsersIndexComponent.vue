@@ -129,7 +129,7 @@ export default {
                     this.users = response.data.users;
                 })
                 .catch(errors => {
-                    console.log(errors);
+
                 });
         },
         confirmarExclusao(userId) {
@@ -160,7 +160,7 @@ export default {
                             modal.hide();
                         }
 
-                        if (errors.response.status == 401) {
+                        if (errors.response.status == 405) {
                             this.alertStatus = 'notAllowed';
                         }
                     });

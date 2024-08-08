@@ -103,7 +103,7 @@ export default {
                     this.roles = response.data.roles;
                 })
                 .catch(errors => {
-                    console.log(errors);
+
                 });
         }
     }

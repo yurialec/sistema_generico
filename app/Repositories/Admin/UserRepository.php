@@ -45,7 +45,8 @@ class UserRepository implements UserRepositoryInterface
         $user = $this->user->find($id);
         $updateData = [
             'name' => $data['name'],
-            'email' => $data['email']
+            'email' => $data['email'],
+            'role_id' => $data['role_id']
         ];
 
         if (isset($data['password'])) {

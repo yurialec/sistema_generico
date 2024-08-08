@@ -109,7 +109,7 @@ export default {
                     this.setSelectedPermissions();
                 })
                 .catch(errors => {
-                    console.log(errors);
+
                 });
         },
         setSelectedPermissions() {

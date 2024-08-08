@@ -122,7 +122,7 @@ export default {
                     this.menus = response.data.menus;
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    
                 });
         },
         confirmarExclusao(menuId) {
@@ -144,7 +144,7 @@ export default {
                         this.alertStatus = true;
                     })
                     .catch(errors => {
-                        console.log(errors);
+                        
                     });
             }
         },

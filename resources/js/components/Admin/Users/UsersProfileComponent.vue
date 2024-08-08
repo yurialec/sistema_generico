@@ -163,14 +163,16 @@ export default {
                     this.userProfile.permissions = this.user.role.permissions;
                 })
                 .catch(error => {
-                    console.log(error);
+
                 });
         },
         save() {
             const payload = {
                 name: this.userProfile.name,
                 email: this.userProfile.email,
+                role_id: this.user.role_id
             };
+
             if (this.userProfile.password) {
                 payload.password = this.userProfile.password;
             }

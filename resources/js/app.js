@@ -1,6 +1,7 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import axios from 'axios';
+import store from './store';
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
@@ -69,4 +70,5 @@ app.component('permissions-edit-component', PermissionsEditComponent);
 app.component('menus-index-component', MenusIndexComponent);
 app.component('menus-edit-component', MenusEditComponent);
 
+app.use(store);
 app.mount('#app');

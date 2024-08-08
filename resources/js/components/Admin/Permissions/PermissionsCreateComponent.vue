@@ -100,8 +100,6 @@ export default {
             axios.get('/admin/modules/list')
                 .then(response => {
                     this.modules = response.data.modules;
-
-                    console.log();
                 })
                 .catch(errors => {
                     this.alertStatus = false;
@@ -112,8 +110,6 @@ export default {
             axios.get('/admin/permissions/valid-routes')
                 .then(response => {
                     this.validRoutes = response.data.routes;
-
-                    console.log(!this.validRoutes);
                 })
                 .catch(errors => {
                     this.alertStatus = false;

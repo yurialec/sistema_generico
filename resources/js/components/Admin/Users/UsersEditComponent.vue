@@ -29,15 +29,14 @@
                             <input type="text" class="form-control" v-model="user.user.name">
                         </div>
 
-                        <div v-show="user.user.role.id == 1 || user.user.role.id == 2" class="form-group">
-                            <label>Perfil</label>
-
-                            <select class="form-control">
-                                <option>Desenvolvedor</option>
-                                <option>Admin</option>
-                                <option>Auxiliar</option>
-                            </select>
-                        </div>
+                        <!-- <div v-show="this.loggedUser.profile.role_id == 1 || this.loggedUser.profile.role_id == 2" class="form-group"> -->
+                            <div class="form-group">
+                                <label>Perfil</label>
+                                <select class="form-control" v-model="user.user.role_id">
+                                    <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
+                                </select>
+                            </div>
+                        <!-- </div> -->
 
                         <div class="form-group">
                             <label>E-mail</label>
@@ -147,18 +146,29 @@
 <script>
 import axios from 'axios';
 import Multiselect from 'vue-multiselect';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
     components: { Multiselect },
     props: {
         userById: {
-            type: Object,
+            type: String,
             required: true
         },
         urlIndexUser: String,
     },
+    setup() {
+        const store = useStore();
+        const loggedUser = computed(() => store.getters.getUser);
+
+        return {
+            loggedUser
+        };
+    },
     data() {
         return {
+            roles: [],
             user: {
                 user: JSON.parse(this.userById),
                 password: '',
@@ -175,21 +185,34 @@ export default {
             validEmail: null,
         };
     },
+    mounted() {
+        this.getRoles();
+    },
     methods: {
         validateEmail() {
             const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             this.validEmail = emailPattern.test(this.user.user.email);
         },
+        getRoles() {
+            axios.get('/admin/roles/list')
+                .then(response => {
+                    this.roles = response.data.roles.data;
+                })
+                .catch(errors => {
+
+                });
+        },
         save() {
             const payload = {
                 name: this.user.user.name,
                 email: this.user.user.email,
+                role_id: this.user.user.role_id,
             };
             if (this.user.password) {
                 payload.password = this.user.password;
             }
             axios.post('/admin/users/update/' + this.user.user.id, payload)
-                .then(response => {
+                .then(response => {                    
                     this.alertStatus = true;
                     this.messages = response.data;
                 })

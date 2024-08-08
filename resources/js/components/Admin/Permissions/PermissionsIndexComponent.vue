@@ -113,7 +113,7 @@ export default {
                         this.alertStatus = true;
                     })
                     .catch(errors => {
-                        console.log(errors);
+                        
                     });
             }
         },
@@ -129,10 +129,10 @@ export default {
             axios.get(url)
                 .then(response => {
                     this.permissions = response.data.permission;
-                    console.log(this.permissions);
+                    
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    
                 });
         },
     }
