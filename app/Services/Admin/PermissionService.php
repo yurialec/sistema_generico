@@ -3,7 +3,6 @@
 namespace App\Services\Admin;
 
 use App\Repositories\Admin\PermissionRepository;
-use Illuminate\Support\Facades\Route;
 
 class PermissionService
 {
@@ -26,6 +25,10 @@ class PermissionService
 
     public function storePermission($data)
     {
+        if (strpos($data['name'], 'update') || strpos($data['name'], 'create')) {
+            dd('é editar ou cadastrar');
+        }
+
         return $this->permissionRepository->create($data);
     }
 

@@ -48,14 +48,17 @@ class ValidRouteService
             "modules.list",
             "valid.routes.index",
             "users.index",
-            "users.edit",
+            "users.update",
             "users.create",
             "roles.index",
+            "roles.update",
             "roles.create",
-            "roles.edit",
-            "permissions.create",
             "permissions.index",
-            "permissions.edit"
+            "permissions.update",
+            "permissions.create",
+            "menu.index",
+            "menu.update",
+            "menu.create",
         ];
 
         $route_name = array_filter($route_name, function ($route) use ($removeItems) {
@@ -64,6 +67,7 @@ class ValidRouteService
 
         $permissions = $this->permissionRepository->all();
         $permissionsIndexed = [];
+
         foreach ($permissions as $permission) {
             $permissionsIndexed[] = $permission->name;
         }

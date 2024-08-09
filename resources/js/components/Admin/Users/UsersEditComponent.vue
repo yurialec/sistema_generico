@@ -35,14 +35,12 @@
                             <input type="text" class="form-control" v-model="user.user.name">
                         </div>
 
-                        <!-- <div v-show="this.loggedUser.profile.role_id == 1 || this.loggedUser.profile.role_id == 2" class="form-group"> -->
                         <div class="form-group">
                             <label>Perfil</label>
                             <select class="form-control" v-model="user.user.role_id">
                                 <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
                             </select>
                         </div>
-                        <!-- </div> -->
 
                         <div class="form-group">
                             <label>E-mail</label>
@@ -151,12 +149,10 @@
 
 <script>
 import axios from 'axios';
-import Multiselect from 'vue-multiselect';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
-    components: { Multiselect },
     props: {
         userById: {
             type: String,
