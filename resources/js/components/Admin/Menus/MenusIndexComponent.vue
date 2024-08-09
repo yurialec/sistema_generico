@@ -23,7 +23,14 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-hover">
+
+            <div v-if="loading" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <table v-else class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -102,6 +109,7 @@ export default {
             menuToDelete: null,
             alertStatus: null,
             msg: [],
+            loading: null,
         };
     },
     mounted() {
@@ -117,12 +125,15 @@ export default {
             }
         },
         getMenus(url = 'admin/menu/list') {
+            this.loading = true;
             axios.get(url)
                 .then(response => {
                     this.menus = response.data.menus;
                 })
                 .catch(errors => {
-                    
+
+                }).finally(() => {
+                    this.loading = false
                 });
         },
         confirmarExclusao(menuId) {
@@ -144,7 +155,7 @@ export default {
                         this.alertStatus = true;
                     })
                     .catch(errors => {
-                        
+
                     });
             }
         },

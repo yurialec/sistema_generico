@@ -28,44 +28,47 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
 
-            <div v-if="loading" class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+        <div v-if="loading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
+        </div>
 
-            <table v-else class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Perfil</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="user in users.data" :key="user.id">
-                        <th scope="row">{{ user.id }}</th>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.role.name }}</td>
-                        <td>
-                            <a :href="'users/edit/' + user.id">
-                                <i class="fa-regular fa-pen-to-square fa-lg"></i>
-                            </a>
-                            &nbsp;&nbsp;&nbsp;
+        <div v-else class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Perfil</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in users.data" :key="user.id">
+                            <th scope="row">{{ user.id }}</th>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role.name }}</td>
+                            <td>
+                                <a :href="'users/edit/' + user.id">
+                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                </a>
+                                &nbsp;&nbsp;&nbsp;
 
-                            <button type="button" style="color: red;" class="btn" @click="confirmarExclusao(user.id)"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="fa-regular fa-trash-can fa-lg"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <button type="button" style="color: red; padding: 0;" class="btn"
+                                    @click="confirmarExclusao(user.id)" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    <i class="fa-regular fa-trash-can fa-lg"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="card-footer">
             <nav aria-label="Page navigation example">
