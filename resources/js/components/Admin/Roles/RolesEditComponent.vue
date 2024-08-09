@@ -4,9 +4,8 @@
             <h4>Editar perfil</h4>
         </div>
         <div class="card-body">
-            <div id="formulario" class="row justify-content-center">
+            <div class="row justify-content-center">
                 <div class="col-sm-6">
-
                     <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                         role="alert">
                         <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
@@ -22,7 +21,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-                    <form method="POST" action="" @submit.prevent="salvar">
+                    <div v-if="loading" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <form v-else method="POST" action="" @submit.prevent="salvar">
                         <div class="form-group">
                             <label>Nome</label>
                             <input type="text" class="form-control" disabled v-model="role.role.name">
@@ -64,7 +69,7 @@ export default {
     components: { Multiselect },
     props: {
         roleById: {
-            type: Object,
+            type: String,
             required: true
         },
         urlIndexRole: String,
@@ -78,6 +83,7 @@ export default {
             alertStatus: null,
             messages: [],
             permissions: [],
+            loading: null,
         };
     },
     mounted() {
@@ -103,6 +109,7 @@ export default {
                 });
         },
         getPermissions() {
+            this.loading = true;
             axios.get('/admin/permissions/list')
                 .then(response => {
                     this.permissions = response.data.permission.data;
@@ -110,6 +117,8 @@ export default {
                 })
                 .catch(errors => {
 
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
         setSelectedPermissions() {

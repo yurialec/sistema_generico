@@ -4,7 +4,7 @@
             <h4>Cadastrar perfil</h4>
         </div>
         <div class="card-body">
-            <div id="formulario" class="row justify-content-center">
+            <div class="row justify-content-center">
                 <div class="col-sm-6">
 
                     <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
@@ -29,12 +29,12 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="text-start" style="margin-top: 10px;">
+                                <div class="text-start">
                                     <a :href="this.urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="text-end" style="margin-top: 10px;">
+                                <div class="text-end">
                                     <a href="#" class="btn btn-primary btn-sm" @click="salvar()">Cadastrar</a>
                                 </div>
                             </div>
@@ -61,6 +61,7 @@ export default {
             },
             alertStatus: null,
             msg: [],
+            loading: null,
         };
     },
     methods: {
@@ -77,11 +78,3 @@ export default {
     }
 }
 </script>
-<style>
-#formulario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-}
-</style>

@@ -20,7 +20,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <form method="POST" action="" @submit.prevent="save()" class="col-lg-4 offset-lg-4" autocomplete="off">
+            <div v-if="loading" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-4 offset-lg-4"
+                autocomplete="off">
                 <div class="form-group">
                     <label>Nome</label>
                     <input type="text" class="form-control" v-model="userProfile.name" autocomplete="off">
@@ -143,6 +150,7 @@ export default {
             validEmail: null,
             alertStatus: null,
             msg: [],
+            loading: null,
         };
     },
     mounted() {
@@ -154,6 +162,7 @@ export default {
             this.validEmail = emailPattern.test(this.userProfile.email);
         },
         getProfile() {
+            this.loading = true;
             axios.get('admin/users/profile')
                 .then(response => {
                     this.user = response.data.profile;
@@ -164,6 +173,9 @@ export default {
                 })
                 .catch(error => {
 
+                })
+                .finally(() => {
+                    this.loading = false
                 });
         },
         save() {

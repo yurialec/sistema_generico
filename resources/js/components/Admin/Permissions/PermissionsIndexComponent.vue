@@ -22,7 +22,14 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+
+        <div v-if="loading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div v-else class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
@@ -89,6 +96,7 @@ export default {
             permissionToDelete: null,
             alertStatus: null,
             msg: [],
+            loading: null,
         };
     },
     mounted() {
@@ -113,7 +121,7 @@ export default {
                         this.alertStatus = true;
                     })
                     .catch(errors => {
-                        
+
                     });
             }
         },
@@ -126,13 +134,16 @@ export default {
             }
         },
         getPermissions(url = '/admin/permissions/list') {
+            this.loading = true;
             axios.get(url)
                 .then(response => {
                     this.permissions = response.data.permission;
-                    
+
                 })
                 .catch(errors => {
-                    
+
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
     }

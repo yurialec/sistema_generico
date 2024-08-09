@@ -29,7 +29,14 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-hover">
+
+            <div v-if="loading" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <table v-else class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -109,6 +116,7 @@ export default {
             userToDelete: null,
             alertStatus: null,
             msg: [],
+            loading: null,
         };
     },
     mounted() {
@@ -124,12 +132,15 @@ export default {
             }
         },
         getUsers(url = 'admin/users/list') {
+            this.loading = true;
             axios.get(url)
                 .then(response => {
                     this.users = response.data.users;
                 })
                 .catch(errors => {
 
+                }).finally(() => {
+                    this.loading = false
                 });
         },
         confirmarExclusao(userId) {

@@ -20,7 +20,13 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div v-if="loading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div v-else class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
@@ -80,6 +86,7 @@ export default {
             searchFilter: '',
             alertStatus: null,
             msg: [],
+            loading: null,
         };
     },
     mounted() {
@@ -98,12 +105,15 @@ export default {
             }
         },
         getRoles(url = '/admin/roles/list') {
+            this.loading = true;
             axios.get(url)
                 .then(response => {
                     this.roles = response.data.roles;
                 })
                 .catch(errors => {
 
+                }).finally(() => {
+                    this.loading = false;
                 });
         }
     }

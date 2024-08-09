@@ -3,9 +3,16 @@
         <div class="card-header">
             <h4>Cadastrar Permissões</h4>
         </div>
-        <div class="card-body">
-            <div v-if="this.validRoutes" id="formulario" class="row justify-content-center">
-                <div class="col-sm-6">
+
+        <div v-if="loading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div v-else class="card-body">
+            <div v-if="this.validRoutes" class="row justify-content-center">
+                <div class="col-sm-4">
 
                     <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
                         role="alert">
@@ -48,12 +55,12 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="text-start" style="margin-top: 10px;">
+                                <div class="text-start mt-3">
                                     <a :href="this.urlIndexPermission" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="text-end" style="margin-top: 10px;">
+                                <div class="text-end mt-3">
                                     <a href="#" class="btn btn-primary btn-sm" @click="save()">Cadastrar</a>
                                 </div>
                             </div>
@@ -62,7 +69,8 @@
                 </div>
             </div>
 
-            <div v-if="!this.validRoutes" class="d-flex justify-content-center align-items-center" style="height:100px;">
+            <div v-if="!this.validRoutes" class="d-flex justify-content-center align-items-center"
+                style="height:100px;">
                 <div class="alert alert-primary" role="alert">
                     <h4 class="alert-heading">Todas as permissões disponíveis já foram cadastradas!</h4>
                 </div>
@@ -88,7 +96,8 @@ export default {
                 name: '',
                 label: '',
                 module_id: ''
-            }
+            },
+            loading: null,
         };
     },
     mounted() {
@@ -97,6 +106,7 @@ export default {
     },
     methods: {
         getModules() {
+            this.loading = true;
             axios.get('/admin/modules/list')
                 .then(response => {
                     this.modules = response.data.modules;
@@ -104,9 +114,12 @@ export default {
                 .catch(errors => {
                     this.alertStatus = false;
                     this.messages = errors.response;
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
         getValidRoutes() {
+            this.loading = true;
             axios.get('/admin/permissions/valid-routes')
                 .then(response => {
                     this.validRoutes = response.data.routes;
@@ -114,6 +127,8 @@ export default {
                 .catch(errors => {
                     this.alertStatus = false;
                     this.messages = errors.response;
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
         save() {
@@ -129,11 +144,3 @@ export default {
     }
 }
 </script>
-<style>
-#formulario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-}
-</style>

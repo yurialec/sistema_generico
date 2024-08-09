@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::get('modules/list', [ModuleController::class, 'list'])->name('modules.list');
 
 
-        Route::middleware('acl')->group(function () {
+        // Route::middleware('acl')->group(function () {
 
             Route::prefix('users')->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('users.index');
@@ -85,7 +85,8 @@ Route::middleware('auth')->group(function () {
                 Route::post('/update/{id}', [MenuController::class, 'update'])->name('menu.update');
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
             });
-        });
+            
+        // });
 
         //AUTH
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

@@ -7,7 +7,13 @@
             <div class="row justify-content-center">
                 <div class="col-sm-6">
 
-                    <form method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
+                    <div v-if="loading" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
                             <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
@@ -30,12 +36,12 @@
                         </div>
 
                         <!-- <div v-show="this.loggedUser.profile.role_id == 1 || this.loggedUser.profile.role_id == 2" class="form-group"> -->
-                            <div class="form-group">
-                                <label>Perfil</label>
-                                <select class="form-control" v-model="user.user.role_id">
-                                    <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label>Perfil</label>
+                            <select class="form-control" v-model="user.user.role_id">
+                                <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
+                            </select>
+                        </div>
                         <!-- </div> -->
 
                         <div class="form-group">
@@ -183,6 +189,7 @@ export default {
             messages: [],
             changePassword: false,
             validEmail: null,
+            loading: null,
         };
     },
     mounted() {
@@ -194,12 +201,15 @@ export default {
             this.validEmail = emailPattern.test(this.user.user.email);
         },
         getRoles() {
+            this.loading = true;
             axios.get('/admin/roles/list')
                 .then(response => {
                     this.roles = response.data.roles.data;
                 })
                 .catch(errors => {
 
+                }).finally(() => {
+                    this.loading = false
                 });
         },
         save() {
@@ -212,7 +222,7 @@ export default {
                 payload.password = this.user.password;
             }
             axios.post('/admin/users/update/' + this.user.user.id, payload)
-                .then(response => {                    
+                .then(response => {
                     this.alertStatus = true;
                     this.messages = response.data;
                 })
