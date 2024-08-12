@@ -21,18 +21,38 @@ body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    height: 100%;
 }
 
 .content-wrapper {
     padding: 10px;
+    flex-grow: 1;
+    overflow-y: auto;
 }
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+/* INICIO FOOTER */
 
 footer {
     background-color: #ebeef6;
     color: #333;
     padding: 10px 20px;
     text-align: end;
+    margin-top: auto;
 }
+
+/* FIM FOOTER */
 
 /* INICIO HEADER */
 
