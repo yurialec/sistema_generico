@@ -10,14 +10,9 @@ class AclMiddleware
 {
     protected $except = [
         'users.index',
-        'users.create',
-        'users.update',
         'roles.index',
-        'roles.create',
-        'roles.update',
         'permissions.index',
-        'permissions.create',
-        'permissions.update',
+        'menu.index',
         'profile',
         'profile.view',
         'modules.list',
