@@ -1,8 +1,9 @@
 <template>
     <div class="sidebar">
         <div class="logo">
-            <a :href="urlHome" style="text-decoration: none;">
-                Home
+            <a :href="urlHome" class="logo-link">
+                <!-- <img src="../../../../../public/img/logo/logo.png" alt="Logo" class="logo-img"> -->
+                <!-- <i style="font-size: 25px;" class="fa fa-house"></i> -->
             </a>
         </div>
         <ul class="sidebar-list">

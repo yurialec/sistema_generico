@@ -116,11 +116,11 @@ export default {
         }, 'bar');
 
         this.createChart('chart3', {
-            labels: ['January', 'February', 'March', 'April', 'May'],
+            labels: ['January', 'February', 'March', 'April'],
             datasets: [
                 {
                     label: 'Revenue',
-                    data: [100, 200, 150, 300, 250],
+                    data: [100, 200, 150, 300],
                     backgroundColor: [
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(255, 99, 132, 0.2)',

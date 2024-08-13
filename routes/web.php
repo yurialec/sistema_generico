@@ -86,17 +86,17 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
             });
 
-            Route::prefix('site')->group(function () {
-                Route::prefix('logo')->group(function () {
-                    Route::get('/', function () {
-                        return response()->json([
-                            'status' => true,
-                            'logo' => 'https://img.freepik.com/vetores-premium/logotipo-do-sistema-generico_9569-167.jpg?w=740',
-                            'description' => 'This is the site logo'
-                        ]);
-                    });
-                });
-            });
+            // Route::prefix('site')->group(function () {
+            //     Route::prefix('logo')->group(function () {
+            //         Route::get('/', function () {
+            //             return response()->json([
+            //                 'status' => true,
+            //                 'logo' => 'https://img.freepik.com/vetores-premium/logotipo-do-sistema-generico_9569-167.jpg?w=740',
+            //                 'description' => 'This is the site logo'
+            //             ]);
+            //         });
+            //     });
+            // });
         });
 
         //AUTH

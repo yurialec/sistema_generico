@@ -49,7 +49,7 @@
                         <div class="row mt-5">
                             <div class="col-sm-6">
                                 <div class="text-start">
-                                    <a :href="urlIndexUser" class="btn btn-secondary btn-sm">Voltar</a>
+                                    <a :href="urlIndexMenu" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -70,7 +70,7 @@ import axios from 'axios';
 
 export default {
     props: {
-        urlIndexRole: String,
+        urlIndexMenu: String,
     },
     data() {
         return {
