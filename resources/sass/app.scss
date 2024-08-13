@@ -85,11 +85,6 @@ canvas {
     font-size: 20px;
 }
 
-// .avatar:hover {
-//     background-color: #1e2746;
-//     border-radius: 10px;
-// }
-
 .dropdown-menu {
     position: absolute;
     right: 0;
@@ -115,6 +110,7 @@ canvas {
     font-size: 15px;
     text-decoration: none;
     color: #f0f0f0;
+    height: 40px;
 }
 
 .dropdown-menu .item:hover {
