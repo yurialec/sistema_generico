@@ -31,12 +31,21 @@ class MenuRepository implements MenuRepositoryInterface
             ->find($id)
             ->with('children')
             ->whereNull('son')
+            ->where('id', $id)
             ->get();
     }
 
     public function create(array $data)
     {
-        return $this->menu->create($data);
+        return $this->menu->create([
+            'label' => $data['label'],
+            'icon' => $data['icon'],
+            'url' => '#',
+            'active' => 1,
+            'son' => null,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 
     public function update($id, $data)
@@ -60,10 +69,22 @@ class MenuRepository implements MenuRepositoryInterface
     public function delete($id)
     {
         $menu = $this->menu->find($id);
+
         if ($menu) {
+            $this->deleteSubmenus($menu);
             $menu->delete();
+
             return true;
         }
+
         return false;
+    }
+
+    protected function deleteSubmenus(Menu $menu)
+    {
+        foreach ($menu->children as $submenu) {
+            $this->deleteSubmenus($submenu);
+            $submenu->delete();
+        }
     }
 }

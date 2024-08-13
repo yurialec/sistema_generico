@@ -4,20 +4,24 @@
             <div class="col text-center">
                 <div class="card">
                     <div class="card-header">
-                        grafico1
+                        Vendas
                     </div>
                     <div class="card-body">
-                        <h1>350</h1>
+                        <div class="chart-container">
+                            <canvas ref="chart1"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col text-center">
                 <div class="card">
                     <div class="card-header">
-                        grafico2
+                        Votos
                     </div>
                     <div class="card-body">
-                        <h1>R$ 3.569,55</h1>
+                        <div class="chart-container">
+                            <canvas ref="chart2"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -41,19 +41,6 @@ canvas {
     height: 100% !important;
 }
 
-
-/* INICIO FOOTER */
-
-footer {
-    background-color: #ebeef6;
-    color: #333;
-    padding: 10px 20px;
-    text-align: end;
-    margin-top: auto;
-}
-
-/* FIM FOOTER */
-
 /* INICIO HEADER */
 
 .navbar {
@@ -305,10 +292,23 @@ footer {
 
 /** FOOTER */
 footer {
-    background-color: #ebeef6;
+    background-color: #FFF;
     color: #333;
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.12);
+    padding: 10px 20px;
     height: 40px;
     text-align: end;
     margin-top: auto;
 }
+
+/* INICIO FOOTER */
+
+// footer {
+//     background-color: #131b38;
+//     color: #333;
+//     padding: 10px 20px;
+//     text-align: end;
+//     margin-top: auto;
+// }
+
+/* FIM FOOTER */

@@ -42,6 +42,7 @@ import PermissionsEditComponent from './components/Admin/Permissions/Permissions
 //Menus
 import MenusIndexComponent from './components/Admin/Menus/MenusIndexComponent.vue';
 import MenusEditComponent from './components/Admin/Menus/MenusEditComponent.vue';
+import MenusCreateComponent from './components/Admin/Menus/MenusCreateComponent.vue';
 
 //Theme
 app.component('example-component', ExampleComponent);
@@ -69,6 +70,7 @@ app.component('permissions-edit-component', PermissionsEditComponent);
 //MENUS
 app.component('menus-index-component', MenusIndexComponent);
 app.component('menus-edit-component', MenusEditComponent);
+app.component('menus-create-component', MenusCreateComponent);
 
 app.use(store);
 app.mount('#app');

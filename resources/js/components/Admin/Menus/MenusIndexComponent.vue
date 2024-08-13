@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="col-sm-3 text-end">
-                    <!-- <a :href="urlCreateUser" type="button" class="btn btn-primary btn-sm">Cadastrar</a> -->
+                    <a :href="urlCreateMenu" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -51,10 +51,12 @@
                                 <i class="fa-regular fa-pen-to-square fa-lg"></i>
                             </a>
                             &nbsp;&nbsp;&nbsp;
-                            <!-- <button type="button" style="color: red;" class="btn" @click="confirmarExclusao(user.id)"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+                            <button v-show="menu.id != 1" type="button" style="color: red; padding: 0;" class="btn"
+                                @click="confirmExclusion(menu.id)" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
                                 <i class="fa-regular fa-trash-can fa-lg"></i>
-                            </button> -->
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -97,7 +99,7 @@ import { Modal } from 'bootstrap';
 
 export default {
     props: {
-        urlCreateUser: String,
+        urlCreateMenu: String,
     },
     data() {
         return {
@@ -136,7 +138,7 @@ export default {
                     this.loading = false
                 });
         },
-        confirmarExclusao(menuId) {
+        confirmExclusion(menuId) {
             this.menuToDelete = menuId;
         },
         excluirRegistro() {
@@ -155,7 +157,12 @@ export default {
                         this.alertStatus = true;
                     })
                     .catch(errors => {
+                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
+                        if (modal) {
+                            modal.hide();
+                        }
 
+                        this.alertStatus = false;
                     });
             }
         },
