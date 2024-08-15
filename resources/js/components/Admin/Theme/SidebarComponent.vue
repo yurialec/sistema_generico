@@ -2,8 +2,7 @@
     <div class="sidebar">
         <div class="logo">
             <a :href="urlHome" class="logo-link">
-                <!-- <img src="../../../../../public/img/logo/logo.png" alt="Logo" class="logo-img"> -->
-                <!-- <i style="font-size: 25px;" class="fa fa-house"></i> -->
+                <img v-show="logo" :src="'/storage/' + logo" alt="Logo" class="logo-img">
             </a>
         </div>
         <ul class="sidebar-list">
@@ -47,6 +46,7 @@ export default {
             required: true
         },
         urlHome: String,
+        logo: String,
     },
     data() {
         return {

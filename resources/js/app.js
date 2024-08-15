@@ -44,6 +44,13 @@ import MenusIndexComponent from './components/Admin/Menus/MenusIndexComponent.vu
 import MenusEditComponent from './components/Admin/Menus/MenusEditComponent.vue';
 import MenusCreateComponent from './components/Admin/Menus/MenusCreateComponent.vue';
 
+
+//SITE
+//LOGO
+import SiteLogoIndexComponent from './components/Site/Logo/SiteLogoIndexComponent.vue';
+import SiteLogoCreateComponent from './components/Site/Logo/SiteLogoCreateComponent.vue';
+import SiteLogoEditComponent from './components/Site/Logo/SiteLogoEditComponent.vue';
+
 //Theme
 app.component('example-component', ExampleComponent);
 app.component('home-component', HomeHomeComponent);
@@ -71,6 +78,13 @@ app.component('permissions-edit-component', PermissionsEditComponent);
 app.component('menus-index-component', MenusIndexComponent);
 app.component('menus-edit-component', MenusEditComponent);
 app.component('menus-create-component', MenusCreateComponent);
+
+
+//SITE
+//LOGOTIPO
+app.component('site-logo-index-component', SiteLogoIndexComponent);
+app.component('site-logo-create-component', SiteLogoCreateComponent);
+app.component('site-logo-edit-component', SiteLogoEditComponent);
 
 app.use(store);
 app.mount('#app');

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ValidRoutesController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -86,17 +87,17 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
             });
 
-            // Route::prefix('site')->group(function () {
-            //     Route::prefix('logo')->group(function () {
-            //         Route::get('/', function () {
-            //             return response()->json([
-            //                 'status' => true,
-            //                 'logo' => 'https://img.freepik.com/vetores-premium/logotipo-do-sistema-generico_9569-167.jpg?w=740',
-            //                 'description' => 'This is the site logo'
-            //             ]);
-            //         });
-            //     });
-            // });
+            Route::prefix('site/')->group(function () {
+                Route::prefix('logo')->group(function () {
+                    Route::get('/', [LogoController::class, 'index'])->name('site.logo.index');
+                    Route::get('/list', [LogoController::class, 'list'])->name('site.logo.list');
+                    Route::get('/create', [LogoController::class, 'create'])->name('site.logo.create');
+                    Route::post('/store', [LogoController::class, 'store'])->name('site.logo.store');
+                    Route::get('/edit/{id}', [LogoController::class, 'edit'])->name('site.logo.edit');
+                    Route::post('/update/{id}', [LogoController::class, 'update'])->name('site.logo.update');
+                    Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
+                });
+            });
         });
 
         //AUTH
