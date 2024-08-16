@@ -51,6 +51,11 @@ import SiteLogoIndexComponent from './components/Site/Logo/SiteLogoIndexComponen
 import SiteLogoCreateComponent from './components/Site/Logo/SiteLogoCreateComponent.vue';
 import SiteLogoEditComponent from './components/Site/Logo/SiteLogoEditComponent.vue';
 
+//MAINTEXT
+import SiteMainTextIndexComponent from './components/Site/MainText/SiteMainTextIndexComponent.vue';
+import SiteMainTextCreateComponent from './components/Site/MainText/SiteMainTextCreateComponent.vue';
+import SiteMainTextEditComponent from './components/Site/MainText/SiteMainTextEditComponent.vue';
+
 //Theme
 app.component('example-component', ExampleComponent);
 app.component('home-component', HomeHomeComponent);
@@ -85,6 +90,11 @@ app.component('menus-create-component', MenusCreateComponent);
 app.component('site-logo-index-component', SiteLogoIndexComponent);
 app.component('site-logo-create-component', SiteLogoCreateComponent);
 app.component('site-logo-edit-component', SiteLogoEditComponent);
+
+//MAINTEXT
+app.component('site-main-text-index-component', SiteMainTextIndexComponent);
+app.component('site-main-text-create-component', SiteMainTextCreateComponent);
+app.component('site-main-text-edit-component', SiteMainTextEditComponent);
 
 app.use(store);
 app.mount('#app');

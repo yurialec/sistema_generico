@@ -110,9 +110,9 @@ export default {
         },
         getPermissions() {
             this.loading = true;
-            axios.get('/admin/permissions/list')
+            axios.get('/admin/roles/list-permissions')
                 .then(response => {
-                    this.permissions = response.data.permission.data;
+                    this.permissions = response.data.permissions;
                     this.setSelectedPermissions();
                 })
                 .catch(errors => {
@@ -130,12 +130,3 @@ export default {
     }
 }
 </script>
-
-<style>
-#formulario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-}
-</style>

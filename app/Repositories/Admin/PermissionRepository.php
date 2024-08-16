@@ -52,4 +52,9 @@ class PermissionRepository implements PermissionRepositoryInterface
         }
         return false;
     }
+
+    public function list()
+    {
+        return $this->permission->get();
+    }
 }

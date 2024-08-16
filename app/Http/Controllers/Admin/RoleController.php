@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Role\CreateRoleRequest;
 use App\Http\Requests\Admin\Role\UpdateRoleRequest;
-use App\Models\Admin\Roles;
 use App\Services\Admin\RoleService;
 use Illuminate\Http\Request;
 
@@ -101,6 +100,22 @@ class RoleController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir perfil'
+            ], 204);
+        }
+    }
+
+    public function listPermissions()
+    {
+        $permissions = $this->roleService->listPermissions();
+        if ($permissions) {
+            return response()->json([
+                'status' => true,
+                'permissions' => $permissions,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Nenhum registro encontrado.',
             ], 204);
         }
     }

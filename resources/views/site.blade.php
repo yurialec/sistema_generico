@@ -28,8 +28,12 @@
             <!-- Main Section -->
             <div class="row">
                 <div class="col-md-8">
-                    <h1>Título da Página</h1>
-                    <p>Texto genérico alinhado à esquerda. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    @if(isset(App\Models\Site\MainText::first()->title))
+                    <h1>{{App\Models\Site\MainText::first()->title}}</h1>
+                    @endif
+                    @if(isset(App\Models\Site\MainText::first()->text))
+                    <p>{{App\Models\Site\MainText::first()->text}}</p>
+                    @endif
                 </div>
             </div>
 

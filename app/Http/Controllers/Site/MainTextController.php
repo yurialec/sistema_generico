@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Services\Site\LogoService;
+use App\Services\Site\MainTextService;
 use Illuminate\Http\Request;
 
-class LogoController extends Controller
+class MainTextController extends Controller
 {
-    protected $logoService;
-    public function __construct(LogoService $logoService)
+    protected $mainTextService;
+    public function __construct(MainTextService $mainTextService)
     {
-        $this->logoService = $logoService;
+        $this->mainTextService = $mainTextService;
     }
 
     /**
@@ -19,17 +19,17 @@ class LogoController extends Controller
      */
     public function index()
     {
-        return view('site.logo.index');
+        return view('site.maintext.index');
     }
 
     public function list()
     {
-        $logo = $this->logoService->getAllLogo();
+        $mainText = $this->mainTextService->getAll();
 
-        if ($logo) {
+        if ($mainText) {
             return response()->json([
                 'status' => true,
-                'logo' => $logo
+                'mainText' => $mainText
             ], 200);
         } else {
             return response()->json([
@@ -44,7 +44,7 @@ class LogoController extends Controller
      */
     public function create()
     {
-        return view('site.logo.create');
+        return view('site.maintext.create');
     }
 
     /**
@@ -52,7 +52,19 @@ class LogoController extends Controller
      */
     public function store(Request $request)
     {
-        $logo = $this->logoService->createLogo($request->all());
+        $mainTex = $this->mainTextService->create($request->all());
+
+        if ($mainTex) {
+            return response()->json([
+                'status' => true,
+                'mainTex' => $mainTex,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar conteúdo principal'
+            ], 204);
+        }
     }
 
     /**
@@ -60,8 +72,9 @@ class LogoController extends Controller
      */
     public function edit(string $id)
     {
-        $logo = $this->logoService->getLogoById($id);
-        return view('site.logo.edit', compact('logo'));
+        $mainText = $this->mainTextService->getById($id);
+
+        return view('site.maintext.edit', compact('mainText'));
     }
 
     /**
@@ -69,17 +82,17 @@ class LogoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $logo = $this->logoService->updateLogo($id, $request->all());
+        $main = $this->mainTextService->update($id, $request->all());
 
-        if ($logo) {
+        if ($main) {
             return response()->json([
                 'status' => true,
-                'logo' => $logo,
+                'main' => $main,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao atualizar logotipo'
+                'message' => 'Erro ao atualizar conteudo'
             ], 204);
         }
     }
@@ -89,17 +102,17 @@ class LogoController extends Controller
      */
     public function delete(string $id)
     {
-        $logo = $this->logoService->deleteLogo($id);
+        $main = $this->mainTextService->delete($id);
 
-        if ($logo) {
+        if ($main) {
             return response()->json([
                 'status' => true,
-                'message' => 'Logotipo excluido com sucesso',
+                'message' => 'Conteúdo excluido com sucesso',
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao excluir logotipo'
+                'message' => 'Erro ao excluir conteúdo'
             ], 204);
         }
     }

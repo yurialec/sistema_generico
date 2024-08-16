@@ -3,8 +3,8 @@
 namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\RoleRepositoryInterface;
+use App\Models\Admin\Permissions;
 use App\Models\Admin\Roles;
-use App\Models\Role;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,11 +12,13 @@ class RoleRepository implements RoleRepositoryInterface
 {
     protected $role;
     protected $permissionRoles;
+    protected $permissions;
 
-    public function __construct(Roles $role, PermissionsRolesRepository $permissionRoles)
+    public function __construct(Roles $role, PermissionsRolesRepository $permissionRoles, Permissions $permissions)
     {
         $this->role = $role;
         $this->permissionRoles = $permissionRoles;
+        $this->permissions = $permissions;
     }
 
     public function all($term)
@@ -82,5 +84,10 @@ class RoleRepository implements RoleRepositoryInterface
             return true;
         }
         return false;
+    }
+
+    public function listPermissions()
+    {
+        return $this->permissions->get();
     }
 }
