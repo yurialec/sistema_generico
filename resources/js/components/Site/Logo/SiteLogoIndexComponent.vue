@@ -12,56 +12,57 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-sm-3 text-left">
-                    <h3>Usuários</h3>
+                <div class="col-md-6 text-start">
+                    <h3>Logotipo</h3>
                 </div>
-                <div class="col-sm-6 text-center">
-                    <div class="input-group">
-                        <input type="text" class="form-control" v-model="searchFilter" />
-                        <button type="button" class="btn btn-primary" @click="pesquisar()">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-sm-3 text-end">
-                    <a :href="urlCreateUser" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
+
+                <div class="col-md-6 text-end">
+                    <a v-show="!logo.id" :href="urlCreateLogo" type="button"
+                        class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
 
-        <div v-if="loading" class="d-flex justify-content-center">
+        <div v-if="loading === true" class="d-flex justify-content-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
         <div v-else class="card-body">
-            <div class="table-responsive">
+            <div v-if="this.logo.length == 0" class="text-center">
+                <p>Nenhum resultado encontrado</p>
+            </div>
+
+            <div v-else class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Perfil</th>
+                            <th scope="col">Preview</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="user in users.data" :key="user.id">
-                            <th scope="row">{{ user.id }}</th>
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.role.name }}</td>
+                        <tr>
+                            <th scope="row">
+                                <img :src="'/storage/' + logo.image" width="80">
+                            </th>
+                            <td>{{ logo.name }}</td>
                             <td>
-                                <a :href="'users/edit/' + user.id">
+                                <button type="button" style="color: #333; padding: 0;" class="btn"
+                                    data-bs-toggle="modal" data-bs-target="#viewImgModal">
+                                    <i class="fa-regular fa-eye fa-lg"></i>
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <a :href="'/admin/site/logo/edit/' + logo.id">
                                     <i class="fa-regular fa-pen-to-square fa-lg"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
 
-                                <button type="button" style="color: red; padding: 0;" class="btn"
-                                    @click="confirmarExclusao(user.id)" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
+                                <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" @click="confirmExclusion(logo.id)">
                                     <i class="fa-regular fa-trash-can fa-lg"></i>
                                 </button>
                             </td>
@@ -69,16 +70,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="card-footer">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li v-for="(link, key) in users.links" :key="key" class="page-item"
-                        :class="{ 'active': link.active }">
-                        <a class="page-link" href="#" @click.prevent="pagination(link.url)" v-html="link.label"></a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 
@@ -94,7 +85,24 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" @click="excluirRegistro">Excluir</button>
+                    <button type="button" class="btn btn-danger" @click="deleteRecord">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewImgModal" tabindex="-1" aria-labelledby="viewImgModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewImgModalLabel">Visualisar imagem</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center;">
+                        <img :src="'/storage/' + logo.image" width="450">
+                        <small>Nome: {{ logo.name }}</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,54 +115,42 @@ import { Modal } from 'bootstrap';
 
 export default {
     props: {
-        urlCreateUser: String,
+        urlCreateLogo: String,
     },
     data() {
         return {
-            users: {
-                data: [],
-                links: []
-            },
-            searchFilter: '',
-            userToDelete: null,
+            logoToDelete: null,
             alertStatus: null,
             msg: [],
             loading: null,
+            logo: [],
         };
     },
     mounted() {
-        this.getUsers();
+        this.getLogo();
     },
     methods: {
-        pesquisar() {
-            this.getUsers('admin/users/list', this.searchFilter);
-        },
-        pagination(url) {
-            if (url) {
-                this.getUsers(url);
-            }
-        },
-        getUsers(url = 'admin/users/list') {
+        getLogo() {
             this.loading = true;
-            axios.get(url)
+            axios.get('admin/site/logo/list')
                 .then(response => {
-                    this.users = response.data.users;
+                    this.logo = response.data.logo;
                 })
                 .catch(errors => {
-
+                    this.alertStatus = 'error';
                 }).finally(() => {
-                    this.loading = false
                 });
+            this.loading = false;
         },
-        confirmarExclusao(userId) {
-            this.userToDelete = userId;
+        confirmExclusion(logoId) {
+            this.logoToDelete = logoId;
         },
-        excluirRegistro() {
-            if (this.userToDelete !== null) {
-                axios.delete('/admin/users/delete/' + this.userToDelete)
+        deleteRecord() {
+            if (this.logoToDelete !== null) {
+                axios.delete('/admin/site/logo/delete/' + this.logoToDelete)
                     .then(response => {
-                        this.getUsers();
-                        this.userToDelete = null;
+                        this.getLogo();
+                        this.logoToDelete = null;
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {

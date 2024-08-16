@@ -26,6 +26,28 @@ class MenuController extends Controller
         return view('admin.menus.index');
     }
 
+    public function create()
+    {
+        return view('admin.menus.create');
+    }
+
+    public function store(Request $request)
+    {
+        $menu = $this->menuService->createMenu($request->all());
+
+        if ($menu) {
+            return response()->json([
+                'status' => true,
+                'menu' => $menu,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar menu'
+            ], 204);
+        }
+    }
+
     public function list(Request $request)
     {
         $menus = $this->menuService->getAllMenus($request->input('search'));
@@ -51,17 +73,34 @@ class MenuController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $user = $this->menuService->updateMenu($id, $request->all());
+        $menu = $this->menuService->updateMenu($id, $request->all());
 
-        if ($user) {
+        if ($menu) {
             return response()->json([
                 'status' => true,
-                'user' => $user,
+                'menu' => $menu,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar menu'
+            ], 204);
+        }
+    }
+
+    public function delete(string $id)
+    {
+        $menu = $this->menuService->deleteMenu($id);
+
+        if ($menu) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário excluio com sucesso',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir usuário'
             ], 204);
         }
     }

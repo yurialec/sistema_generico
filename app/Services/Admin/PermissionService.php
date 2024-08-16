@@ -3,7 +3,6 @@
 namespace App\Services\Admin;
 
 use App\Repositories\Admin\PermissionRepository;
-use Illuminate\Support\Facades\Route;
 
 class PermissionService
 {

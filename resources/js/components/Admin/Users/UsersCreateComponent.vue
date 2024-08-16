@@ -24,8 +24,8 @@
                             role="alert">
                             <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
                             <hr>
-                            <ul v-for="msg in messages.data.errors">
-                                <li>{{ msg[0] }}</li>
+                            <ul v-for="messages in messages.data.errors">
+                                <li>{{ messages[0] }}</li>
                             </ul>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -163,7 +163,7 @@ export default {
             has_six_chars: '',
             alertStatus: null,
             equalPasswords: null,
-            msg: [],
+            messages: [],
         };
     },
     mounted() {
@@ -180,7 +180,7 @@ export default {
                     this.roles = response.data.roles.data;
                 })
                 .catch(errors => {
-                    
+
                 });
         },
         save() {
@@ -191,11 +191,11 @@ export default {
                 axios.post('/admin/users/store', this.user)
                     .then(response => {
                         this.alertStatus = true;
-                        this.msg = response;
+                        this.messages = response.data;
                     })
                     .catch(errors => {
                         this.alertStatus = false;
-                        this.msg = errors.response;
+                        this.messages = errors.response;
                     });
             }
         },

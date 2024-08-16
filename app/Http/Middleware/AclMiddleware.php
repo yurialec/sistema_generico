@@ -4,21 +4,15 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Route;
 
 class AclMiddleware
 {
     protected $except = [
         'users.index',
-        'users.create',
-        'users.update',
         'roles.index',
-        'roles.create',
-        'roles.update',
         'permissions.index',
-        'permissions.create',
-        'permissions.update',
+        'menu.index',
         'profile',
         'profile.view',
         'modules.list',
@@ -40,10 +34,6 @@ class AclMiddleware
                 ->withErrors([
                     'message' => 'Você não tem permissão para acessar essa funcionalidade'
                 ]);
-            // return response()->json([
-            //     'status' => false,
-            //     'message' => 'Você não tem permissão para acessar essa funcionalidade'
-            // ], 401);
         }
 
         return $next($request);

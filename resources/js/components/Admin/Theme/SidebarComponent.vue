@@ -1,8 +1,8 @@
 <template>
     <div class="sidebar">
         <div class="logo">
-            <a :href="urlHome" style="text-decoration: none;">
-                Home
+            <a :href="urlHome" class="logo-link">
+                <img v-show="logo" :src="'/storage/' + logo" alt="Logo" class="logo-img">
             </a>
         </div>
         <ul class="sidebar-list">
@@ -46,6 +46,7 @@ export default {
             required: true
         },
         urlHome: String,
+        logo: String,
     },
     data() {
         return {

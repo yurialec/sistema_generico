@@ -13,7 +13,6 @@ class MenusSeeder extends Seeder
      */
     public function run()
     {
-        // Menu principal
         DB::table('menus')->insert([
             'label' => 'Administrativo',
             'icon' => 'fa-solid fa-gear',
@@ -24,10 +23,8 @@ class MenusSeeder extends Seeder
             'updated_at' => now()
         ]);
 
-        // Recupera o ID do menu principal
         $adminMenuId = DB::getPdo()->lastInsertId();
 
-        // Submenus
         DB::table('menus')->insert([
             [
                 'label' => 'Usuários',
@@ -51,6 +48,15 @@ class MenusSeeder extends Seeder
                 'label' => 'Permissões',
                 'icon' => 'fa-solid fa-lock',
                 'url' => '/admin/permissions',
+                'active' => 1,
+                'son' => $adminMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Menus',
+                'icon' => 'fa-solid fa-lock',
+                'url' => '/admin/menu',
                 'active' => 1,
                 'son' => $adminMenuId,
                 'created_at' => now(),

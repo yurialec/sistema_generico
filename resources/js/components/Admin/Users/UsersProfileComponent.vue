@@ -49,6 +49,11 @@
 
                 <div class="form-group">
                     <label>Permissões</label><br>
+
+                    <strong>
+                        <p v-show="userProfile.permissions.length == 0">Você não tem nenhuma permissão</p>
+                    </strong>
+
                     <span id="span-role-permissions" v-for="permission in userProfile.permissions" :key="permission.id"
                         class="badge bg-success">
                         {{ permission.label }}
