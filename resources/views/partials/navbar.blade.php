@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             @if(isset(App\Models\Site\SiteLogo::first()->image))
-            <img src="{{'/storage/' . App\Models\Site\SiteLogo::first()->image}}" width="40">
+            <img src="{{'/storage/' . App\Models\Site\SiteLogo::first()->image}}" width="200">
             @else
                 <i class="fa-solid fa-house"></i>
             @endif

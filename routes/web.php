@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\LogoController;
+use App\Http\Controllers\Site\MainTextController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -99,6 +100,16 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit/{id}', [LogoController::class, 'edit'])->name('site.logo.edit');
                     Route::post('/update/{id}', [LogoController::class, 'update'])->name('site.logo.update');
                     Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
+                });
+
+                Route::prefix('main-text')->group(function () {
+                    Route::get('/', [MainTextController::class, 'index'])->name('site.maintext.index');
+                    Route::get('/list', [MainTextController::class, 'list'])->name('site.maintext.list');
+                    Route::get('/create', [MainTextController::class, 'create'])->name('site.maintext.create');
+                    Route::post('/store', [MainTextController::class, 'store'])->name('site.maintext.store');
+                    Route::get('/edit/{id}', [MainTextController::class, 'edit'])->name('site.maintext.edit');
+                    Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
+                    Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
                 });
             });
         });
