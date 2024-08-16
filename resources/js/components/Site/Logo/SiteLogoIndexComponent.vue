@@ -30,7 +30,11 @@
         </div>
 
         <div v-else class="card-body">
-            <div class="table-responsive">
+            <div v-if="this.logo.length == 0" class="text-center">
+                <p>Nenhum resultado encontrado</p>
+            </div>
+
+            <div v-else class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
