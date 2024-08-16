@@ -135,8 +135,8 @@ export default {
                 .catch(errors => {
                     this.alertStatus = 'error';
                 }).finally(() => {
-                    this.loading = false;
                 });
+            this.loading = false;
         },
         confirmExclusion(logoId) {
             this.logoToDelete = logoId;
