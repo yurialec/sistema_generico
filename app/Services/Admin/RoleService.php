@@ -37,4 +37,9 @@ class RoleService
     {
         return $this->roleRepository->delete($id);
     }
+
+    public function listPermissions()
+    {
+        return $this->roleRepository->listPermissions();
+    }
 }

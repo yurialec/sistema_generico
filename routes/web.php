@@ -64,6 +64,9 @@ Route::middleware('auth')->group(function () {
                 Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('roles.edit');
                 Route::post('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
                 Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('roles.delete');
+
+                //dont need acl
+                Route::get('/list-permissions', [RoleController::class, 'listPermissions'])->name('roles.list.permissions');
             });
 
             Route::prefix('permissions')->group(function () {

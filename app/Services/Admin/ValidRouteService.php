@@ -20,7 +20,11 @@ class ValidRouteService
 
         foreach (Route::getRoutes()->getRoutes() as $route) {
             $action = $route->getAction();
-            if (array_key_exists('as', $action)) {
+            if (
+                array_key_exists('as', $action) &&
+                (!str_contains($action['as'], 'index') && !str_contains($action['as'], 'store') && !str_contains($action['as'], 'update'))
+            ) {
+
                 $route_name[] = ['name' => $action['as']];
             }
         }
@@ -47,25 +51,14 @@ class ValidRouteService
             "profile.view",
             "modules.list",
             "valid.routes.index",
-            "users.index",
-            "users.edit",
-            "users.store",
-            "roles.index",
-            "roles.edit",
-            "roles.store",
-            "permissions.index",
-            "permissions.edit",
-            "permissions.store",
-            "menu.index",
-            "menu.edit",
-            "menu.store",
+            "roles.list.permissions",
         ];
 
         $route_name = array_filter($route_name, function ($route) use ($removeItems) {
             return !in_array($route['name'], $removeItems);
         });
 
-        $permissions = $this->permissionRepository->all();
+        $permissions = $this->permissionRepository->list();
         $permissionsIndexed = [];
 
         foreach ($permissions as $permission) {
