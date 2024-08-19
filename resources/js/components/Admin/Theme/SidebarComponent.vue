@@ -8,7 +8,6 @@
         <ul class="sidebar-list">
             <li v-for="menu in menus" :key="menu.id">
                 <template v-if="menu.children && menu.children.length > 0">
-                    <!-- Menu with children -->
                     <div>
                         <a href="#" class="sidebar-nav" @click.prevent="toggleSubmenu(menu)">
                             <i id="icon" :class="menu.icon"></i>
@@ -26,7 +25,6 @@
                     </div>
                 </template>
                 <template v-else>
-                    <!-- Menu without children -->
                     <a class="sidebar-nav" :href="menu.url">
                         <i id="icon" :class="menu.icon"></i>
                         <span style="margin-left: 10px;">{{ menu.label }}</span>
@@ -62,7 +60,7 @@ export default {
             axios.get('/admin/menus')
                 .then(response => {
                     this.menus = response.data.map(menu => {
-                        return { ...menu, expanded: false }; // Adiciona a propriedade 'expanded' usando spread operator
+                        return { ...menu, expanded: false };
                     });
                 })
                 .catch(error => {

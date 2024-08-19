@@ -195,7 +195,7 @@ canvas {
 .sidebar {
     color: #ebeef6;
     height: calc(100vh);
-    width: 80px;
+    width: 250px;
     position: sticky;
     top: 60px;
     background-color: #192039;
@@ -226,8 +226,8 @@ canvas {
     }
 }
 
-.sidebar.active {
-    width: 250px;
+.sidebar.deactivate {
+    width: 80px;
 }
 
 .sidebar .sidebar-nav {

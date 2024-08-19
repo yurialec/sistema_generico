@@ -19,7 +19,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="bi bi-search"></i>
                         </button>
                     </div>
                 </div>
@@ -55,14 +55,15 @@
                             <td>{{ user.role.name }}</td>
                             <td>
                                 <a :href="'users/edit/' + user.id">
-                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
+                                
                                 &nbsp;&nbsp;&nbsp;
 
                                 <button type="button" style="color: red; padding: 0;" class="btn"
                                     @click="confirmarExclusao(user.id)" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
-                                    <i class="fa-regular fa-trash-can fa-lg"></i>
+                                    <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
                         </tr>

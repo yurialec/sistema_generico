@@ -76,9 +76,9 @@
                                         v-model="confirmPassword" autocomplete="new-password">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <button class="btn btn-outline-secondary btn-sm" type="button"
+                                            <button class="btn" style="padding: 0;" type="button"
                                                 @click="showPassword()" id="button-addon2">
-                                                <i class="fa-solid fa-eye"></i>
+                                                <i class="bi bi-eye"></i>
                                             </button>
                                         </div>
                                     </div>

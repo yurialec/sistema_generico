@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
                     Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
                 });
 
-                Route::prefix('carrousel')->group(function () {
+                Route::prefix('carousel')->group(function () {
                     Route::get('/', [SiteCarrousel::class, 'index'])->name('site.carrousel.index');
                     Route::get('/list', [SiteCarrousel::class, 'list'])->name('site.carrousel.list');
                     Route::get('/create', [SiteCarrousel::class, 'create'])->name('site.carrousel.create');

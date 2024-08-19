@@ -57,13 +57,13 @@
                                 &nbsp;&nbsp;&nbsp;
 
                                 <a :href="'/admin/site/logo/edit/' + logo.id">
-                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
 
                                 <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" @click="confirmExclusion(logo.id)">
-                                    <i class="fa-regular fa-trash-can fa-lg"></i>
+                                    <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
                         </tr>

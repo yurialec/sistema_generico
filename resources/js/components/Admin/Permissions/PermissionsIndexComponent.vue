@@ -13,7 +13,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="bi bi-search"></i>
                         </button>
                     </div>
                 </div>

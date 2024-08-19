@@ -19,22 +19,22 @@
             <div class="row justify-content-center">
                 <div class="col-sm-6">
 
-                    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao cadastrar registro
-                        <hr>
-                        <ul v-for="msg in this.messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
+                    
                     <form method="POST" action="" @submit.prevent="salvar()" class="col-lg-8">
+                        <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-xmark"></i> Erro ao cadastrar registro
+                            <hr>
+                            <ul v-for="msg in this.messages.data.errors">
+                                <li>{{ msg[0] }}</li>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
 
                         <div class="form-group">
                             <label>Nome</label>

@@ -13,7 +13,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="bi bi-search"></i>
                         </button>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
 
                             <td>
                                 <a :href="'roles/edit/' + role.id">
-                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
                             </td>
                         </tr>

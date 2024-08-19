@@ -51,7 +51,7 @@ export default {
         },
         handleClick() {
             let sidebar = document.querySelector(".sidebar");
-            sidebar.classList.contains("active") ? sidebar.classList.remove("active") : sidebar.classList.add("active");
+            sidebar.classList.contains("deactivate") ? sidebar.classList.remove("deactivate") : sidebar.classList.add("deactivate");
         }
     }
 };
