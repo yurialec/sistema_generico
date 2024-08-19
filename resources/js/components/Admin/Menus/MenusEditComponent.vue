@@ -8,7 +8,7 @@
                     </div>
                     <div class="col-sm text-end">
                         <a href="https://fontawesome.com/icons" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
-                        <i class="fa-solid fa-circle-exclamation fa-lg" style="color: #00a803;" data-bs-toggle="tooltip"
+                        <i class="bi bi-info-circle fs-4" style="color: #00a803;" data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Ao adicionar o nome do ícone, você deve inserir sem as tags HTML"></i>
                     </div>
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-sm text-end">
                                     <button type="button" @click="addRow" class="btn btn-primary">
-                                        <i class="fa-regular fa-square-plus"></i>
+                                        <i class="bi bi-plus-square"></i>
                                     </button>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                             <div class="col-lg-1">
                                 <button type="button" @click="deleteRow(index)"
                                     class="btn btn-outline-danger rounded-circle">
-                                    <i class="fa fa-times"></i>
+                                    <i class="bi bi-x-circle-fill"></i>
                                 </button>
                             </div>
                         </div>

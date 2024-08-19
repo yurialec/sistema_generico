@@ -48,14 +48,14 @@
                         <td>{{ menu.url }}</td>
                         <td>
                             <a :href="'menu/edit/' + menu.id">
-                                <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                <i class="bi bi-pencil-square"></i>
                             </a>
                             &nbsp;&nbsp;&nbsp;
 
-                            <button v-show="menu.id != 1" type="button" style="color: red; padding: 0;" class="btn"
+                            <button type="button" style="color: red; padding: 0;" class="btn"
                                 @click="confirmExclusion(menu.id)" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
-                                <i class="fa-regular fa-trash-can fa-lg"></i>
+                                <i class="bi bi-trash3"></i>
                             </button>
                         </td>
                     </tr>

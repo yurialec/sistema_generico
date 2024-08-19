@@ -51,6 +51,9 @@ import SiteLogoIndexComponent from './components/Site/Logo/SiteLogoIndexComponen
 import SiteLogoCreateComponent from './components/Site/Logo/SiteLogoCreateComponent.vue';
 import SiteLogoEditComponent from './components/Site/Logo/SiteLogoEditComponent.vue';
 
+//CARROUSE
+import SiteCarrouselIndexComponent from './components/Site/Carrousel/SiteCarrouselIndexComponent.vue';
+
 //MAINTEXT
 import SiteMainTextIndexComponent from './components/Site/MainText/SiteMainTextIndexComponent.vue';
 import SiteMainTextCreateComponent from './components/Site/MainText/SiteMainTextCreateComponent.vue';
@@ -90,6 +93,9 @@ app.component('menus-create-component', MenusCreateComponent);
 app.component('site-logo-index-component', SiteLogoIndexComponent);
 app.component('site-logo-create-component', SiteLogoCreateComponent);
 app.component('site-logo-edit-component', SiteLogoEditComponent);
+
+//CARROUSEL
+app.component('site-carrousel-index-component', SiteCarrouselIndexComponent);
 
 //MAINTEXT
 app.component('site-main-text-index-component', SiteMainTextIndexComponent);

@@ -13,7 +13,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
     <!-- Scripts -->
@@ -43,19 +43,18 @@
                     <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div>
                         <div class="carousel-inner">
+
                             <div class="carousel-item active">
-                                <img src="https://plus.unsplash.com/premium_photo-1669686966146-da8d2400de46?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100" alt="...">
+                                <img src="https://plus.unsplash.com/premium_photo-1669686966146-da8d2400de46?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100 h-40 mb-4" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5 style="background-color: #003366; border-radius: 10px;">First slide label</h5>
+                                    <p style="background-color: #003366; border-radius: 10px;">Some representative placeholder content for the second slide.</p>
+                                    <a href="#" target="_blank" style="background-color: #003366; border-radius: 10px; ">LINK EXTERNO</a>
+                                </div>
                             </div>
-                            <div class="carousel-item">
-                                <img src="https://images.pexels.com/photos/5292267/pexels-photo-5292267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100" alt="...">
-                            </div>
+
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -173,9 +172,9 @@
                 <div class="kv-ee-footer-social kv-ee-col-lg-4 kv-ee-col-md-6">
                     <p class="kv-ee-header" data-type="text" tabindex="0">Siga-nos<span data-prop="titleSocial" class="ck-editable-element" data-editable="basic" style="display:none;"></span></p>
                     <ul class="kv-ee-links kv-ee-body-text" data-type="social">
-                        <li><a href="https://www.facebook.com/groups/404361246637936/?ref=share" target="_blank" aria-label="Social link Facebook"> <i class="fa-brands fa-facebook"></i> <span class="kv-ee-social-provider">Facebook</span></a></li>
-                        <li><a href="https://www.instagram.com/apemigos/" target="_blank" aria-label="Social link Instagram"> <i class="fa-brands fa-instagram"></i> <span class="kv-ee-social-provider">Instagram</span></a></li>
-                        <li><a href="https://youtube.com/channel/UC7nM7FEhWhs9CYBJKJKVkcA" target="_blank" aria-label="Social link YouTube"> <i class="fa-brands fa-youtube"></i> <span class="kv-ee-social-provider">YouTube</span></a></li>
+                        <li><a href="https://www.facebook.com/groups/404361246637936/?ref=share" target="_blank" aria-label="Social link Facebook"> <i class="bi bi-facebook"></i> <span class="kv-ee-social-provider">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/apemigos/" target="_blank" aria-label="Social link Instagram"> <i class="bi bi-instagram"></i> <span class="kv-ee-social-provider">Instagram</span></a></li>
+                        <li><a href="https://youtube.com/channel/UC7nM7FEhWhs9CYBJKJKVkcA" target="_blank" aria-label="Social link YouTube"> <i class="bi bi-youtube"></i> <span class="kv-ee-social-provider">YouTube</span></a></li>
                     </ul>
                 </div>
             </div>
