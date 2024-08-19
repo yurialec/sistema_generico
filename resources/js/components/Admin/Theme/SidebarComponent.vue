@@ -13,7 +13,7 @@
                         <a href="#" class="sidebar-nav" @click.prevent="toggleSubmenu(menu)">
                             <i id="icon" :class="menu.icon"></i>
                             <span style="margin-left: 10px;">{{ menu.label }}</span>
-                            <i class="fa fa-chevron-down" :class="{ 'open': menu.expanded }"></i>
+                            <i class="bi bi-caret-down" :class="{ 'open': menu.expanded }"></i>
                         </a>
                         <ul class="sidebar-submenu-list" v-show="menu.expanded">
                             <li v-for="child in menu.children" :key="child.id">

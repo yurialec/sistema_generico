@@ -2,9 +2,9 @@
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             @if(isset(App\Models\Site\SiteLogo::first()->image))
-            <img src="{{'/storage/' . App\Models\Site\SiteLogo::first()->image}}" width="200">
+            <img class="logo-link" src="{{'/storage/' . App\Models\Site\SiteLogo::first()->image}}">
             @else
-                <i class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-house"></i>
             @endif
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

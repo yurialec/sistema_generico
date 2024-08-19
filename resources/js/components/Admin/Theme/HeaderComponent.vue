@@ -2,18 +2,18 @@
     <nav class="navbar">
         <div class="navbar-content">
             <button class="btn custom-btn" @click="handleClick">
-                <i class="fa-solid fa-bars"></i>
+                <i class="bi bi-list fs-2"></i>
             </button>
         </div>
         <div class="navbar-content">
             <div class="avatar" @click="toggleDropdown">
-                {{ this.user.name }}&nbsp;&nbsp;&nbsp;<i class="fa-regular fa-user"></i>
+                {{ this.user.name }}&nbsp;&nbsp;&nbsp;<i class="bi bi-person fs-3"></i>
                 <div class="dropdown-menu setting" :class="{ active: showDropdown }">
                     <a class="item" :href="urlProfile">
-                        <span class="fa-solid fa-user"></span> Meu Cadastro
+                        <span class="bi bi-person fs-4"></span> Meu Cadastro
                     </a>
                     <a class="item" :href="urlSair">
-                        <span class="fa-solid fa-arrow-right-from-bracket"></span> Sair
+                        <span class="bi bi-box-arrow-right fs-4"></span> Sair
                     </a>
                 </div>
             </div>

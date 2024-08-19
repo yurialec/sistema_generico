@@ -8,7 +8,7 @@
                     </div>
                     <div class="col-sm text-end">
                         <a href="https://fontawesome.com/icons" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
-                        <i class="fa-solid fa-circle-exclamation fa-lg" style="color: #00a803;" data-bs-toggle="tooltip"
+                        <i class="bi bi-info-circle fs-4" style="color: #00a803;" data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Ao adicionar o nome do ícone, você deve inserir sem as tags HTML"></i>
                     </div>

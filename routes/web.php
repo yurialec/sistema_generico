@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
 use App\Http\Controllers\SiteController;
+use App\Models\Site\SiteCarrousel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -110,6 +111,16 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit/{id}', [MainTextController::class, 'edit'])->name('site.maintext.edit');
                     Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
                     Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
+                });
+
+                Route::prefix('carrousel')->group(function () {
+                    Route::get('/', [SiteCarrousel::class, 'index'])->name('site.carrousel.index');
+                    Route::get('/list', [SiteCarrousel::class, 'list'])->name('site.carrousel.list');
+                    Route::get('/create', [SiteCarrousel::class, 'create'])->name('site.carrousel.create');
+                    Route::post('/store', [SiteCarrousel::class, 'store'])->name('site.carrousel.store');
+                    Route::get('/edit/{id}', [SiteCarrousel::class, 'edit'])->name('site.carrousel.edit');
+                    Route::post('/update/{id}', [SiteCarrousel::class, 'update'])->name('site.carrousel.update');
+                    Route::delete('/delete/{id}', [SiteCarrousel::class, 'delete'])->name('site.carrousel.delete');
                 });
             });
         });
