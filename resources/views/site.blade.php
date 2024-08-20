@@ -37,24 +37,26 @@
                 </div>
             </div>
 
+            @if(isset($carousels) and !empty($carousels))
             <!-- Carousel Section -->
             <div class="container carousel-container">
+
                 <div class="d-flex justify-content-center my-5">
                     <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
-                        <div class="carousel-indicators">
+                        <!-- <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        </div>
+                        </div> -->
                         <div class="carousel-inner">
-
+                            @foreach($carousels as $carousel)
                             <div class="carousel-item active">
-                                <img src="https://plus.unsplash.com/premium_photo-1669686966146-da8d2400de46?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100 h-40 mb-4" alt="...">
+                                <img src="{{'/storage/' .$carousel->image}}" class="d-block w-100 h-40 mb-4" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h5 style="background-color: #003366; border-radius: 10px;">First slide label</h5>
-                                    <p style="background-color: #003366; border-radius: 10px;">Some representative placeholder content for the second slide.</p>
-                                    <a href="#" target="_blank" style="background-color: #003366; border-radius: 10px; ">LINK EXTERNO</a>
+                                    <h5 style="background-color: #003366; border-radius: 10px;">{{$carousel->title}}</h5>
+                                    <p style="background-color: #003366; border-radius: 10px;">{{$carousel->description}}</p>
+                                    <a href="{{$carousel->url_link}}" target="_blank" style="background-color: #003366; border-radius: 10px; ">{{$carousel->name_link}}</a>
                                 </div>
                             </div>
-
+                            @endforeach
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -67,6 +69,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="container blog-section text-center">
                 <h2>Blog</h2>

@@ -11,8 +11,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
+use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\SiteController;
-use App\Models\Site\SiteCarrousel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -114,13 +114,13 @@ Route::middleware('auth')->group(function () {
                 });
 
                 Route::prefix('carousel')->group(function () {
-                    Route::get('/', [SiteCarrousel::class, 'index'])->name('site.carrousel.index');
-                    Route::get('/list', [SiteCarrousel::class, 'list'])->name('site.carrousel.list');
-                    Route::get('/create', [SiteCarrousel::class, 'create'])->name('site.carrousel.create');
-                    Route::post('/store', [SiteCarrousel::class, 'store'])->name('site.carrousel.store');
-                    Route::get('/edit/{id}', [SiteCarrousel::class, 'edit'])->name('site.carrousel.edit');
-                    Route::post('/update/{id}', [SiteCarrousel::class, 'update'])->name('site.carrousel.update');
-                    Route::delete('/delete/{id}', [SiteCarrousel::class, 'delete'])->name('site.carrousel.delete');
+                    Route::get('/', [SiteCarouselController::class, 'index'])->name('site.carousel.index');
+                    Route::get('/list', [SiteCarouselController::class, 'list'])->name('site.carousel.list');
+                    Route::get('/create', [SiteCarouselController::class, 'create'])->name('site.carousel.create');
+                    Route::post('/store', [SiteCarouselController::class, 'store'])->name('site.carousel.store');
+                    Route::get('/edit/{id}', [SiteCarouselController::class, 'edit'])->name('site.carousel.edit');
+                    Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
+                    Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
                 });
             });
         });

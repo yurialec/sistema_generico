@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Services\Site\LogoService;
+use App\Http\Requests\Site\Carousel\StoreCarouselRequest;
+use App\Http\Requests\Site\Carousel\UpdateCarouselRequest;
+use App\Services\Site\CarouselService;
 use Illuminate\Http\Request;
 
-class LogoController extends Controller
+class SiteCarouselController extends Controller
 {
-    protected $logoService;
-    public function __construct(LogoService $logoService)
+    protected $carouselService;
+    public function __construct(CarouselService $carouselService)
     {
-        $this->logoService = $logoService;
+        $this->carouselService = $carouselService;
     }
 
     /**
@@ -19,17 +21,17 @@ class LogoController extends Controller
      */
     public function index()
     {
-        return view('site.logo.index');
+        return view('site.carousel.index');
     }
 
     public function list()
     {
-        $logo = $this->logoService->getAllLogo();
+        $carousels = $this->carouselService->getAll();
 
-        if ($logo) {
+        if ($carousels) {
             return response()->json([
                 'status' => true,
-                'logo' => $logo
+                'carousels' => $carousels
             ], 200);
         } else {
             return response()->json([
@@ -44,25 +46,25 @@ class LogoController extends Controller
      */
     public function create()
     {
-        return view('site.logo.create');
+        return view('site.carousel.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCarouselRequest $request)
     {
-        $logo = $this->logoService->createLogo($request->all());
+        $carousel = $this->carouselService->create($request->all());
 
-        if ($logo) {
+        if ($carousel) {
             return response()->json([
                 'status' => true,
-                'logo' => $logo,
+                'carousel' => $carousel,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao cadastrar Logotipo'
+                'message' => 'Erro ao cadastrar carousel'
             ], 204);
         }
     }
@@ -72,26 +74,26 @@ class LogoController extends Controller
      */
     public function edit(string $id)
     {
-        $logo = $this->logoService->getLogoById($id);
-        return view('site.logo.edit', compact('logo'));
+        $carousel = $this->carouselService->getById($id);
+        return view('site.carousel.edit', compact('carousel'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCarouselRequest $request, string $id)
     {
-        $logo = $this->logoService->updateLogo($id, $request->all());
+        $carousel = $this->carouselService->update($id, $request->all());
 
-        if ($logo) {
+        if ($carousel) {
             return response()->json([
                 'status' => true,
-                'logo' => $logo,
+                'carousel' => $carousel,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao atualizar logotipo'
+                'message' => 'Erro ao atualizar carousel'
             ], 204);
         }
     }
@@ -101,17 +103,17 @@ class LogoController extends Controller
      */
     public function delete(string $id)
     {
-        $logo = $this->logoService->deleteLogo($id);
+        $carousel = $this->carouselService->delete($id);
 
-        if ($logo) {
+        if ($carousel) {
             return response()->json([
                 'status' => true,
-                'message' => 'Logotipo excluido com sucesso',
+                'message' => 'Carousel excluido com sucesso',
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao excluir logotipo'
+                'message' => 'Erro ao excluir Carousel'
             ], 204);
         }
     }
