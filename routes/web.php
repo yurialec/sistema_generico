@@ -32,6 +32,7 @@ Auth::routes();
 
 Route::get('/', [SiteController::class, 'index']);
 Route::get('/sobre', [SiteController::class, 'about'])->name('about');
+Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 Route::middleware('auth')->group(function () {

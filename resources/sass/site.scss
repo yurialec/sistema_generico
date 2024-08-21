@@ -7,6 +7,23 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+
+:root {
+    --main-color: #003366;
+    --site-color: #fff;
+    --active-color: #0063e5;
+    --first-color: #08132f;
+    --second-color: #090b13;
+    --third-color: #1b202a;
+}
+
 html,
 body {
     height: 100%;
@@ -23,7 +40,7 @@ body {
 
 .navbar {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #003366;
+    background-color: var(--main-color);
 }
 
 .navbar-brand,
@@ -63,7 +80,7 @@ body {
 
 .main-content h1 {
     font-size: 2.5rem;
-    color: #003366;
+    color: var(--main-color);
 }
 
 .main-content p {
@@ -402,7 +419,7 @@ body {
 
 // INICIO FOOTER
 footer {
-    background-color: #003366;
+    background-color: var(--main-color);
     color: #fff;
     padding: 20px 0;
     text-align: center;
@@ -424,7 +441,7 @@ footer {
 .card-header {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    background-color: #003366;
+    background-color: var(--main-color);
     color: #fff;
 }
 

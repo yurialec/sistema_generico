@@ -170,21 +170,6 @@
                     </ul>
                 </div>
             </div>
-            <hr>
-            <div class="kv-ee-row">
-                <div class="kv-ee-col-sm-6 kv-ee-footer-address" data-type="address">
-                    <p class="kv-ee-body--sm">Brasília - DF, BR</p>
-                </div>
-                <div>
-                    <a href="mailto:contato@apemigos.org" data-type="email">email@email.com</a>
-                </div>
-            </div>
-            <div class="kv-ee-row kv-ee-legal">
-                <div class="kv-ee-col-12"><a href="/sitemap.xml" target="_blank">Mapa do site</a></div>
-                <div class="kv-ee-col-12">
-                    <div class="kv-ee-legal-placeholder"></div>
-                </div>
-            </div>
         </div>
     </div>
 

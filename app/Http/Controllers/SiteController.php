@@ -28,4 +28,9 @@ class SiteController extends Controller
         $about = $this->aboutRepository->all()[0];
         return view('partials.about.index', compact('about'));
     }
+
+    public function contact()
+    {
+        return view('partials.contact.index');
+    }
 }
