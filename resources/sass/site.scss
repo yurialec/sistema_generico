@@ -69,6 +69,7 @@ body {
 }
 
 .carousel-item img {
+    background-color: #f8f9fa;
     margin: 0 auto;
     height: 450px;
     width: auto;
@@ -79,6 +80,36 @@ body {
 
 .carousel-item img:hover {
     transform: scale(1.05);
+}
+
+.carousel-caption {
+    background-color: #C0C0C0;
+    border-radius: 10px;
+    opacity : 0.8;
+    width: auto;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.carousel-caption h5 {
+    color: #333;
+}
+
+.carousel-caption p {
+    color: #333;
+}
+
+.carousel-caption a {
+    text-decoration: none;
+    color: #333;
+}
+
+.carousel-caption a:hover {
+    background-color: #007bff;
+    text-decoration: none;
+    color: #fff;
+    padding: 4px;
+    border-radius: 10px;
 }
 
 .carousel-control-prev-icon,

@@ -31,6 +31,17 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label>Imagem</label>
+
+                            <img v-show="!newImage" :src="'/storage/' + carousel.carousel.image"
+                                class="form-control mb-3" width="200">
+
+                            <img v-show="newImage" class="form-control mb-3" :src="urlImage" width="200">
+
+                            <input type="file" class="form-control mb-3" @change="loadImage">
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label>Título</label>
                             <input type="text" class="form-control" v-model="carousel.carousel.title">
                         </div>
@@ -38,11 +49,6 @@
                         <div class="form-group mb-3">
                             <label>Descrição</label>
                             <input type="text" class="form-control" v-model="carousel.carousel.description">
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label>Imagem</label>
-                            <input type="file" class="form-control" @change="loadImage">
                         </div>
 
                         <div class="form-group mb-3">
@@ -105,19 +111,23 @@ export default {
             alertStatus: null,
             messages: [],
             loading: null,
+            newImage: null,
+            file: '',
+            urlImage: null,
         };
     },
     mounted() {
     },
     methods: {
         loadImage(e) {
-            this.carousel.carousel.image = e.target.files[0];
+            this.newImage = e.target.files[0];
+            this.urlImage = URL.createObjectURL(this.newImage);
         },
         save() {
             let formData = new FormData();
 
-            if (this.carousel.carousel.image) {
-                formData.append('image', this.carousel.carousel.image);
+            if (this.newImage) {
+                formData.append('image', this.newImage);
             }
 
             if (this.carousel.carousel.title) {

@@ -38,11 +38,9 @@ class CarouselService
     {
         $carousel = $this->carouselRepository->find($id);
 
-        if (isset($carousel->image)) {
-            Storage::disk('public')->delete($carousel->image);
-        }
-
         if (isset($data['image'])) {
+            Storage::disk('public')->delete($carousel->image);
+
             $image = $data['image'];
             $data['image_urn'] = $image->store('site/carousel/images', 'public');
         } else {

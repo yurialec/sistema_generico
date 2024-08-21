@@ -93,8 +93,9 @@ export default {
     data() {
         return {
             carousel: {
-                image: null,
                 title: '',
+                description: '',
+                image: null,
                 text: '',
                 name_link: '',
                 url_link: '',

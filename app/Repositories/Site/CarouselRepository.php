@@ -52,8 +52,15 @@ class CarouselRepository implements CarouselRepositoryInterface
         $carousel = $this->carousel->find($id);
 
         $updateData = [
-            'image' => $data['image_urn'],
+            'title'       => null,
+            'description' => null,
+            'url_link'    => null,
+            'name_link'   => null,
         ];
+
+        if (isset($data['image_urn'])) {
+            $updateData['image'] = $data['image_urn'];
+        }
 
         if (isset($data['title'])) {
             $updateData['title'] = $data['title'];

@@ -37,24 +37,25 @@
                 </div>
             </div>
 
-            @if(isset($carousels) and !empty($carousels))
+            @if(isset($carousels) && $carousels->isNotEmpty())
             <!-- Carousel Section -->
             <div class="container carousel-container">
-
                 <div class="d-flex justify-content-center my-5">
                     <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
-                        <!-- <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        </div> -->
                         <div class="carousel-inner">
-                            @foreach($carousels as $carousel)
-                            <div class="carousel-item active">
-                                <img src="{{'/storage/' .$carousel->image}}" class="d-block w-100 h-40 mb-4" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5 style="background-color: #003366; border-radius: 10px;">{{$carousel->title}}</h5>
-                                    <p style="background-color: #003366; border-radius: 10px;">{{$carousel->description}}</p>
-                                    <a href="{{$carousel->url_link}}" target="_blank" style="background-color: #003366; border-radius: 10px; ">{{$carousel->name_link}}</a>
+                            @foreach($carousels as $index => $carousel)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $carousel->image) }}" class="d-block w-100 h-40 mb-4" alt="...">
+
+                                @if($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
+                                <div class="carousel-caption d-md-block">
+                                    <h5>{{$carousel->title}}</h5>
+                                    <p>{{$carousel->description}}</p>
+                                    <a href="{{$carousel->url_link}}" target="_blank">{{$carousel->name_link}}</a>
                                 </div>
+                                @else
+
+                                @endif
                             </div>
                             @endforeach
                         </div>
@@ -70,6 +71,7 @@
                 </div>
             </div>
             @endif
+
 
             <div class="container blog-section text-center">
                 <h2>Blog</h2>
