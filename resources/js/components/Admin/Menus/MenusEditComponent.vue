@@ -17,7 +17,7 @@
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
-                <div class="col-sm-6">
+                <div class="col-sm-10">
 
                     <form method="POST" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"

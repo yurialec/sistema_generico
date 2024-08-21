@@ -148,26 +148,13 @@
     <div class="kv-content" data-padding-top="0" style="margin-top: 0px;">
         <div class="kv-ee-container kv-ee-main">
             <div class="kv-ee-row">
-                <div class="kv-ee-col-lg-4 kv-ee-col-sm-12">
-                    <div class="kv-ee-contact-about">
-                        <h4 class="kv-ee-header" data-type="text" tabindex="0">LOREM IPSUM<span data-prop="titleDescription" class="ck-editable-element" data-editable="basic" style="display:none;"></span></h4>
-                        <p class="kv-ee-description" data-type="text" tabindex="0">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
-                    </div>
-                    <div class="kv-ee-logo-group">
-                        <h3 class="kv-ee-logo-title kv-ee-title--md kv-ee-header" data-type="text" tabindex="0">
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </h3>
-                    </div>
-                </div>
 
                 <div class="kv-ee-footer-navigation kv-ee-col-lg-4 kv-ee-col-md-6">
                     <p class="kv-ee-header" data-type="text" tabindex="0">Páginas<span data-prop="titleNavigation" class="ck-editable-element" data-editable="basic" style="display:none;"></span></p>
                     <nav class="kv-ee-links kv-ee-body-text">
                         <ul>
                             <li class="kv-ee-nav-title"><a href="/" data-uri-path="/" target="_self" class="">Início</a></li>
-                            <li class="kv-ee-nav-title"><a href="/sobre" data-uri-path="/sobre" target="_self" class="">Sobre</a></li>
+                            <li class="kv-ee-nav-title"><a href="{{route('about')}}" data-uri-path="/sobre" target="_self" class="">Sobre</a></li>
                             <li class="kv-ee-nav-title"><a href="/contato" data-uri-path="/contato" target="_self" class="">Contato</a></li>
                             <li class="kv-ee-nav-title"><a href="/blog" data-uri-path="/blog" target="_self" class="kv-ee-active">Blog</a></li>
                         </ul>

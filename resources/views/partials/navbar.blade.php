@@ -4,7 +4,7 @@
             @if(isset(App\Models\Site\SiteLogo::first()->image))
             <img class="logo-link" src="{{'/storage/' . App\Models\Site\SiteLogo::first()->image}}">
             @else
-            <i class="bi bi-house-fill"></i>
+            Home
             @endif
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

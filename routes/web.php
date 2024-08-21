@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
+use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [SiteController::class, 'index']);
+Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 Route::middleware('auth')->group(function () {
@@ -121,6 +123,16 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit/{id}', [SiteCarouselController::class, 'edit'])->name('site.carousel.edit');
                     Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
                     Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
+                });
+
+                Route::prefix('site-about')->group(function () {
+                    Route::get('/', [SiteAboutController::class, 'index'])->name('site.about.index');
+                    Route::get('/list', [SiteAboutController::class, 'list'])->name('site.about.list');
+                    Route::get('/create', [SiteAboutController::class, 'create'])->name('site.about.create');
+                    Route::post('/store', [SiteAboutController::class, 'store'])->name('site.about.store');
+                    Route::get('/edit/{id}', [SiteAboutController::class, 'edit'])->name('site.about.edit');
+                    Route::post('/update/{id}', [SiteAboutController::class, 'update'])->name('site.about.update');
+                    Route::delete('/delete/{id}', [SiteAboutController::class, 'delete'])->name('site.about.delete');
                 });
             });
         });

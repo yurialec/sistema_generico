@@ -61,6 +61,11 @@ import SiteMainTextIndexComponent from './components/Site/MainText/SiteMainTextI
 import SiteMainTextCreateComponent from './components/Site/MainText/SiteMainTextCreateComponent.vue';
 import SiteMainTextEditComponent from './components/Site/MainText/SiteMainTextEditComponent.vue';
 
+//ABOUT
+import SiteAboutIndexComponent from './components/Site/About/SiteAboutIndexComponent.vue';
+import SiteAboutCreateComponent from './components/Site/About/SiteAboutCreateComponent.vue';
+import SiteAboutEditComponent from './components/Site/About/SiteAboutEditComponent.vue';
+
 //Theme
 app.component('example-component', ExampleComponent);
 app.component('home-component', HomeHomeComponent);
@@ -105,6 +110,11 @@ app.component('site-carousel-edit-component', SiteCarouselEditComponent);
 app.component('site-main-text-index-component', SiteMainTextIndexComponent);
 app.component('site-main-text-create-component', SiteMainTextCreateComponent);
 app.component('site-main-text-edit-component', SiteMainTextEditComponent);
+
+//ABOUT
+app.component('site-about-index-component', SiteAboutIndexComponent);
+app.component('site-about-create-component', SiteAboutCreateComponent);
+app.component('site-about-edit-component', SiteAboutEditComponent);
 
 app.use(store);
 app.mount('#app');

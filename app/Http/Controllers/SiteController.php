@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Site\AboutRepository;
 use App\Repositories\Site\CarouselRepository;
-use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
-    public $carouselRepository;
+    public object|null $carouselRepository;
+    public object|null $aboutRepository;
 
-    public function __construct(CarouselRepository $carouselRepository)
+    public function __construct(CarouselRepository $carouselRepository, AboutRepository $aboutRepository)
     {
         $this->carouselRepository = $carouselRepository;
+        $this->aboutRepository = $aboutRepository;
     }
 
     public function index()
@@ -19,5 +21,11 @@ class SiteController extends Controller
         $carousels = $this->carouselRepository->all();
 
         return view('site', compact('carousels'));
+    }
+
+    public function about()
+    {
+        $about = $this->aboutRepository->all()[0];
+        return view('partials.about.index', compact('about'));
     }
 }
