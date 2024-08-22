@@ -17,7 +17,7 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
     <!-- Scripts -->
-    @vite(['resources/sass/site.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/site.scss'])
 </head>
 
 <body>

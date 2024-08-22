@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ValidRoutesController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
 use App\Http\Controllers\Site\SiteAboutController;
@@ -134,6 +135,16 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit/{id}', [SiteAboutController::class, 'edit'])->name('site.about.edit');
                     Route::post('/update/{id}', [SiteAboutController::class, 'update'])->name('site.about.update');
                     Route::delete('/delete/{id}', [SiteAboutController::class, 'delete'])->name('site.about.delete');
+                });
+
+                Route::prefix('contact')->group(function () {
+                    Route::get('/', [ContactController::class, 'index'])->name('site.contact.index');
+                    Route::get('/list', [ContactController::class, 'list'])->name('site.contact.list');
+                    Route::get('/create', [ContactController::class, 'create'])->name('site.contact.create');
+                    Route::post('/store', [ContactController::class, 'store'])->name('site.contact.store');
+                    Route::get('/edit/{id}', [ContactController::class, 'edit'])->name('site.contact.edit');
+                    Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
+                    Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
             });
         });
