@@ -28,48 +28,51 @@
             <!-- Main Section -->
             <div class="row">
                 <div class="col-md-8">
-                    @if(isset(App\Models\Site\MainText::first()->title))
-                    <h1>{{App\Models\Site\MainText::first()->title}}</h1>
+                    @if (isset(App\Models\Site\MainText::first()->title))
+                        <h1>{{ App\Models\Site\MainText::first()->title }}</h1>
                     @endif
-                    @if(isset(App\Models\Site\MainText::first()->text))
-                    <p>{{App\Models\Site\MainText::first()->text}}</p>
+                    @if (isset(App\Models\Site\MainText::first()->text))
+                        <p>{{ App\Models\Site\MainText::first()->text }}</p>
                     @endif
                 </div>
             </div>
 
-            @if(isset($carousels) && $carousels->isNotEmpty())
-            <!-- Carousel Section -->
-            <div class="container carousel-container">
-                <div class="d-flex justify-content-center my-5">
-                    <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
-                        <div class="carousel-inner">
-                            @foreach($carousels as $index => $carousel)
-                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ asset('storage/' . $carousel->image) }}" class="d-block w-100 h-40 mb-4" alt="...">
+            @if (isset($carousels) && $carousels->isNotEmpty())
+                <!-- Carousel Section -->
+                <div class="container carousel-container">
+                    <div class="d-flex justify-content-center my-5">
+                        <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
+                            <div class="carousel-inner">
+                                @foreach ($carousels as $index => $carousel)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $carousel->image) }}"
+                                            class="d-block w-100 h-40 mb-4" alt="...">
 
-                                @if($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
-                                <div class="carousel-caption d-md-block">
-                                    <h5>{{$carousel->title}}</h5>
-                                    <p>{{$carousel->description}}</p>
-                                    <a href="{{$carousel->url_link}}" target="_blank">{{$carousel->name_link}}</a>
-                                </div>
-                                @else
-
-                                @endif
+                                        @if ($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
+                                            <div class="carousel-caption d-md-block">
+                                                <h5>{{ $carousel->title }}</h5>
+                                                <p>{{ $carousel->description }}</p>
+                                                <a href="{{ $carousel->url_link }}"
+                                                    target="_blank">{{ $carousel->name_link }}</a>
+                                            </div>
+                                        @else
+                                        @endif
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
                 </div>
-            </div>
             @endif
 
 
@@ -79,7 +82,8 @@
 
                     <div class="col-md-4 d-flex align-items-stretch">
                         <div class="card blog-card mb-4">
-                            <img class="card-img-top" alt="thumbnail-blog" src="https://i.pinimg.com/564x/22/2a/5b/222a5b172d9bb69c4c4780261fa2f494.jpg">
+                            <img class="card-img-top" alt="thumbnail-blog"
+                                src="https://i.pinimg.com/564x/22/2a/5b/222a5b172d9bb69c4c4780261fa2f494.jpg">
                             <div class="card-body">
                                 <p class="card-text">This is a wider card with supporting text below.</p>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -94,7 +98,8 @@
 
                     <div class="col-md-4 d-flex align-items-stretch">
                         <div class="card blog-card mb-4">
-                            <img class="card-img-top" alt="thumbnail-blog" src="https://upload.wikimedia.org/wikipedia/commons/6/68/Szczenie_Jack_Russell_Terrier3.jpg">
+                            <img class="card-img-top" alt="thumbnail-blog"
+                                src="https://upload.wikimedia.org/wikipedia/commons/6/68/Szczenie_Jack_Russell_Terrier3.jpg">
                             <div class="card-body">
                                 <p class="card-text">This is a wider card with supporting text below.</p>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -109,7 +114,8 @@
 
                     <div class="col-md-4 d-flex align-items-stretch">
                         <div class="card blog-card mb-4">
-                            <img class="card-img-top" alt="thumbnail-blog" src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg">
+                            <img class="card-img-top" alt="thumbnail-blog"
+                                src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg">
                             <div class="card-body">
                                 <p class="card-text">This is a wider card with supporting text below.</p>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -127,47 +133,61 @@
 
             <div class="container newsletter text-center py-5">
                 <h2 class="display-4 font-weight-bold mb-4">Assine</h2>
-                <p class="lead mb-4">Assine nossa newsletter e mantenha-se atualizado. Não se preocupe, não enviaremos muito conteúdo.</p>
+                <p class="lead mb-4">Assine nossa newsletter e mantenha-se atualizado. Não se preocupe, não enviaremos
+                    muito conteúdo.</p>
                 <form>
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Insira o seu endereço de email" required>
+                        <input type="email" class="form-control" placeholder="Insira o seu endereço de email"
+                            required>
                         <button type="submit" class="btn btn-primary">Inscrever-se</button>
                     </div>
-                    <div class="form-check text-left">
+                    {{-- <div class="form-check text-left">
                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required>
                         <label class="form-check-label" for="defaultCheck1">
                             Aceito a <a href="#">política de privacidade</a> e concordo em receber informações.
                         </label>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
 
         </div>
     </div>
 
-    <div class="kv-content" data-padding-top="0" style="margin-top: 0px;">
-        <div class="kv-ee-container kv-ee-main">
-            <div class="kv-ee-row">
-
-                <div class="kv-ee-footer-navigation kv-ee-col-lg-4 kv-ee-col-md-6">
-                    <p class="kv-ee-header" data-type="text" tabindex="0">Páginas<span data-prop="titleNavigation" class="ck-editable-element" data-editable="basic" style="display:none;"></span></p>
-                    <nav class="kv-ee-links kv-ee-body-text">
+    <div class="site-information">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm text-start">
+                    <p><strong>Páginas</strong></p>
+                    <nav>
                         <ul>
-                            <li class="kv-ee-nav-title"><a href="/" data-uri-path="/" target="_self" class="">Início</a></li>
-                            <li class="kv-ee-nav-title"><a href="{{route('about')}}" data-uri-path="/sobre" target="_self" class="">Sobre</a></li>
-                            <li class="kv-ee-nav-title"><a href="/contato" data-uri-path="/contato" target="_self" class="">Contato</a></li>
-                            <li class="kv-ee-nav-title"><a href="/blog" data-uri-path="/blog" target="_self" class="kv-ee-active">Blog</a></li>
+                            <li><a href="/">Início</a></li>
+                            <li><a href="{{ route('about') }}">Sobre</a></li>
+                            <li><a href="/contato">Contato</a></li>
+                            <li><a href="/blog">Blog</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
-
-                <div class="kv-ee-footer-social kv-ee-col-lg-4 kv-ee-col-md-6">
-                    <p class="kv-ee-header" data-type="text" tabindex="0">Siga-nos<span data-prop="titleSocial" class="ck-editable-element" data-editable="basic" style="display:none;"></span></p>
-                    <ul class="kv-ee-links kv-ee-body-text" data-type="social">
-                        <li><a href="https://www.facebook.com/groups/404361246637936/?ref=share" target="_blank" aria-label="Social link Facebook"> <i class="bi bi-facebook"></i> <span class="kv-ee-social-provider">Facebook</span></a></li>
-                        <li><a href="https://www.instagram.com/apemigos/" target="_blank" aria-label="Social link Instagram"> <i class="bi bi-instagram"></i> <span class="kv-ee-social-provider">Instagram</span></a></li>
-                        <li><a href="https://youtube.com/channel/UC7nM7FEhWhs9CYBJKJKVkcA" target="_blank" aria-label="Social link YouTube"> <i class="bi bi-youtube"></i> <span class="kv-ee-social-provider">YouTube</span></a></li>
-                    </ul>
+                <div class="col-sm text-center">
+                    <p><strong>Contato</strong></p>
+                    <nav>
+                        <ul>
+                            <li>Telefone</li>
+                            <li>Email</li>
+                            <li>Cidade/UF</li>
+                            <li>Enderço</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-sm text-end">
+                    <p><strong>Siga-nos</strong></p>
+                    <nav>
+                        <ul>
+                            <li><i class="bi bi-instagram"></i> Instagram</li>
+                            <li><i class="bi bi-facebook"></i> Youtube</li>
+                            <li><i class="bi bi-youtube"></i> Facebook</li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

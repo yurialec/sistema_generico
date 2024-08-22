@@ -229,193 +229,78 @@ body {
 
 //FIM NEWLETTER
 
-//INICIO DIV CONTATO
-.kv-content {
+//INICIO DIV SITE-INFORMATION
+
+.site-information {
     background-color: #f8f9fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    margin-top: 0;
-    padding: 20px;
-    color: #333;
+    padding: 40px 0;
+    border-top: 2px solid #e9ecef;
 }
 
-.kv-ee-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -15px;
-}
-
-.kv-ee-col-lg-4,
-.kv-ee-col-sm-12,
-.kv-ee-col-md-6 {
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.kv-ee-col-lg-4 {
-    flex: 0 0 33.333%;
-    max-width: 33.333%;
-}
-
-.kv-ee-col-sm-12 {
-    flex: 0 0 100%;
-    max-width: 100%;
-}
-
-.kv-ee-col-md-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
-}
-
-.kv-ee-header {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+.site-information p {
+    font-size: 18px;
     font-weight: bold;
-}
-
-.kv-ee-description {
-    font-size: 1em;
     margin-bottom: 20px;
+    color: #343a40;
 }
 
-.kv-ee-logo-title {
-    font-size: 1.25em;
-    margin-top: 20px;
-}
-
-.kv-ee-links {
+.site-information ul {
     list-style: none;
     padding: 0;
-    list-style-type: none;
 }
 
-.kv-ee-links li {
-    margin-bottom: 10px;
+.site-information ul li {
+    margin-bottom: 5px;
 }
 
-.kv-ee-links a {
+.site-information a {
     text-decoration: none;
-    color: #dee2e6;
+    color: #343a40;
+    padding: 4px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.kv-ee-links a:hover {
-    text-decoration: none;
+.site-information a:hover {
+    background-color: #007bff;
+    color: #FFF;
 }
 
-.kv-ee-social-provider {
-    margin-left: 5px;
+.site-information .col-sm {
+    padding: 10px 20px;
 }
 
-.kv-ee-line {
-    border: 0;
-    border-top: 1px solid #dee2e6;
-    margin: 20px 0;
+.site-information .text-center {
+    text-align: center;
 }
 
-.kv-ee-footer-address,
-.kv-ee-footer-contact {
-    font-size: 0.875em;
-}
-
-.kv-ee-text-sm-right {
+.site-information .text-end {
     text-align: right;
 }
 
-.kv-ee-legal {
-    margin-top: 20px;
-}
-
-.kv-ee-legal a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.kv-ee-legal a:hover {
-    text-decoration: underline;
-}
-
-.kv-ee-footer-navigation {
-    padding: 15px;
-}
-
-.kv-ee-footer-navigation .kv-ee-header {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.kv-ee-footer-navigation nav.kv-ee-links {
-    padding: 0;
-}
-
-.kv-ee-footer-navigation ul {
-    list-style: none;
-    padding: 0;
-}
-
-.kv-ee-footer-navigation ul li {
-    margin-bottom: 10px;
-}
-
-.kv-ee-footer-navigation ul li a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1em;
-    padding: 4px;
-}
-
-.kv-ee-footer-navigation ul li a:hover {
-    background-color: #007bff;
-    text-decoration: none;
-    color: #333;
-    padding: 4px;
-    border-radius: 10px;
-}
-
-.kv-ee-footer-social {
-    padding: 15px;
-}
-
-.kv-ee-footer-social .kv-ee-header {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.kv-ee-footer-social ul {
-    list-style: none;
-    padding: 0;
-}
-
-.kv-ee-footer-social ul li {
+.text-end ul li {
     display: inline-block;
-    margin-right: 15px;
-}
-
-.kv-ee-footer-social ul li a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    padding: 4px;
-}
-
-.kv-ee-footer-social ul li a i {
-    font-size: 1.25em;
-    margin-right: 5px;
-}
-
-.kv-ee-footer-social ul li a:hover {
-    text-decoration: none;
-    background-color: #007bff;
-    text-decoration: none;
-    color: #333;
+    margin-bottom: 5px;
     padding: 4px;
     border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2px solid transparent;
+    color: #343a40;
 }
 
-//FIM DIV CONTATO
+.text-end ul li:hover {
+    background-color: #007bff;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.text-end ul li i {
+    margin-right: 8px;
+    color: inherit;
+}
+
+//FIM DIV SITE-INFORMATION
 
 // INICIO FOOTER
 footer {

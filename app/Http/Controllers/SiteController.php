@@ -25,7 +25,7 @@ class SiteController extends Controller
 
     public function about()
     {
-        $about = $this->aboutRepository->all()[0];
+        $about = $this->aboutRepository->all()[0] ?? null;
         return view('partials.about.index', compact('about'));
     }
 
