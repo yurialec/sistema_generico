@@ -14,6 +14,7 @@ use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
 use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\Site\SiteCarouselController;
+use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -148,6 +149,16 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit/{id}', [ContactController::class, 'edit'])->name('site.contact.edit');
                     Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
+                });
+
+                Route::prefix('social-media')->group(function () {
+                    Route::get('/', [SocialMediaController::class, 'index'])->name('site.socialmedia.index');
+                    Route::get('/list', [SocialMediaController::class, 'list'])->name('site.socialmedia.list');
+                    Route::get('/create', [SocialMediaController::class, 'create'])->name('site.socialmedia.create');
+                    Route::post('/store', [SocialMediaController::class, 'store'])->name('site.socialmedia.store');
+                    Route::get('/edit/{id}', [SocialMediaController::class, 'edit'])->name('site.socialmedia.edit');
+                    Route::post('/update/{id}', [SocialMediaController::class, 'update'])->name('site.socialmedia.update');
+                    Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');
                 });
             });
         });

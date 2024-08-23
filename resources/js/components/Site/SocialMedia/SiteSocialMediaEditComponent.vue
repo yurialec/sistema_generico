@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
-                        <h4>Cadastrar Menu</h4>
+                        <h4>Editar Rede Social</h4>
                     </div>
                     <div class="col-sm text-end">
                         <a href="https://icons.getbootstrap.com/" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
@@ -19,42 +19,53 @@
             <div class="row justify-content-center">
                 <div class="col-sm-6">
 
-                    
-                    <form method="POST" action="" @submit.prevent="salvar()" class="col-lg-8">
-                        <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
+                    <div v-if="loading" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <form v-else method="POST" @submit.prevent="save()" autocomplete="off">
+                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
-                            <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
+                            <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+
+                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
                             role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> Erro ao cadastrar registro
+                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
                             <hr>
-                            <ul v-for="msg in this.messages.data.errors">
-                                <li>{{ msg[0] }}</li>
+                            <ul>
+                                <li v-for="msg in messages.errors" :key="msg">{{ msg }}</li>
                             </ul>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                         <div class="form-group">
                             <label>Nome</label>
-                            <input type="text" class="form-control" v-model="menu.label">
+                            <input type="text" class="form-control" v-model="socialmedia.name">
                         </div>
 
                         <div class="form-group">
                             <label>Ícone</label>
-                            <input type="text" class="form-control" v-model="menu.icon">
+                            <input type="text" class="form-control" v-model="socialmedia.icon">
+                        </div>
+
+                        <div class="form-group">
+                            <label>URL</label>
+                            <input type="text" class="form-control" v-model="socialmedia.url">
                         </div>
 
                         <div class="row mt-5">
                             <div class="col-sm-6">
                                 <div class="text-start">
-                                    <a :href="urlIndexMenu" class="btn btn-secondary btn-sm">Voltar</a>
+                                    <a :href="urlIndexSocialMedia" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
+                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
                                 </div>
                             </div>
                         </div>
@@ -70,30 +81,35 @@ import axios from 'axios';
 
 export default {
     props: {
-        urlIndexMenu: String,
+        socialMediaById: {
+            type: String,
+            required: true
+        },
+        urlIndexSocialMedia: String,
     },
     data() {
         return {
-            menu: {
-                label: '',
-                icon: '',
-            },
+            socialmedia: JSON.parse(this.socialMediaById),
             alertStatus: null,
-            msg: [],
-            loading: null,
+            messages: [],
+            loading: false,
         };
     },
     methods: {
-        salvar() {
-            axios.post('/admin/menu/store', this.menu)
+        save() {
+            this.loading = true;
+            axios.post('/admin/site/social-media/update/' + this.socialmedia.id, this.socialmedia)
                 .then(response => {
                     this.alertStatus = true;
+                    this.messages = response.data;
+                    this.loading = false;
                 })
                 .catch(errors => {
                     this.alertStatus = false;
-                    this.messages = errors.response;
+                    this.messages = errors.response.data.errors || ['Erro desconhecido'];
+                    this.loading = false;
                 });
-        }
+        },
     }
 }
 </script>

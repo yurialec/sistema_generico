@@ -186,16 +186,22 @@
 
                 @endif
 
+                @if (isset($socialmedias) && $socialmedias->isNotEmpty())
                 <div class="col-sm text-end">
                     <p><strong>Siga-nos</strong></p>
                     <nav>
                         <ul>
-                            <li><i class="bi bi-instagram"></i> Instagram</li>
-                            <li><i class="bi bi-facebook"></i> Youtube</li>
-                            <li><i class="bi bi-youtube"></i> Facebook</li>
+                            @foreach($socialmedias as $media)
+                            <li>
+                                <a target="_blank" href="{{ $media->url }}">
+                                    <i class="{{ $media->icon }}"></i> {{ $media->name }}
+                                </a>
+                            </li>
+                            @endforeach
                         </ul>
                     </nav>
                 </div>
+                @endif
             </div>
         </div>
     </div>
