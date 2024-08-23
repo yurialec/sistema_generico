@@ -353,3 +353,16 @@ footer {
 .btn-link:hover {
     text-decoration: underline;
 }
+
+//INICIO DIV PAGINA CONTATO
+.div-contact-page {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    bdisplay: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    border-radius: 10px;
+}
+
+//FIM DIV PAGINA CONTATO

@@ -35,6 +35,7 @@ class SiteController extends Controller
 
     public function contact()
     {
-        return view('partials.contact.index');
+        $contact = $this->contactRepository->all()[0] ?? null;
+        return view('partials.contact.index', compact('contact'));
     }
 }
