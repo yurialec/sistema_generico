@@ -66,6 +66,11 @@ import SiteAboutIndexComponent from './components/Site/About/SiteAboutIndexCompo
 import SiteAboutCreateComponent from './components/Site/About/SiteAboutCreateComponent.vue';
 import SiteAboutEditComponent from './components/Site/About/SiteAboutEditComponent.vue';
 
+//CONTACT
+import SiteContactIndexComponent from './components/Site/Contact/SiteContactIndexComponent.vue';
+import SiteContactCreateComponent from './components/Site/Contact/SiteContactCreateComponent.vue';
+import SiteContactEditComponent from './components/Site/Contact/SiteContactEditComponent.vue';
+
 //Theme
 app.component('example-component', ExampleComponent);
 app.component('home-component', HomeHomeComponent);
@@ -115,6 +120,11 @@ app.component('site-main-text-edit-component', SiteMainTextEditComponent);
 app.component('site-about-index-component', SiteAboutIndexComponent);
 app.component('site-about-create-component', SiteAboutCreateComponent);
 app.component('site-about-edit-component', SiteAboutEditComponent);
+
+//CONTACT
+app.component('site-contact-index-component', SiteContactIndexComponent);
+app.component('site-contact-create-component', SiteContactCreateComponent);
+app.component('site-contact-edit-component', SiteContactEditComponent);
 
 app.use(store);
 app.mount('#app');
