@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Site\Contact\CreateContactRequest;
 use App\Services\Site\ContactService;
 use Illuminate\Http\Request;
 
@@ -32,12 +33,12 @@ class ContactController extends Controller
 
     public function list()
     {
-        $contact = $this->contactService->getAll();
+        $contacts = $this->contactService->getAll();
 
-        if ($contact) {
+        if ($contacts) {
             return response()->json([
                 'status' => true,
-                'contact' => $contact
+                'contacts' => $contacts
             ], 200);
         } else {
             return response()->json([
@@ -50,7 +51,7 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateContactRequest $request)
     {
         $contact = $this->contactService->create($request->all());
 

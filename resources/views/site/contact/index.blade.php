@@ -1,6 +1,6 @@
 @extends('layouts.app_admin')
 @section('content')
-<site-contact-component
+<site-contact-index-component
     url-create-contact="{{ route('site.contact.create') }}">
-</site-contact-component>
+</site-contact-index-component>
 @endsection

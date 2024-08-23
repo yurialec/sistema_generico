@@ -29,50 +29,50 @@
             <div class="row">
                 <div class="col-md-8">
                     @if (isset(App\Models\Site\MainText::first()->title))
-                        <h1>{{ App\Models\Site\MainText::first()->title }}</h1>
+                    <h1>{{ App\Models\Site\MainText::first()->title }}</h1>
                     @endif
                     @if (isset(App\Models\Site\MainText::first()->text))
-                        <p>{{ App\Models\Site\MainText::first()->text }}</p>
+                    <p>{{ App\Models\Site\MainText::first()->text }}</p>
                     @endif
                 </div>
             </div>
 
             @if (isset($carousels) && $carousels->isNotEmpty())
-                <!-- Carousel Section -->
-                <div class="container carousel-container">
-                    <div class="d-flex justify-content-center my-5">
-                        <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
-                            <div class="carousel-inner">
-                                @foreach ($carousels as $index => $carousel)
-                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <img src="{{ asset('storage/' . $carousel->image) }}"
-                                            class="d-block w-100 h-40 mb-4" alt="...">
+            <!-- Carousel Section -->
+            <div class="container carousel-container">
+                <div class="d-flex justify-content-center my-5">
+                    <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 800px;">
+                        <div class="carousel-inner">
+                            @foreach ($carousels as $index => $carousel)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $carousel->image) }}"
+                                    class="d-block w-100 h-40 mb-4" alt="...">
 
-                                        @if ($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
-                                            <div class="carousel-caption d-md-block">
-                                                <h5>{{ $carousel->title }}</h5>
-                                                <p>{{ $carousel->description }}</p>
-                                                <a href="{{ $carousel->url_link }}"
-                                                    target="_blank">{{ $carousel->name_link }}</a>
-                                            </div>
-                                        @else
-                                        @endif
-                                    </div>
-                                @endforeach
+                                @if ($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
+                                <div class="carousel-caption d-md-block">
+                                    <h5>{{ $carousel->title }}</h5>
+                                    <p>{{ $carousel->description }}</p>
+                                    <a href="{{ $carousel->url_link }}"
+                                        target="_blank">{{ $carousel->name_link }}</a>
+                                </div>
+                                @else
+                                @endif
                             </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
+                            @endforeach
                         </div>
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
                 </div>
+            </div>
             @endif
 
 
@@ -168,17 +168,24 @@
                         </ul>
                     </nav>
                 </div>
+
+                @if (isset($contact) && $contact)
                 <div class="col-sm text-center">
                     <p><strong>Contato</strong></p>
                     <nav>
                         <ul>
-                            <li>Telefone</li>
-                            <li>Email</li>
-                            <li>Cidade/UF</li>
-                            <li>Enderço</li>
+                            <li><i class="bi bi-telephone"></i>&nbsp;{{$contact->phone}}</li>
+                            <li><i class="bi bi-envelope"></i>&nbsp;{{$contact->email}}</li>
+                            <li><i class="bi bi-building"></i></i>&nbsp;{{$contact->city}}/{{$contact->state}}</li>
+                            <li><i class="bi bi-geo-alt-fill"></i>&nbsp;{{$contact->address}}</li>
+                            <li>CEP&nbsp;{{$contact->zipcode}}</li>
                         </ul>
                     </nav>
                 </div>
+                @else
+
+                @endif
+
                 <div class="col-sm text-end">
                     <p><strong>Siga-nos</strong></p>
                     <nav>

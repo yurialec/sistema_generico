@@ -2,6 +2,7 @@ import './bootstrap';
 import { createApp } from 'vue';
 import axios from 'axios';
 import store from './store';
+import { mask } from 'vue-the-mask'
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
@@ -15,6 +16,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 window.axios = axios;
 
 const app = createApp({});
+app.directive('mask', mask);
 
 //Theme
 import ExampleComponent from './components/ExampleComponent.vue';

@@ -16,6 +16,7 @@ use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,8 @@ Route::get('/', [SiteController::class, 'index']);
 Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+
 
 Route::middleware('auth')->group(function () {
 
@@ -147,6 +150,11 @@ Route::middleware('auth')->group(function () {
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
             });
+        });
+
+        Route::get('/cep/{cep}', function ($cep) {
+            $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
+            return $response->json();
         });
 
         //AUTH

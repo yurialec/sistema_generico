@@ -16,8 +16,8 @@
                     <h3>Informações Contato</h3>
                 </div>
 
-                <div v-show="this.abouts.length == 0" class="col-md-6 text-end">
-                    <a :href="urlCreateAbout" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
+                <div v-show="this.contacts.length == 0" class="col-md-6 text-end">
+                    <a :href="urlCreateContact" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
 
         <div v-else class="card-body">
 
-            <div v-if="this.abouts.length == 0" class="text-center">
+            <div v-if="this.contacts.length == 0" class="text-center">
                 <p>Nenhum resultado encontrado</p>
             </div>
 
@@ -38,54 +38,36 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th class="col-md-3">Preview Imagem</th>
-                            <th class="col-md-3">Título</th>
-                            <th class="col-md-3">Descrição</th>
-                            <th class="col-md-3">Ações</th>
+                            <th class="col-md-1">Telefone</th>
+                            <th class="col-md-1">E-mail</th>
+                            <th class="col-md-1">Cidade</th>
+                            <th class="col-md-1">UF</th>
+                            <th class="col-md-3">Endereço</th>
+                            <th class="col-md-1">CEP</th>
+                            <th class="col-md-1">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="about in abouts" :key="about.id">
-                            <td class="col-md-3"><img :src="'/storage/' + about.image" width="80"></td>
-                            <td class="col-md-3">{{ about.title }}</td>
-                            <td class="col-md-3"
-                                style="max-width:100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
-                                {{ about.description }}
-                            </td>
-                            <td class="col-md-3">
-                                <button type="button" style="color: #333; padding: 0;" class="btn"
-                                    data-bs-toggle="modal" data-bs-target="#viewImgModal" @click="viewImage(about)">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                &nbsp;&nbsp;&nbsp;
-                                <a :href="'/admin/site/site-about/edit/' + about.id">
+                        <tr v-for="contact in contacts" :key="contact.id">
+                            <td class="col-md-1">{{ contact.phone }}</td>
+                            <td class="col-md-1">{{ contact.email }}</td>
+                            <td class="col-md-1">{{ contact.city }}</td>
+                            <td class="col-md-1">{{ contact.state }}</td>
+                            <td class="col-md-3">{{ contact.address }}</td>
+                            <td class="col-md-1">{{ contact.zipcode }}</td>
+                            <td class="col-md-1">
+                                <a :href="'/admin/site/contact/edit/' + contact.id">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
                                 <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" @click="confirmExclusion(about.id)">
+                                    data-bs-target="#exampleModal" @click="confirmExclusion(contact.id)">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="viewImgModal" tabindex="-1" aria-labelledby="viewImgModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewImgModalLabel">Visualizar imagem</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div style="text-align: center;">
-                        <img :src="'/storage/' + selectedAbout.image" width="450">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -116,27 +98,28 @@ import { Modal } from 'bootstrap';
 
 export default {
     props: {
-        urlCreateAbout: String,
+        urlCreateContact: String,
     },
     data() {
         return {
-            aboutToDelete: null,
+            contactToDelete: null,
             alertStatus: null,
             msg: [],
             loading: null,
-            abouts: [],
-            selectedAbout: {},
+            contacts: [],
         };
     },
     mounted() {
-        this.getAbout();
+        this.getContact();
     },
     methods: {
-        getAbout() {
+        getContact() {
             this.loading = true;
-            axios.get('admin/site/site-about/list')
+            axios.get('admin/site/contact/list')
                 .then(response => {
-                    this.abouts = response.data.abouts;
+                    this.contacts = response.data.contacts;
+                    console.log(this.contacts);
+
                 })
                 .catch(errors => {
                     this.alertStatus = 'error';
@@ -144,15 +127,14 @@ export default {
                     this.loading = false;
                 });
         },
-        confirmExclusion(aboutId) {
-            this.aboutToDelete = aboutId;
+        confirmExclusion(contactId) {
+            this.contactToDelete = contactId;
         },
         deleteRecord() {
-            if (this.aboutToDelete !== null) {
-                axios.delete('/admin/site/site-about/delete/' + this.aboutToDelete)
+            if (this.contactToDelete !== null) {
+                axios.delete('/admin/site/contact/delete/' + this.contactToDelete)
                     .then(response => {
-                        this.getAbout();
-                        this.selectedAbout = null;
+                        this.getContact();
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
@@ -176,9 +158,6 @@ export default {
                         }
                     });
             }
-        },
-        viewImage(about) {
-            this.selectedAbout = about;
         },
     }
 }

@@ -17,5 +17,6 @@ class SiteContact extends Model
         'city',
         'state',
         'address',
+        'zipcode',
     ];
 }

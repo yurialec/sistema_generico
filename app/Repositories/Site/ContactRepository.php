@@ -16,7 +16,7 @@ class ContactRepository implements ContactRepositoryInterface
 
     public function all()
     {
-        return $this->contact->first();
+        return $this->contact->get();
     }
 
     public function find($id)
@@ -32,6 +32,7 @@ class ContactRepository implements ContactRepositoryInterface
             'city' => $data['city'],
             'state' => $data['state'],
             'address' => $data['address'],
+            'zipcode' => $data['zipcode'],
         ]);
     }
 
