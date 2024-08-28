@@ -2,6 +2,7 @@ import './bootstrap';
 import { createApp } from 'vue';
 import axios from 'axios';
 import store from './store';
+import { mask } from 'vue-the-mask'
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
@@ -15,6 +16,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 window.axios = axios;
 
 const app = createApp({});
+app.directive('mask', mask);
 
 //Theme
 import ExampleComponent from './components/ExampleComponent.vue';
@@ -60,6 +62,11 @@ import SiteCarouselEditComponent from './components/Site/Carousel/SiteCarouselEd
 import SiteMainTextIndexComponent from './components/Site/MainText/SiteMainTextIndexComponent.vue';
 import SiteMainTextCreateComponent from './components/Site/MainText/SiteMainTextCreateComponent.vue';
 import SiteMainTextEditComponent from './components/Site/MainText/SiteMainTextEditComponent.vue';
+
+//SOCIALMEDIA
+import SiteSocialMediaIndexComponent from './components/Site/SocialMedia/SiteSocialMediaIndexComponent.vue';
+import SiteSocialMediaCreateComponent from './components/Site/SocialMedia/SiteSocialMediaCreateComponent.vue';
+import SiteSocialMediaEditComponent from './components/Site/SocialMedia/SiteSocialMediaEditComponent.vue';
 
 //ABOUT
 import SiteAboutIndexComponent from './components/Site/About/SiteAboutIndexComponent.vue';
@@ -115,6 +122,11 @@ app.component('site-carousel-edit-component', SiteCarouselEditComponent);
 app.component('site-main-text-index-component', SiteMainTextIndexComponent);
 app.component('site-main-text-create-component', SiteMainTextCreateComponent);
 app.component('site-main-text-edit-component', SiteMainTextEditComponent);
+
+//SOCIALMEDIA
+app.component('site-socialmedia-index-component', SiteSocialMediaIndexComponent);
+app.component('site-socialmedia-create-component', SiteSocialMediaCreateComponent);
+app.component('site-socialmedia-edit-component', SiteSocialMediaEditComponent);
 
 //ABOUT
 app.component('site-about-index-component', SiteAboutIndexComponent);

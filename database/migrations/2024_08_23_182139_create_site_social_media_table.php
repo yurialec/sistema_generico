@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('site_contact', function (Blueprint $table) {
+        Schema::create('site_social_media', function (Blueprint $table) {
             $table->id();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('address')->nullable();
-            $table->integer('zipcode')->nullable();
+            $table->string('name');
+            $table->string('url');
+            $table->string('icon');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('site_contact');
+        Schema::dropIfExists('site_social_media');
     }
 };

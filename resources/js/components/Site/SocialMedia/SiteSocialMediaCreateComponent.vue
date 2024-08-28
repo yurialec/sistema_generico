@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
-                        <h4>Cadastrar Menu</h4>
+                        <h4>Cadastrar Rede Social</h4>
                     </div>
                     <div class="col-sm text-end">
                         <a href="https://icons.getbootstrap.com/" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
@@ -18,38 +18,53 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-sm-6">
-
-                    
-                    <form method="POST" action="" @submit.prevent="salvar()" class="col-lg-8">
-                        <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
+                    <form method="POST" @submit.prevent="save" class="col-lg-8" autocomplete="off">
+                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
                             <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+
+                        <div v-if="alertStatus === 'notAllowed'" class="alert alert-warning alert-dismissible fade show"
                             role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> Erro ao cadastrar registro
+                            <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa
+                            funcionalidade
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
                             <hr>
-                            <ul v-for="msg in this.messages.data.errors">
-                                <li>{{ msg[0] }}</li>
+                            <ul v-for="messages in messages.data.errors" :key="messages[0]">
+                                <li>{{ messages[0] }}</li>
                             </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div v-if="this.alertStatus == 'maxchars'"
+                            class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa-regular fa-circle-xmark"></i> Você atingiu o máximo de caracteres
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                         <div class="form-group">
                             <label>Nome</label>
-                            <input type="text" class="form-control" v-model="menu.label">
+                            <input type="text" required class="form-control" v-model="media.name">
                         </div>
-
                         <div class="form-group">
-                            <label>Ícone</label>
-                            <input type="text" class="form-control" v-model="menu.icon">
+                            <label>Icone</label>
+                            <input type="text" required class="form-control" v-model="media.icon">
+                        </div>
+                        <div class="form-group">
+                            <label>URL</label>
+                            <input type="text" required class="form-control" v-model="media.url">
                         </div>
 
                         <div class="row mt-5">
                             <div class="col-sm-6">
                                 <div class="text-start">
-                                    <a :href="urlIndexMenu" class="btn btn-secondary btn-sm">Voltar</a>
+                                    <a :href="urlIndexSocialMedia" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -70,30 +85,31 @@ import axios from 'axios';
 
 export default {
     props: {
-        urlIndexMenu: String,
+        urlIndexSocialMedia: String,
     },
     data() {
         return {
-            menu: {
-                label: '',
+            media: {
+                name: '',
                 icon: '',
+                url: '',
             },
             alertStatus: null,
-            msg: [],
-            loading: null,
+            messages: [],
         };
     },
     methods: {
-        salvar() {
-            axios.post('/admin/menu/store', this.menu)
+        save() {
+            axios.post('/admin/site/social-media/store', this.media)
                 .then(response => {
                     this.alertStatus = true;
+                    this.messages = response.data;
                 })
                 .catch(errors => {
                     this.alertStatus = false;
                     this.messages = errors.response;
                 });
-        }
+        },
     }
 }
 </script>

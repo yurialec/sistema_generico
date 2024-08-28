@@ -7,7 +7,7 @@
                         <h4>Editar Menu</h4>
                     </div>
                     <div class="col-sm text-end">
-                        <a href="https://fontawesome.com/icons" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
+                        <a href="https://icons.getbootstrap.com/" target="_blank">Biblioteca de ícones</a>&nbsp;&nbsp;
                         <i class="bi bi-info-circle fs-4" style="color: #00a803;" data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Ao adicionar o nome do ícone, você deve inserir sem as tags HTML"></i>

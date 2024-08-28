@@ -1,10 +1,10 @@
 <template>
-    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro excluído com sucesso
+    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div v-if="alertStatus === 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div v-if="this.alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
         <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa funcionalidade
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -13,11 +13,11 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6 text-start">
-                    <h3>Informações Contato</h3>
+                    <h3>Redes Sociais</h3>
                 </div>
 
-                <div v-show="this.contacts.length == 0" class="col-md-6 text-end">
-                    <a :href="urlCreateContact" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
+                <div class="col-md-6 text-end">
+                    <a :href="urlCreateSocialMedia" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -29,8 +29,7 @@
         </div>
 
         <div v-else class="card-body">
-
-            <div v-if="this.contacts.length == 0" class="text-center">
+            <div v-if="this.socialMedia.length == 0" class="text-center">
                 <p>Nenhum resultado encontrado</p>
             </div>
 
@@ -38,30 +37,24 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th class="col-md-1">Telefone</th>
-                            <th class="col-md-1">E-mail</th>
-                            <th class="col-md-1">Cidade</th>
-                            <th class="col-md-1">UF</th>
-                            <th class="col-md-3">Endereço</th>
-                            <th class="col-md-1">CEP</th>
-                            <th class="col-md-1">Ações</th>
+                            <th class="col-md-3">Url</th>
+                            <th class="col-md-3">Icone</th>
+                            <th class="col-md-3">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="contact in contacts" :key="contact.id">
-                            <td class="col-md-1">{{ contact.phone }}</td>
-                            <td class="col-md-1">{{ contact.email }}</td>
-                            <td class="col-md-1">{{ contact.city }}</td>
-                            <td class="col-md-1">{{ contact.state }}</td>
-                            <td class="col-md-3">{{ contact.address }}</td>
-                            <td class="col-md-1">{{ contact.zipcode }}</td>
-                            <td class="col-md-1">
-                                <a :href="'/admin/site/contact/edit/' + contact.id">
+                        <tr v-for="social in this.socialMedia">
+                            <td class="col-md-3"><a style="text-decoration: none;" target="_blank" :href="social.url">{{
+                                    social.name }}</a></td>
+                            <td class="col-md-3"><i :class="social.icon"></i></td>
+                            <td class="col-md-3">
+                                <a :href="'/admin/site/social-media/edit/' + social.id">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
+
                                 <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" @click="confirmExclusion(contact.id)">
+                                    data-bs-target="#exampleModal" @click="confirmExclusion(social.id)">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
@@ -72,7 +65,6 @@
         </div>
     </div>
 
-    <!-- Modal de confirmação de exclusão -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -98,43 +90,43 @@ import { Modal } from 'bootstrap';
 
 export default {
     props: {
-        urlCreateContact: String,
+        urlCreateSocialMedia: String,
     },
     data() {
         return {
-            contactToDelete: null,
+            socialMediaToDelete: null,
             alertStatus: null,
             msg: [],
             loading: null,
-            contacts: [],
+            socialMedia: [],
         };
     },
     mounted() {
-        this.getContact();
+        this.getSocialMedia();
     },
     methods: {
-        getContact() {
+        getSocialMedia() {
             this.loading = true;
-            axios.get('admin/site/contact/list')
+            axios.get('admin/site/social-media/list')
                 .then(response => {
-                    this.contacts = response.data.contacts;
-                    console.log(this.contacts);
+                    this.socialMedia = response.data.socialMedia;
 
                 })
                 .catch(errors => {
                     this.alertStatus = 'error';
                 }).finally(() => {
-                    this.loading = false;
                 });
+            this.loading = false;
         },
-        confirmExclusion(contactId) {
-            this.contactToDelete = contactId;
+        confirmExclusion(socialId) {
+            this.socialMediaToDelete = socialId;
         },
         deleteRecord() {
-            if (this.contactToDelete !== null) {
-                axios.delete('/admin/site/contact/delete/' + this.contactToDelete)
+            if (this.socialMediaToDelete !== null) {
+                axios.delete('/admin/site/social-media/delete/' + this.socialMediaToDelete)
                     .then(response => {
-                        this.getContact();
+                        this.getSocialMedia();
+                        this.socialMediaToDelete = null;
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
@@ -146,6 +138,7 @@ export default {
                         } else {
                             this.alertStatus = true;
                         }
+
                     })
                     .catch(errors => {
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));

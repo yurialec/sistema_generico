@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Site\Contact\CreateContactRequest;
-use App\Services\Site\ContactService;
+use App\Services\Site\SocialMediaService;
 use Illuminate\Http\Request;
 
-class ContactController extends Controller
+class SocialMediaController extends Controller
 {
-    protected $contactService;
-    public function __construct(ContactService $contactService)
+    protected $socialMediaService;
+    public function __construct(SocialMediaService $socialMediaService)
     {
-        $this->contactService = $contactService;
+        $this->socialMediaService = $socialMediaService;
     }
 
     /**
@@ -20,25 +19,17 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('site.contact.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('site.contact.create');
+        return view('site.socialmedia.index');
     }
 
     public function list()
     {
-        $contacts = $this->contactService->getAll();
+        $socialMedia = $this->socialMediaService->getAll();
 
-        if ($contacts) {
+        if ($socialMedia) {
             return response()->json([
                 'status' => true,
-                'contacts' => $contacts
+                'socialMedia' => $socialMedia
             ], 200);
         } else {
             return response()->json([
@@ -49,21 +40,29 @@ class ContactController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('site.socialmedia.create');
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateContactRequest $request)
+    public function store(Request $request)
     {
-        $contact = $this->contactService->create($request->all());
+        $media = $this->socialMediaService->create($request->all());
 
-        if ($contact) {
+        if ($media) {
             return response()->json([
                 'status' => true,
-                'contact' => $contact,
+                'media' => $media,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao cadastrar conteúdo de contato'
+                'message' => 'Erro ao cadastrar rede social'
             ], 204);
         }
     }
@@ -73,8 +72,8 @@ class ContactController extends Controller
      */
     public function edit(string $id)
     {
-        $contact = $this->contactService->getById($id);
-        return view('site.contact.edit', compact('contact'));
+        $socialmedia = $this->socialMediaService->getById($id);
+        return view('site.socialmedia.edit', compact('socialmedia'));
     }
 
     /**
@@ -82,17 +81,17 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $contact = $this->contactService->update($id, $request->all());
+        $media = $this->socialMediaService->update($id, $request->all());
 
-        if ($contact) {
+        if ($media) {
             return response()->json([
                 'status' => true,
-                'contact' => $contact,
+                'media' => $media,
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao atualizar conteudo do contato'
+                'message' => 'Erro ao atualizar rede social'
             ], 204);
         }
     }
@@ -102,18 +101,18 @@ class ContactController extends Controller
      */
     public function delete(string $id)
     {
-        $contact = $this->contactService->delete($id);
+        $media = $this->socialMediaService->delete($id);
 
-        if ($contact) {
+        if ($media) {
             return response()->json([
                 'status' => true,
-                'message' => 'Conteúdo excluido com sucesso',
+                'message' => 'Conteúdo excluído com sucesso',
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Erro ao excluir conteúdo'
-            ], 204);
+                'message' => 'Erro ao excluir conteúdo',
+            ], 400);
         }
     }
 }

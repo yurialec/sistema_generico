@@ -2,35 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Site\AboutRepository;
-use App\Repositories\Site\CarouselRepository;
+use App\Traits\SiteTrait;
 
 class SiteController extends Controller
 {
-    public object|null $carouselRepository;
-    public object|null $aboutRepository;
-
-    public function __construct(CarouselRepository $carouselRepository, AboutRepository $aboutRepository)
-    {
-        $this->carouselRepository = $carouselRepository;
-        $this->aboutRepository = $aboutRepository;
-    }
+    use SiteTrait;
 
     public function index()
     {
-        $carousels = $this->carouselRepository->all();
+        $mainText = $this->mainText();
+        $carousels = $this->carousels();
+        $contact = $this->contactSite();
+        $socialmedias = $this->socialmedias();
 
-        return view('site', compact('carousels'));
+        return view('site', compact('mainText', 'carousels', 'contact', 'socialmedias'));
     }
 
     public function about()
     {
-        $about = $this->aboutRepository->all()[0] ?? null;
+        $about = $this->aboutSite();
         return view('partials.about.index', compact('about'));
     }
 
     public function contact()
     {
-        return view('partials.contact.index');
+        $contact = $this->contactSite();
+        return view('partials.contact.index', compact('contact'));
     }
 }
