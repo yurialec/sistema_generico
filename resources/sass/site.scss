@@ -87,6 +87,21 @@ body {
     font-size: 1.2rem;
 }
 
+//INICIO SECTION
+section {
+    padding: 60px 0;
+}
+
+.card {
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+//FIM SECTION
+
 //INICIO CARROUSEL
 
 .carousel {

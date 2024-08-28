@@ -22,21 +22,54 @@
 
 <body>
     @include('partials.navbar')
+    <!-- Main Section -->
+    @if (isset($mainText) && !empty($mainText))
+    <header class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1>{{$mainText->title}}</h1>
+            <p class="lead">{{$mainText->text}}</p>
+        </div>
+    </header>
+    @else
+    @endif
 
     <div class="main-content container">
-        <div class="container">
-            <!-- Main Section -->
-            <div class="row">
-                <div class="col-md-8">
-                    @if (isset(App\Models\Site\MainText::first()->title))
-                    <h1>{{ App\Models\Site\MainText::first()->title }}</h1>
-                    @endif
-                    @if (isset(App\Models\Site\MainText::first()->text))
-                    <p>{{ App\Models\Site\MainText::first()->text }}</p>
-                    @endif
+        <section id="services" class="bg-light py-5">
+            <div class="container">
+                <h2 class="text-center">Services</h2>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="bi bi-laptop fs-1 text-primary"></i>
+                                <h5 class="card-title mt-3">Desenvolvimento Web</h5>
+                                <p class="card-text">Creating responsive and dynamic websites to suit your needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="bi bi-phone fs-1 text-primary"></i>
+                                <h5 class="card-title mt-3">Aplicativos</h5>
+                                <p class="card-text">Developing user-friendly mobile applications for Android and iOS.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="bi bi-bar-chart fs-1 text-primary"></i>
+                                <h5 class="card-title mt-3">Otimização</h5>
+                                <p class="card-text">Improving your website's visibility and search engine ranking.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
+        <div class="container">
             @if (isset($carousels) && $carousels->isNotEmpty())
             <!-- Carousel Section -->
             <div class="container carousel-container">
