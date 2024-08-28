@@ -37,6 +37,30 @@
                 </div>
             </div>
 
+            <!-- Features Section -->
+            {{-- <section id="features" class="py-5">
+                <div class="container">
+                    <h2 class="text-center mb-4">Características</h2>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <i class="bi bi-speedometer2 display-4"></i>
+                            <h3>Desempenho rápido </h3>
+                            <p>Experimente velocidade e desempenho extremamente rápidos.</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="bi bi-shield-lock display-4"></i>
+                            <h3>Segurança</h3>
+                            <p>Seus dados estão protegidos com os mais altos padrões de segurança.</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="bi bi-stars display-4"></i>
+                            <h3>Fácil de usar</h3>
+                            <p>Nossa plataforma é intuitiva e fácil de navegar.</p>
+                        </div>
+                    </div>
+                </div>
+            </section> --}}
+
             @if (isset($carousels) && $carousels->isNotEmpty())
                 <!-- Carousel Section -->
                 <div class="container carousel-container">
