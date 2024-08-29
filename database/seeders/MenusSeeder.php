@@ -13,9 +13,10 @@ class MenusSeeder extends Seeder
      */
     public function run()
     {
+        // Inserindo o menu "Administrativo"
         DB::table('menus')->insert([
             'label' => 'Administrativo',
-            'icon' => 'fa-solid fa-gear',
+            'icon' => 'bi bi-house-gear',
             'url' => '#',
             'active' => 1,
             'son' => null,
@@ -23,12 +24,14 @@ class MenusSeeder extends Seeder
             'updated_at' => now()
         ]);
 
+        // Obtendo o ID do menu "Administrativo"
         $adminMenuId = DB::getPdo()->lastInsertId();
 
+        // Inserindo os submenus do "Administrativo"
         DB::table('menus')->insert([
             [
                 'label' => 'Usuários',
-                'icon' => 'fa-solid fa-users',
+                'icon' => 'bi bi-people',
                 'url' => '/admin/users',
                 'active' => 1,
                 'son' => $adminMenuId,
@@ -37,7 +40,7 @@ class MenusSeeder extends Seeder
             ],
             [
                 'label' => 'Perfis',
-                'icon' => 'fa-solid fa-id-badge',
+                'icon' => 'bi bi-person-badge',
                 'url' => '/admin/roles',
                 'active' => 1,
                 'son' => $adminMenuId,
@@ -46,7 +49,7 @@ class MenusSeeder extends Seeder
             ],
             [
                 'label' => 'Permissões',
-                'icon' => 'fa-solid fa-lock',
+                'icon' => 'bi bi-lock',
                 'url' => '/admin/permissions',
                 'active' => 1,
                 'son' => $adminMenuId,
@@ -55,10 +58,82 @@ class MenusSeeder extends Seeder
             ],
             [
                 'label' => 'Menus',
-                'icon' => 'fa-solid fa-lock',
+                'icon' => 'bi bi-compass',
                 'url' => '/admin/menu',
                 'active' => 1,
                 'son' => $adminMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ]);
+
+        // Inserindo o menu "Site"
+        DB::table('menus')->insert([
+            'label' => 'Site',
+            'icon' => 'bi bi-newspaper',
+            'url' => '#',
+            'active' => 1,
+            'son' => null,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Obtendo o ID do menu "Site"
+        $siteMenuId = DB::getPdo()->lastInsertId();
+
+        // Inserindo os submenus do "Site"
+        DB::table('menus')->insert([
+            [
+                'label' => 'Logotipo',
+                'icon' => 'bi bi-flag',
+                'url' => '/admin/site/logo',
+                'active' => 1,
+                'son' => $siteMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Texto Principal',
+                'icon' => 'bi bi-cursor-text',
+                'url' => '/admin/site/main-text',
+                'active' => 1,
+                'son' => $siteMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Carousel',
+                'icon' => 'bi bi-collection',
+                'url' => '/admin/site/carousel',
+                'active' => 1,
+                'son' => $siteMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Sobre',
+                'icon' => 'bi bi-card-text',
+                'url' => '/admin/site/site-about',
+                'active' => 1,
+                'son' => $siteMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Contato',
+                'icon' => 'bi bi-geo-alt',
+                'url' => '/admin/site/contact',
+                'active' => 1,
+                'son' => $siteMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Redes Sociais',
+                'icon' => 'bi bi-telephone',
+                'url' => '/admin/site/social-media',
+                'active' => 1,
+                'son' => $siteMenuId,
                 'created_at' => now(),
                 'updated_at' => now()
             ]
