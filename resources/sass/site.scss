@@ -97,7 +97,7 @@ section {
 }
 
 .card:hover {
-    transform: translateY(-10px);
+    // transform: translateY(-10px);
 }
 
 //FIM SECTION
@@ -319,9 +319,10 @@ section {
 
 // INICIO FOOTER
 footer {
-    background-color: var(--main-color);
-    color: #fff;
-    padding: 20px 0;
+    background-color: #FFF;
+    color: #333;
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.12);
+    padding: 5px 20px;
     text-align: center;
     width: 100%;
     flex-shrink: 0;

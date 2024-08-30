@@ -1,7 +1,7 @@
 @include('layouts.app')
 @include('partials.navbar')
 
-<div class="main-content container" style="margin-bottom: 204px;">
+<div class="main-content container">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
