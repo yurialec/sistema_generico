@@ -4,7 +4,7 @@
 <div class="main-content container">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card shadow-lg">
                     <div class="card-header text-center bg-primary text-white">
                         Login
@@ -13,7 +13,6 @@
                     <div class="card-body p-4">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
-
                             <div class="form-group mb-3">
                                 <label for="email">{{ __('E-mail') }}</label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
