@@ -33,6 +33,7 @@
     @else
     @endif
 
+    @if (isset($about) && !empty($about))
     <section class="py-5" style="background-color: #f8f9fa;">
         <div class="container">
             <div class="row align-items-center">
@@ -46,6 +47,8 @@
             </div>
         </div>
     </section>
+    @else
+    @endif
 
     <div class="main-content container">
         <section id="services" class="bg-light py-5">

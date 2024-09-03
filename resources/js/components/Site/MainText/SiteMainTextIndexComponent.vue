@@ -1,10 +1,10 @@
 <template>
-    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
+    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa-regular fa-circle-check"></i> Registro excluído com sucesso
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div v-if="this.alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div v-if="alertStatus === 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
         <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa funcionalidade
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -16,20 +16,20 @@
                     <h3>Texto principal</h3>
                 </div>
 
-                <div class="col-md-6 text-end">
+                <div v-show="!this.main.id" class="col-md-6 text-end">
                     <a :href="urlCreateMainText" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
 
-        <div v-if="loading === true" class="d-flex justify-content-center">
+        <div v-if="loading" class="d-flex justify-content-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
         <div v-else class="card-body">
-            <div v-if="this.main.length == 0" class="text-center">
+            <div v-if="!main || main.length === 0" class="text-center">
                 <p>Nenhum resultado encontrado</p>
             </div>
 
@@ -44,16 +44,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th>
                             <td>{{ main.title }}</td>
-                            </th>
                             <td>{{ main.text }}</td>
                             <td>
-                                <a :href="'/admin/site/main-text/edit/' + main.id">
+                                <a :href="'/admin/site/main-text/edit/' + main?.id">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
-
                                 <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" @click="confirmExclusion(main.id)">
                                     <i class="bi bi-trash3"></i>
@@ -97,8 +94,7 @@ export default {
         return {
             mainToDelete: null,
             alertStatus: null,
-            msg: [],
-            loading: null,
+            loading: true,
             main: [],
         };
     },
@@ -108,14 +104,17 @@ export default {
     methods: {
         getMainText() {
             this.loading = true;
-            axios.get('admin/site/main-text/list')
+            axios.get('/admin/site/main-text/list')
                 .then(response => {
-                    this.main = response.data.mainText;
+                    this.main = response.data.mainText[0];
                 })
-                .catch(errors => {
+                .catch(() => {
                     this.alertStatus = 'error';
-                }).finally(() => {
+                })
+                .finally(() => {
+                    
                 });
+
             this.loading = false;
         },
         confirmExclusion(mainId) {
@@ -126,19 +125,13 @@ export default {
                 axios.delete('/admin/site/main-text/delete/' + this.mainToDelete)
                     .then(response => {
                         this.getMainText();
-                        this.mainToDelete = null;
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
                             modal.hide();
                         }
 
-                        if (response.data == '') {
-                            this.alertStatus = 'notAllowed';
-                        } else {
-                            this.alertStatus = true;
-                        }
-
+                        this.alertStatus = response.data === '' ? 'notAllowed' : true;
                     })
                     .catch(errors => {
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
@@ -146,7 +139,7 @@ export default {
                             modal.hide();
                         }
 
-                        if (errors.response.status == 405) {
+                        if (errors.response.status === 405) {
                             this.alertStatus = 'notAllowed';
                         }
                     });

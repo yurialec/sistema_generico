@@ -16,7 +16,7 @@ class MainTextRepository implements MainTextRepositoryInterface
 
     public function all()
     {
-        return $this->mainText->first();
+        return $this->mainText->get();
     }
 
     public function find($id)

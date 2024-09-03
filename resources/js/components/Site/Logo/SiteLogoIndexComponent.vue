@@ -1,10 +1,10 @@
 <template>
-    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
+    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa-regular fa-circle-check"></i> Registro excluído com sucesso
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div v-if="this.alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div v-if="alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
         <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa funcionalidade
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -17,20 +17,20 @@
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <a v-show="!logo.id" :href="urlCreateLogo" type="button"
+                    <a v-show="!logo?.id" :href="urlCreateLogo" type="button"
                         class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
 
-        <div v-if="loading === true" class="d-flex justify-content-center">
+        <div v-if="loading" class="d-flex justify-content-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
         <div v-else class="card-body">
-            <div v-if="this.logo.length == 0" class="text-center">
+            <div v-if="!logo?.id" class="text-center">
                 <p>Nenhum resultado encontrado</p>
             </div>
 
@@ -39,7 +39,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Preview</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">Nome</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -73,6 +73,7 @@
         </div>
     </div>
 
+    <!-- Modal de Exclusão -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -91,11 +92,12 @@
         </div>
     </div>
 
+    <!-- Modal de Visualização de Imagem -->
     <div class="modal fade" id="viewImgModal" tabindex="-1" aria-labelledby="viewImgModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewImgModalLabel">Visualisar imagem</h5>
+                    <h5 class="modal-title" id="viewImgModalLabel">Visualizar imagem</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -122,8 +124,8 @@ export default {
             logoToDelete: null,
             alertStatus: null,
             msg: [],
-            loading: null,
-            logo: [],
+            loading: false,
+            logo: {},
         };
     },
     mounted() {
@@ -134,13 +136,13 @@ export default {
             this.loading = true;
             axios.get('admin/site/logo/list')
                 .then(response => {
-                    this.logo = response.data.logo;
+                    this.logo = response.data.logo || {};
                 })
                 .catch(errors => {
                     this.alertStatus = 'error';
                 }).finally(() => {
+                    this.loading = false;
                 });
-            this.loading = false;
         },
         confirmExclusion(logoId) {
             this.logoToDelete = logoId;
@@ -150,18 +152,13 @@ export default {
                 axios.delete('/admin/site/logo/delete/' + this.logoToDelete)
                     .then(response => {
                         this.getLogo();
-                        this.logoToDelete = null;
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
                             modal.hide();
                         }
 
-                        if (response.data == '') {
-                            this.alertStatus = 'notAllowed';
-                        } else {
-                            this.alertStatus = true;
-                        }
+                        this.alertStatus = response.data === '' ? 'notAllowed' : true;
 
                     })
                     .catch(errors => {
@@ -170,7 +167,7 @@ export default {
                             modal.hide();
                         }
 
-                        if (errors.response.status == 405) {
+                        if (errors.response.status === 405) {
                             this.alertStatus = 'notAllowed';
                         }
                     });
