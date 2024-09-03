@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ValidRoutesController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
@@ -160,6 +161,16 @@ Route::middleware('auth')->group(function () {
                     Route::post('/update/{id}', [SocialMediaController::class, 'update'])->name('site.socialmedia.update');
                     Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');
                 });
+            });
+
+            Route::prefix('blog')->group(function () {
+                Route::get('/', [BlogController::class, 'index'])->name('blog.index');
+                Route::get('/list', [BlogController::class, 'list'])->name('blog.list');
+                Route::get('/create', [BlogController::class, 'create'])->name('blog.create');
+                Route::post('/store', [BlogController::class, 'store'])->name('blog.store');
+                Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
+                Route::post('/update/{id}', [BlogController::class, 'update'])->name('blog.update');
+                Route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
             });
         });
 
