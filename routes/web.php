@@ -17,6 +17,7 @@ use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +40,13 @@ Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
+Route::get('/blog', function () {
+    return view('site.blog.index');
+});
 
+Route::get('/blog/post', function () {
+    return view('site.blog.post');
+});
 
 Route::middleware('auth')->group(function () {
 
