@@ -16,61 +16,58 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row justify-content-center">
-                <div class="col-sm-6">
+            <div class="d-flex justify-content-center">
+                <div v-if="loading" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
 
-                    <div v-if="loading" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                <form v-else method="POST" @submit.prevent="save()" class="col-lg-6" autocomplete="off">
+                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-                    <form v-else method="POST" @submit.prevent="save()" autocomplete="off">
-                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                            role="alert">
-                            <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
+                        <hr>
+                        <ul>
+                            <li v-for="msg in messages.errors" :key="msg">{{ msg }}</li>
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
 
-                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                            role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                            <hr>
-                            <ul>
-                                <li v-for="msg in messages.errors" :key="msg">{{ msg }}</li>
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" class="form-control" v-model="socialmedia.name">
+                    </div>
 
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" class="form-control" v-model="socialmedia.name">
-                        </div>
+                    <div class="form-group">
+                        <label>Ícone</label>
+                        <input type="text" class="form-control" v-model="socialmedia.icon">
+                    </div>
 
-                        <div class="form-group">
-                            <label>Ícone</label>
-                            <input type="text" class="form-control" v-model="socialmedia.icon">
-                        </div>
+                    <div class="form-group">
+                        <label>URL</label>
+                        <input type="text" class="form-control" v-model="socialmedia.url">
+                    </div>
 
-                        <div class="form-group">
-                            <label>URL</label>
-                            <input type="text" class="form-control" v-model="socialmedia.url">
-                        </div>
-
-                        <div class="row mt-5">
-                            <div class="col-sm-6">
-                                <div class="text-start">
-                                    <a :href="urlIndexSocialMedia" class="btn btn-secondary btn-sm">Voltar</a>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                                </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-6">
+                            <div class="text-start">
+                                <a :href="urlIndexSocialMedia" class="btn btn-secondary btn-sm">Voltar</a>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="col-sm-6">
+                            <div class="col text-end">
+                                <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -4,9 +4,8 @@
             <h4>Cadastrar Conteúdo Principal</h4>
         </div>
         <div class="card-body">
-            <div class="row justify-content-center">
-                <div class="col-sm-6">
-                    <form method="POST" @submit.prevent="save" class="col-lg-8" autocomplete="off">
+            <div class="d-flex justify-content-center">
+                    <form method="POST" @submit.prevent="save" class="col-lg-6" autocomplete="off">
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
                             <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
@@ -62,7 +61,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
             </div>
         </div>
     </div>
