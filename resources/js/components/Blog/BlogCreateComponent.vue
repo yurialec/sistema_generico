@@ -7,7 +7,6 @@
             <div class="row justify-content-center">
                 <div class="col-sm-6">
                     <form method="POST" @submit.prevent="save" class="col-lg-12" autocomplete="off">
-                        <!-- Alertas -->
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
                             <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
@@ -31,7 +30,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
-                        <!-- Formulário -->
                         <div class="form-group">
                             <label>Título</label>
                             <input type="text" class="form-control" v-model="blog.title">
@@ -49,8 +47,7 @@
 
                             <div class="jumbotron">
                                 <div class="row">
-                                    <div class="col-md-4" v-for="(image, index) in images" :key="index"
-                                        style="border-radius: 10px;  margin: 5px;  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);  position: relative;  overflow: hidden;">
+                                    <div class="div-blog-image col-md-4" v-for="(image, index) in images" :key="index">
                                         <button class="btn btn-danger btn-sm mb-2" type="button"
                                             @click="removeImage(index)"
                                             style="position: absolute;  top: 5px;  right: 5px;  z-index: 10;">

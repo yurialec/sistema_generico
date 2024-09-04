@@ -29,6 +29,10 @@ class AclMiddleware
         'site.logo.update',
         'site.logo.store',
 
+        'blog.index',
+        'blog.store',
+        'blog.update',
+
         'profile',
         'profile.view',
         'modules.list',

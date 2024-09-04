@@ -38,27 +38,27 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th class="col-md-1">Preview</th>
                             <th class="col-md-2">Título</th>
                             <th class="col-md-2">Descrição</th>
+                            <th class="col-md-2">Autor</th>
                             <th class="col-md-1">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="blog in blogs" :key="blog.id">
-                            <td class="col-md-1"><img :src="'/storage/' + blog.image" width="80"></td>
                             <td class="col-md-2">{{ blog.title }}</td>
                             <td class="col-md-2"
                                 style="max-width:100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
                                 {{ blog.description }}
                             </td>
+                            <td class="col-md-2">{{ blog.user.name }} - {{ blog.user.email }}</td>
                             <td class="col-md-1">
                                 <button type="button" style="color: #333; padding: 0;" class="btn"
                                     data-bs-toggle="modal" data-bs-target="#viewImgModal" @click="viewImage(blog)">
                                     <i class="bi bi-eye"></i>
                                 </button>
                                 &nbsp;&nbsp;&nbsp;
-                                <a :href="'/admin/site/blog/edit/' + blog.id">
+                                <a :href="'/admin/blog/edit/' + blog.id">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
@@ -78,14 +78,32 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewImgModalLabel">Visualizar imagem</h5>
+                    <h5 class="modal-title" id="viewImgModalLabel">Visualizar imagen do blog</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div style="text-align: center;">
-                        <img :src="'/storage/' + selectedBlog.image" width="450">
-                        <small>Nome: {{ selectedBlog.title }}</small>
+
+                    <div id="carouselExample" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div v-for="(image, index) in selectedBlog" :key="index"
+                                :class="['carousel-item', { active: index === 0 }]">
+                                <img :src="'/storage/' + image.image_path" class="d-block w-100 h-30 mb-4" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="prev">
+                            <span style="background-color: #333; border-radius: 10px;"
+                                class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="next">
+                            <span style="background-color: #333; border-radius: 10px;"
+                                class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -179,8 +197,15 @@ export default {
             }
         },
         viewImage(blog) {
-            this.selectedBlog = blog;
-        },
+            this.selectedBlog = blog.images;
+            this.$nextTick(() => {
+                const carouselElement = document.getElementById('carouselExample');
+                const carousel = bootstrap.Carousel.getInstance(carouselElement);
+                if (carousel) {
+                    carousel.to(0);
+                }
+            });
+        }
     }
 }
 </script>

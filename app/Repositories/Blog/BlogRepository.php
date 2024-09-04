@@ -4,14 +4,19 @@ namespace App\Repositories\Blog;
 
 use App\Interfaces\Blog\BlogRepositoryInterface;
 use App\Models\Blog\Blog;
+use App\Models\Blog\BlogImages;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BlogRepository implements BlogRepositoryInterface
 {
     protected $blog;
+    protected $blogImages;
 
-    public function __construct(Blog $blog)
+    public function __construct(Blog $blog, BlogImages $blogImages)
     {
         $this->blog = $blog;
+        $this->blogImages = $blogImages;
     }
 
     public function all()
@@ -26,11 +31,28 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function create(array $data)
     {
-        return $this->blog->create($data);
+        DB::transaction(function () use ($data) {
+            $blog = $this->blog->create([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'user_id' => Auth::id(),
+            ]);
+
+            foreach ($data['images'] as $imagePath) {
+                $this->blogImages->insert([
+                    'image_path' => $imagePath,
+                    'order' => 0,
+                    'blog_id' => $blog->id,
+                ]);
+            }
+
+            return $blog;
+        });
     }
 
     public function update($id, $data)
     {
+        dd($id, $data);
         $blog = $this->blog->find($id);
         $blog->update($data);
 

@@ -31,52 +31,52 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label>Imagem</label>
-
-                            <img v-show="!newImage" :src="'/storage/' + carousel.carousel.image"
-                                class="form-control mb-3" width="200">
-
-                            <img v-show="newImage" class="form-control mb-3" :src="urlImage" width="200">
-
-                            <input type="file" class="form-control mb-3" @change="loadImage">
-                        </div>
-
-                        <div class="form-group mb-3">
                             <label>Título</label>
-                            <input type="text" class="form-control" v-model="carousel.carousel.title">
+                            <input type="text" class="form-control" v-model="blog.blog.title">
                         </div>
 
                         <div class="form-group mb-3">
                             <label>Descrição</label>
-                            <input type="text" class="form-control" v-model="carousel.carousel.description">
+                            <input type="text" class="form-control" v-model="blog.blog.description">
                         </div>
 
                         <div class="form-group mb-3">
-                            <label>Nome Link Externo</label>
-                            <input type="text" class="form-control" v-model="carousel.carousel.name_link">
+                            <label>Imagem</label>
 
-                            <small
-                                v-show="carousel?.carousel?.url_link?.length > 1 && carousel?.carousel?.name_link?.length == 0"
-                                style="color: red;">
-                                É necessário inserir o nome do link externo
-                            </small>
-                        </div>
+                            <input class="form-control mb-3 mt-3" type="file" multiple @change="onFileChange" />
 
-                        <div class="form-group mb-3">
-                            <label>URL Link Externo</label>
-                            <input type="text" class="form-control" v-model="carousel.carousel.url_link">
+                            <div class="jumbotron">
+                                <div class="row">
+                                    <div v-for="image in blog.blog.images" class="div-blog-image col-md-4"
+                                        :key="image.id">
+                                        <button @click="removeImage(image.id)" class="btn btn-danger btn-sm mb-2"
+                                            type="button"
+                                            style="position: absolute;  top: 5px;  right: 5px;  z-index: 10;">
+                                            &times;
+                                        </button>
+                                        <img :src="'/storage/' + image.image_path" class="preview img-thumbnail"
+                                            style="width: 100%;  border-radius: 10px;  object-fit: cover;" />
+                                    </div>
 
-                            <small
-                                v-show="carousel?.carousel?.name_link?.length > 1 && carousel?.carousel?.url_link.length == 0"
-                                style="color: red;">
-                                É necessário inserir o nome do link externo
-                            </small>
+                                    <div v-for="(newImage, index) in this.newImages" :key="index"
+                                        class="div-blog-image col-md-4">
+                                        <button @click="removeNewImages(index)" class="btn btn-danger btn-sm mb-2"
+                                            type="button"
+                                            style="position: absolute;  top: 5px;  right: 5px;  z-index: 10;">
+                                            &times;
+                                        </button>
+                                        <img :src="newImage.preview" class="preview img-thumbnail"
+                                            style="width: 100%;  border-radius: 10px;  object-fit: cover;" />
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
                         <div class="row mt-5">
                             <div class="col-sm-6">
                                 <div class="text-start">
-                                    <a :href="urlIndexCarousel" class="btn btn-secondary btn-sm">Voltar</a>
+                                    <a :href="urlIndexBlog" class="btn btn-secondary btn-sm">Voltar</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -97,68 +97,73 @@ import axios from 'axios';
 
 export default {
     props: {
-        carouselById: {
+        blogById: {
             type: String,
             required: true
         },
-        urlIndexCarousel: String,
+        urlIndexBlog: String,
     },
     data() {
         return {
-            carousel: {
-                carousel: JSON.parse(this.carouselById),
+            blog: {
+                blog: JSON.parse(this.blogById),
             },
             alertStatus: null,
             messages: [],
             loading: null,
-            newImage: null,
+            newImages: [],
             file: '',
-            urlImage: null,
         };
     },
     mounted() {
     },
     methods: {
+        onFileChange(e) {
+            const selectedFiles = e.target.files;
+            for (let i = 0; i < selectedFiles.length; i++) {
+                let reader = new FileReader();
+                let file = selectedFiles[i];
+                reader.onload = (event) => {
+                    this.newImages.push({
+                        file: file,
+                        name: file.name,
+                        preview: event.target.result
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        removeImage(id) {
+            const index = this.blog.blog.images.findIndex(image => image.id === id);
+            if (index !== -1) {
+                this.blog.blog.images.splice(index, 1);
+            }
+        },
+        removeNewImages(index) {
+            this.newImages.splice(index, 1);
+        },
         loadImage(e) {
             this.newImage = e.target.files[0];
             this.urlImage = URL.createObjectURL(this.newImage);
         },
         save() {
-            let formData = new FormData();
 
-            if (this.newImage) {
-                formData.append('image', this.newImage);
-            }
+            const payload = {
+                old_data: this.blog.blog,
+                new_image: this.newImages,
+            };
 
-            if (this.carousel.carousel.title) {
-                formData.append('title', this.carousel.carousel.title);
-            }
-
-            if (this.carousel.carousel.description) {
-                formData.append('description', this.carousel.carousel.description);
-            }
-
-            if (this.carousel.carousel.url_link) {
-                formData.append('url_link', this.carousel.carousel.url_link);
-            }
-
-            if (this.carousel.carousel.name_link) {
-                formData.append('name_link', this.carousel.carousel.name_link);
-            }
-
-            axios.post('/admin/site/carousel/update/' + this.carousel.carousel.id, formData, {
+            axios.post('/admin/blog/update/' + this.blog.blog.id, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            })
-                .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
-                })
-                .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
-                });
+            }).then(response => {
+                this.alertStatus = true;
+                this.messages = response.data;
+            }).catch(errors => {
+                this.alertStatus = false;
+                this.messages = errors.response;
+            });
         },
     }
 }
