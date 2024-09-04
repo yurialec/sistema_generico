@@ -22,6 +22,7 @@
         "vue-multiselect": "^3.0.0",
         "vue-sweetalert2": "^5.0.11",
         "vue-the-mask": "^0.11.1",
+        "vue-upload-multiple-image": "^1.1.6",
         "vuex": "^4.1.0"
     }
 }
