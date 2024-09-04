@@ -9,12 +9,5 @@ class BlogImages extends Model
 {
     use HasFactory;
     protected $table = 'blog_images';
-    protected $fillable = ['title', 'description', 'order'];
-
-    protected $with = ['blog'];
-
-    public function blog()
-    {
-        return $this->belongsTo(Blog::class);
-    }
+    protected $fillable = ['blog_id', 'image_path', 'order'];
 }

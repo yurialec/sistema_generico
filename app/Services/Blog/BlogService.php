@@ -26,23 +26,45 @@ class BlogService
 
     public function create($data)
     {
-        $image = $data['image'];
-        $image_urn = $image->store('site/carousel/images', 'public');
+        $images = $data['images'];
 
-        $data['image'] = $image_urn;
+        $images_urn = [];
+        foreach ($data['images'] as $key) {
+            $images_urn[] = $key->store('blog/images', 'public');
+        }
+
+        $data['images'] = $images_urn;
 
         return $this->blogRepository->create($data);
     }
 
     public function update($id, $data)
     {
-        $carousel = $this->blogRepository->find($id);
+        $blog = $this->blogRepository->find($id);
+        $currentImages = $blog->images->pluck('image_path')->toArray();
 
-        if (isset($data['image'])) {
-            Storage::disk('public')->delete($carousel->image);
+        foreach ($data['old_data']['images'] as $key => $value) {
+            $old_data[] = $value['image_path'];
+        }
 
-            $image = $data['image'];
-            $data['image_urn'] = $image->store('site/carousel/images', 'public');
+        $imagesToRemoveFromServer = array_diff($currentImages, $old_data);
+
+        if (!empty($imagesToRemoveFromServer)) {
+            foreach ($imagesToRemoveFromServer as $key => $value) {
+                Storage::disk('public')->delete($value);
+            }
+        }
+
+        if (isset($data['new_image'])) {
+            $images_urn = [];
+
+            foreach ($data['new_image'] as $key) {
+                $images_urn[] = 1;
+            }
+
+            // $image = $data['new_image'];
+            // dd($image);
+            // $data['image_urn'] = $image->store('blog/images', 'public');
         } else {
             unset($data['image_urn']);
         }
@@ -52,9 +74,13 @@ class BlogService
 
     public function delete($id)
     {
-        $logo = $this->blogRepository->find($id);
-        if (isset($logo->image)) {
-            Storage::disk('public')->delete($logo->image);
+        $blog = $this->blogRepository->find($id);
+
+        if (isset($blog->images)) {
+
+            foreach ($blog->images as $image) {
+                Storage::disk('public')->delete($image->image_path);
+            }
         }
 
         return $this->blogRepository->delete($id);

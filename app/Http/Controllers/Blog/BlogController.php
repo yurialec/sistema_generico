@@ -51,7 +51,6 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $blog = $this->blogService->create($request->all());
 
         if ($blog) {
@@ -68,19 +67,12 @@ class BlogController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $blog = $this->blogService->getById($id);
+        return view('blog.edit', compact('blog'));
     }
 
     /**
@@ -88,14 +80,38 @@ class BlogController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $blog = $this->blogService->update($id, $request->all());
+
+        if ($blog) {
+            return response()->json([
+                'status' => true,
+                'blog' => $blog,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar blog'
+            ], 204);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(string $id)
     {
-        //
+        $blog = $this->blogService->delete($id);
+
+        if ($blog) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Blog excluido com sucesso',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir Blog'
+            ], 204);
+        }
     }
 }
