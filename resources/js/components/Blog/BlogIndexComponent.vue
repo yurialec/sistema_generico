@@ -16,7 +16,7 @@
                     <h3>Blog</h3>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a :href="urlCreateCarousel" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
+                    <a :href="urlCreateBlog" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -27,41 +27,43 @@
             </div>
         </div>
 
+
         <div v-else class="card-body">
-            <div class="table-responsive">
+
+            <div v-show="!blogs.length" class="text-center">
+                <p>Nenhum resultado encontrado</p>
+            </div>
+
+            <div v-show="blogs.length" class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
                             <th class="col-md-1">Preview</th>
                             <th class="col-md-2">Título</th>
                             <th class="col-md-2">Descrição</th>
-                            <th class="col-md-2">Nome Link Externo</th>
-                            <th class="col-md-2">Url Link Externo</th>
                             <th class="col-md-1">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="carousel in carousels" :key="carousel.id">
-                            <td class="col-md-1"><img :src="'/storage/' + carousel.image" width="80"></td>
-                            <td class="col-md-2">{{ carousel.title }}</td>
+                        <tr v-for="blog in blogs" :key="blog.id">
+                            <td class="col-md-1"><img :src="'/storage/' + blog.image" width="80"></td>
+                            <td class="col-md-2">{{ blog.title }}</td>
                             <td class="col-md-2"
                                 style="max-width:100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
-                                {{ carousel.description }}
+                                {{ blog.description }}
                             </td>
-                            <td class="col-md-2">{{ carousel.name_link }}</td>
-                            <td class="col-md-2">{{ carousel.url_link }}</td>
                             <td class="col-md-1">
                                 <button type="button" style="color: #333; padding: 0;" class="btn"
-                                    data-bs-toggle="modal" data-bs-target="#viewImgModal" @click="viewImage(carousel)">
+                                    data-bs-toggle="modal" data-bs-target="#viewImgModal" @click="viewImage(blog)">
                                     <i class="bi bi-eye"></i>
                                 </button>
                                 &nbsp;&nbsp;&nbsp;
-                                <a :href="'/admin/site/carousel/edit/' + carousel.id">
+                                <a :href="'/admin/site/blog/edit/' + blog.id">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
                                 <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" @click="confirmExclusion(carousel.id)">
+                                    data-bs-target="#exampleModal" @click="confirmExclusion(blog.id)">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
@@ -81,8 +83,8 @@
                 </div>
                 <div class="modal-body">
                     <div style="text-align: center;">
-                        <img :src="'/storage/' + selectedCarousel.image" width="450">
-                        <small>Nome: {{ selectedCarousel.name_link }}</small>
+                        <img :src="'/storage/' + selectedBlog.image" width="450">
+                        <small>Nome: {{ selectedBlog.title }}</small>
                     </div>
                 </div>
             </div>
@@ -115,27 +117,27 @@ import { Modal } from 'bootstrap';
 
 export default {
     props: {
-        urlCreateCarousel: String,
+        urlCreateBlog: String,
     },
     data() {
         return {
-            carouselToDelete: null,
+            blogToDelete: null,
             alertStatus: null,
             msg: [],
             loading: null,
-            carousels: [],
-            selectedCarousel: {},
+            blogs: [],
+            selectedBlog: {},
         };
     },
     mounted() {
-        this.getCarousel();
+        this.getBlog();
     },
     methods: {
-        getCarousel() {
+        getBlog() {
             this.loading = true;
-            axios.get('admin/site/carousel/list')
+            axios.get('admin/blog/list')
                 .then(response => {
-                    this.carousels = response.data.carousels;
+                    this.blogs = response.data.blogs;
                 })
                 .catch(errors => {
                     this.alertStatus = 'error';
@@ -143,15 +145,15 @@ export default {
                     this.loading = false;
                 });
         },
-        confirmExclusion(carouselId) {
-            this.carouselToDelete = carouselId;
+        confirmExclusion(blogId) {
+            this.blogToDelete = blogId;
         },
         deleteRecord() {
-            if (this.carouselToDelete !== null) {
-                axios.delete('/admin/site/carousel/delete/' + this.carouselToDelete)
+            if (this.blogToDelete !== null) {
+                axios.delete('/admin/blog/delete/' + this.blogToDelete)
                     .then(response => {
-                        this.getCarousel();
-                        this.carouselToDelete = null;
+                        this.getBlog();
+                        this.blogToDelete = null;
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
@@ -176,8 +178,8 @@ export default {
                     });
             }
         },
-        viewImage(carousel) {
-            this.selectedCarousel = carousel;
+        viewImage(blog) {
+            this.selectedBlog = blog;
         },
     }
 }

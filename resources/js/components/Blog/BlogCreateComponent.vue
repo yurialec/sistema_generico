@@ -6,7 +6,8 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-sm-6">
-                    <form method="POST" @submit.prevent="save" class="col-lg-8" autocomplete="off">
+                    <form method="POST" @submit.prevent="save" class="col-lg-12" autocomplete="off">
+                        <!-- Alertas -->
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
                             <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
@@ -24,56 +25,55 @@
                             role="alert">
                             <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
                             <hr>
-                            <ul v-for="messages in messages.data.errors" :key="messages[0]">
-                                <li>{{ messages[0] }}</li>
+                            <ul v-for="(errors, index) in messages.data.errors" :key="index">
+                                <li v-for="message in errors" :key="message">{{ message }}</li>
                             </ul>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
-                        <div class="form-group">
-                            <label>Imagem</label>
-                            <input type="file" required class="form-control" @change="loadImage">
-                        </div>
-
+                        <!-- Formulário -->
                         <div class="form-group">
                             <label>Título</label>
-                            <input type="text" class="form-control" v-model="carousel.title">
+                            <input type="text" class="form-control" v-model="blog.title">
                         </div>
 
                         <div class="form-group">
-                            <label>Texto</label>
-                            <textarea class="form-control" v-model="carousel.description"></textarea>
+                            <label>Descrição</label>
+                            <textarea class="form-control mb-3" v-model="blog.description"></textarea>
                         </div>
+
+                        <hr>
 
                         <div class="form-group">
-                            <label>Nome Link Externo</label>
-                            <input type="text" class="form-control" v-model="carousel.name_link">
+                            <input class="form-control mb-3 mt-3" type="file" multiple @change="onFileChange" />
 
-                            <small v-show="carousel.url_link.length && !carousel.name_link" style="color: red;">
-                                É necessário inserir o nome do link externo
-                            </small>
-                        </div>
+                            <div class="jumbotron">
+                                <div class="row">
+                                    <div class="col-md-4" v-for="(image, index) in images" :key="index"
+                                        style="border-radius: 10px;  margin: 5px;  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);  position: relative;  overflow: hidden;">
+                                        <button class="btn btn-danger btn-sm mb-2" type="button"
+                                            @click="removeImage(index)"
+                                            style="position: absolute;  top: 5px;  right: 5px;  z-index: 10;">
+                                            &times;
+                                        </button>
 
-                        <div class="form-group">
-                            <label>Url Link Externo</label>
-                            <input type="text" class="form-control" v-model="carousel.url_link">
+                                        <img :src="image.preview" class="preview img-thumbnail"
+                                            style="width: 100%;  border-radius: 10px;  object-fit: cover;" />
 
-                            <small v-show="carousel.name_link.length && !carousel.url_link" style="color: red;">
-                                É necessário inserir a url do link externo
-                            </small>
-                        </div>
-
-
-                        <div class="row mt-5">
-                            <div class="col-sm-6">
-                                <div class="text-start">
-                                    <a :href="urlIndexCarousel" class="btn btn-secondary btn-sm">Voltar</a>
+                                        <div style="text-align: center;  padding: 10px 0; font-weight: bold;">
+                                            {{ image.name }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
-                                </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-sm-6 text-start">
+                                <a :href="urlIndexBlog" class="btn btn-secondary btn-sm">Voltar</a>
+                            </div>
+                            <div class="col-sm-6 text-end">
+                                <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
                             </div>
                         </div>
                     </form>
@@ -88,51 +88,58 @@ import axios from 'axios';
 
 export default {
     props: {
-        urlIndexCarousel: String,
+        urlIndexBlog: String,
     },
     data() {
         return {
-            carousel: {
+            blog: {
                 title: '',
                 description: '',
-                image: null,
-                text: '',
-                name_link: '',
-                url_link: '',
             },
+            images: [],
             alertStatus: null,
             messages: [],
         };
     },
     methods: {
-        loadImage(e) {
-            this.carousel.image = e.target.files[0];
+        onFileChange(e) {
+            const selectedFiles = e.target.files;
+            for (let i = 0; i < selectedFiles.length; i++) {
+                let reader = new FileReader();
+                let file = selectedFiles[i];
+                reader.onload = (event) => {
+                    this.images.push({
+                        file: file,
+                        name: file.name,
+                        preview: event.target.result
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        removeImage(index) {
+            this.images.splice(index, 1);
         },
         save() {
-            let formData = new FormData();
-            formData.append('title', this.carousel.title);
-            formData.append('description', this.carousel.description);
-            formData.append('name_link', this.carousel.name_link);
-            formData.append('url_link', this.carousel.url_link);
-            formData.append('image', this.carousel.image);
+            const formData = new FormData();
+            formData.append('title', this.blog.title);
+            formData.append('description', this.blog.description);
 
-            axios.post('/admin/site/carousel/store', formData, {
+            this.images.forEach((image, index) => {
+                formData.append(`images[${index}]`, image.file);
+            });
+
+            axios.post('/admin/blog/store', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            })
-                .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
-                })
-                .catch(errors => {
-
-                    console.log(errors);
-
-
-                    this.alertStatus = false;
-                    this.messages = errors.response;
-                });
+            }).then(response => {
+                this.alertStatus = true;
+                this.messages = response.data;
+            }).catch(errors => {
+                this.alertStatus = false;
+                this.messages = errors.response;
+            });
         },
     }
 }

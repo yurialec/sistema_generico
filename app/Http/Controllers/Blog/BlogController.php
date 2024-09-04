@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Services\Blog\BlogService;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
+    protected $blogService;
+    public function __construct(BlogService $blogService)
+    {
+        $this->blogService = $blogService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -15,12 +21,29 @@ class BlogController extends Controller
         return view('blog.index');
     }
 
+    public function list()
+    {
+        $blogs = $this->blogService->getAll();
+
+        if ($blogs) {
+            return response()->json([
+                'status' => true,
+                'blogs' => $blogs
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Nenhum registro encontrado.',
+                'status' => 204
+            ]);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('blog.create');
     }
 
     /**
@@ -28,7 +51,20 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $blog = $this->blogService->create($request->all());
+
+        if ($blog) {
+            return response()->json([
+                'status' => true,
+                'blog' => $blog,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar blog'
+            ], 204);
+        }
     }
 
     /**
