@@ -52,11 +52,36 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function update($id, $data)
     {
-        dd($id, $data);
-        $blog = $this->blog->find($id);
-        $blog->update($data);
+        return DB::transaction(function () use ($id, $data) {
+            $blog = $this->blog->find($id);
+            $blog->update([
+                'title' => $data['title'],
+                'description' => $data['description'],
+            ]);
 
-        return $blog;
+            if (isset($data['image_urn'])) {
+
+                $this->blogImages->where('blog_id', $id)
+                    ->whereNotIn('image_path', $data['image_urn'])
+                    ->delete();
+
+                foreach ($data['image_urn'] as $imagePath) {
+                    $existingImage = $this->blogImages->where('blog_id', $id)
+                        ->where('image_path', $imagePath)
+                        ->first();
+
+                    if (!$existingImage) {
+                        $this->blogImages->create([
+                            'image_path' => $imagePath,
+                            'order' => 0,
+                            'blog_id' => $id,
+                        ]);
+                    }
+                }
+            }
+
+            return $blog;
+        });
     }
 
     public function delete($id)

@@ -147,23 +147,32 @@ export default {
             this.urlImage = URL.createObjectURL(this.newImage);
         },
         save() {
-
-            const payload = {
-                old_data: this.blog.blog,
-                new_image: this.newImages,
-            };
-
-            axios.post('/admin/blog/update/' + this.blog.blog.id, payload, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(response => {
-                this.alertStatus = true;
-                this.messages = response.data;
-            }).catch(errors => {
-                this.alertStatus = false;
-                this.messages = errors.response;
+            
+            const newImagesForUpload = this.newImages.map(image => {
+                return {
+                    file: image.file,
+                    name: image.name
+                };
             });
+
+            const formData = new FormData();
+            formData.append('old_data', JSON.stringify(this.blog.blog));
+
+            newImagesForUpload.forEach((image, index) => {
+                formData.append(`new_image[${index}]`, image.file);
+            });
+
+            // axios.post('/admin/blog/update/' + this.blog.blog.id, formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data'
+            //     }
+            // }).then(response => {
+            //     this.alertStatus = true;
+            //     this.messages = response.data;
+            // }).catch(errors => {
+            //     this.alertStatus = false;
+            //     this.messages = errors.response;
+            // });
         },
     }
 }
