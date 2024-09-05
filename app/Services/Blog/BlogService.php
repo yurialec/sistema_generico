@@ -26,8 +26,6 @@ class BlogService
 
     public function create($data)
     {
-        $images = $data['images'];
-
         $images_urn = [];
         foreach ($data['images'] as $key) {
             $images_urn[] = $key->store('blog/images', 'public');
@@ -43,9 +41,7 @@ class BlogService
         $blog = $this->blogRepository->find($id);
         $currentImages = $blog->images->pluck('image_path')->toArray();
 
-        $oldImages = isset($data['old_data']['images'])
-            ? array_column($data['old_data']['images'], 'image_path')
-            : [];
+        $oldImages = isset($data['old_data']['images']) ? array_column($data['old_data']['images'], 'image_path') : [];
 
         $imagesToRemoveFromServer = array_diff($currentImages, $oldImages);
 
@@ -55,18 +51,14 @@ class BlogService
             }
         }
 
-        $images = $data['new_image'];
+        if (isset($data['new_image'])) {
+            $images_urn = [];
 
-        if (isset($data['new_image']) && is_array($data['new_image'])) {
-            $newImagePaths = [];
-            foreach ($data['new_image'] as $image) {
-                if ($image instanceof \Illuminate\Http\UploadedFile) {
-                    $newImagePaths[] = $image->store('blog/images', 'public');
-                } else {
-                    throw new \Exception('Invalid file upload.');
-                }
+            foreach ($data['new_image'] as $key) {
+                $images_urn[] = $key->store('blog/images', 'public');
             }
-            $data['image_urn'] = $newImagePaths;
+            
+            $data['images'] = $images_urn;
         } else {
             unset($data['image_urn']);
         }
