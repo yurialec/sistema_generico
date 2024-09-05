@@ -147,32 +147,29 @@ export default {
             this.urlImage = URL.createObjectURL(this.newImage);
         },
         save() {
-            
-            const newImagesForUpload = this.newImages.map(image => {
-                return {
-                    file: image.file,
-                    name: image.name
-                };
-            });
-
             const formData = new FormData();
-            formData.append('old_data', JSON.stringify(this.blog.blog));
+            formData.append('title', this.blog.blog.title);
+            formData.append('description', this.blog.blog.description);
 
-            newImagesForUpload.forEach((image, index) => {
-                formData.append(`new_image[${index}]`, image.file);
+            this.newImages.forEach((image, index) => {
+                formData.append(`new_images[${index}]`, image.file);
             });
 
-            // axios.post('/admin/blog/update/' + this.blog.blog.id, formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // }).then(response => {
-            //     this.alertStatus = true;
-            //     this.messages = response.data;
-            // }).catch(errors => {
-            //     this.alertStatus = false;
-            //     this.messages = errors.response;
-            // });
+            this.blog.blog.images.forEach((image, index) => {
+                formData.append(`old_data[${index}]`, JSON.stringify(image));
+            });
+
+            axios.post('/admin/blog/update/' + this.blog.blog.id, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+                this.alertStatus = true;
+                this.messages = response.data;
+            }).catch(errors => {
+                this.alertStatus = false;
+                this.messages = errors.response;
+            });
         },
     }
 }
