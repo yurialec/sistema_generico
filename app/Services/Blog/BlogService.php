@@ -43,24 +43,25 @@ class BlogService
 
         $oldImages = isset($data['old_data']['images']) ? array_column($data['old_data']['images'], 'image_path') : [];
 
-        $imagesToRemoveFromServer = array_diff($currentImages, $oldImages);
+        $imagesToRemove = array_diff($oldImages, $currentImages);
 
-        foreach ($imagesToRemoveFromServer as $imagePath) {
-            if (Storage::disk('public')->exists($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
+        if (!empty($imagesToRemove)) {
+            foreach ($imagesToRemove as $imagePath) {
+                if (Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                }
             }
         }
 
-        if (isset($data['new_image'])) {
+        if (isset($data['new_images'])) {
             $images_urn = [];
 
-            foreach ($data['new_image'] as $key) {
+            foreach ($data['new_images'] as $key) {
                 $images_urn[] = $key->store('blog/images', 'public');
             }
-            
+
             $data['images'] = $images_urn;
-        } else {
-            unset($data['image_urn']);
+            unset($data['new_images']);
         }
 
         return $this->blogRepository->update($id, $data);

@@ -15,8 +15,9 @@ class SiteController extends Controller
         $contact = $this->contactSite();
         $socialmedias = $this->socialmedias();
         $about = $this->aboutSite();
+        $siteblogs = $this->siteblogs();
 
-        return view('site', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about'));
+        return view('site', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about', 'siteblogs'));
     }
 
     public function about()
