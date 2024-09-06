@@ -49,7 +49,7 @@
                         style="max-width: 800px;">
                         <div class="carousel-indicators">
                             @foreach ($carousels as $index => $carousel)
-                            <button style="background-color: #333;" type="button"
+                            <button style="background-color: #333; width: 14px; height: 14px; border-radius: 100%;" type="button"
                                 data-bs-target="#carouselExampleIndicators"
                                 data-bs-slide-to="{{ $index }}"
                                 class="{{ $index === 0 ? 'active' : '' }}"
