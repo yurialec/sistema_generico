@@ -24,29 +24,30 @@
     @include('partials.navbar')
     <!-- Main Section -->
     @if (isset($mainText) && !empty($mainText))
-    <header class="bg-primary text-white text-center py-5">
-        <div class="container">
-            <h1>{{ $mainText->title }}</h1>
-            <p class="lead">{{ $mainText->text }}</p>
-        </div>
-    </header>
+        <header class="bg-primary text-white text-center py-5">
+            <div class="container">
+                <h1>{{ $mainText->title }}</h1>
+                <p class="lead">{{ $mainText->text }}</p>
+            </div>
+        </header>
     @else
     @endif
 
     @if (isset($about) && !empty($about))
-    <section class="py-5" style="background-color: #f8f9fa;">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-4 mb-md-0">
-                    <img src="{{'storage/' . $about->image}}" class="img-fluid rounded shadow" width="250" alt="{{$about->name}}">
-                </div>
-                <div class="col-md-6">
-                    <h2 class="display-4 font-weight-bold mb-3" style="color: #343a40;">{{ $about->title }}</h2>
-                    <p class="lead text-muted">{{ $about->description }}</p>
+        <section class="py-5" style="background-color: #f8f9fa;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <img src="{{ 'storage/' . $about->image }}" class="img-fluid rounded shadow" width="250"
+                            alt="{{ $about->name }}">
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="display-4 font-weight-bold mb-3" style="color: #343a40;">{{ $about->title }}</h2>
+                        <p class="lead text-muted">{{ $about->description }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
     @else
     @endif
 
@@ -90,108 +91,81 @@
 
             <div class="container">
                 @if (isset($carousels) && $carousels->isNotEmpty())
-                <!-- Carousel Section -->
-                <div class="container carousel-container">
-                    <div class="d-flex justify-content-center my-5">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="max-width: 800px;">
-                            <div class="carousel-indicators">
-                                @foreach ($carousels as $index => $carousel)
-                                <button style="background-color: #333;" type="button" data-bs-target="#carouselExampleIndicators"
-                                    data-bs-slide-to="{{ $index }}"
-                                    class="{{ $index === 0 ? 'active' : '' }}"
-                                    aria-current="{{ $index === 0 ? 'true' : 'false' }}"
-                                    aria-label="Slide {{ $index + 1 }}">
-                                </button>
-                                @endforeach
-                            </div>
-                            <div class="carousel-inner">
-                                @foreach ($carousels as $index => $carousel)
-                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset('storage/' . $carousel->image) }}"
-                                        class="d-block w-100 h-40 mb-4" alt="...">
-
-                                    @if ($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
-                                    <div class="carousel-caption d-md-block">
-                                        <h5>{{ $carousel->title }}</h5>
-                                        <p>{{ $carousel->description }}</p>
-                                        <a href="{{ $carousel->url_link }}" target="_blank">{{ $carousel->name_link }}</a>
-                                    </div>
-                                    @endif
+                    <!-- Carousel Section -->
+                    <div class="container carousel-container">
+                        <div class="d-flex justify-content-center my-5">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true"
+                                style="max-width: 800px;">
+                                <div class="carousel-indicators">
+                                    @foreach ($carousels as $index => $carousel)
+                                        <button style="background-color: #333;" type="button"
+                                            data-bs-target="#carouselExampleIndicators"
+                                            data-bs-slide-to="{{ $index }}"
+                                            class="{{ $index === 0 ? 'active' : '' }}"
+                                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                            aria-label="Slide {{ $index + 1 }}">
+                                        </button>
+                                    @endforeach
                                 </div>
-                                @endforeach
+                                <div class="carousel-inner">
+                                    @foreach ($carousels as $index => $carousel)
+                                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                            <img src="{{ asset('storage/' . $carousel->image) }}"
+                                                class="d-block w-100 h-40 mb-4" alt="...">
+
+                                            @if ($carousel->title || $carousel->description || $carousel->url_link || $carousel->name_link)
+                                                <div class="carousel-caption d-md-block">
+                                                    <h5>{{ $carousel->title }}</h5>
+                                                    <p>{{ $carousel->description }}</p>
+                                                    <a href="{{ $carousel->url_link }}"
+                                                        target="_blank">{{ $carousel->name_link }}</a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
                         </div>
                     </div>
-                </div>
                 @endif
             </div>
 
-            <div class="container blog-section text-center">
-                <h2>Blog</h2>
-                <div class="row justify-content-center">
-
-                    <div class="col-md-4 d-flex align-items-stretch">
-                        <div class="card blog-card mb-4">
-                            <img class="card-img-top" alt="thumbnail-blog"
-                                src="https://i.pinimg.com/564x/22/2a/5b/222a5b172d9bb69c4c4780261fa2f494.jpg">
-                            <div class="card-body">
-                                <p class="card-text">This is a wider card with supporting text below.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-primary">View</button>
+            @if (isset($siteblogs) && $siteblogs->isNotEmpty())
+                <div class="container blog-section text-center">
+                    <h2>Blog</h2>
+                    <div class="row justify-content-center">
+                        @foreach ($siteblogs as $item)
+                            <div class="col-md-4 d-flex align-items-stretch">
+                                <div class="card blog-card mb-4">
+                                    <img class="card-img-top" alt="thumbnail-blog"
+                                        src="{{ asset('storage/' . $item->images[0]->image_path) }}">
+                                    <div class="card-body">
+                                        <p class="card-text">{{ $item->title }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a href="{{ route('site.blog.post', $item->id) }}"
+                                                    class="btn btn-sm btn-outline-primary">View</a>
+                                            </div>
+                                            <small class="text-muted">9 mins</small>
+                                        </div>
                                     </div>
-                                    <small class="text-muted">9 mins</small>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-
-                    <div class="col-md-4 d-flex align-items-stretch">
-                        <div class="card blog-card mb-4">
-                            <img class="card-img-top" alt="thumbnail-blog"
-                                src="https://upload.wikimedia.org/wikipedia/commons/6/68/Szczenie_Jack_Russell_Terrier3.jpg">
-                            <div class="card-body">
-                                <p class="card-text">This is a wider card with supporting text below.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-sm btn-outline-primary">View</button>
-                                    </div>
-                                    <small class="text-muted">9 mins</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 d-flex align-items-stretch">
-                        <div class="card blog-card mb-4">
-                            <img class="card-img-top" alt="thumbnail-blog"
-                                src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg">
-                            <div class="card-body">
-                                <p class="card-text">This is a wider card with supporting text below.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-sm btn-outline-primary">View</button>
-                                    </div>
-                                    <small class="text-muted">9 mins</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
+            @else
+            @endif
     </div>
 
     <div class="site-information">
@@ -211,38 +185,38 @@
                 </div>
 
                 @if (isset($contact) && $contact)
-                <div class="col-sm text-center">
-                    <p><strong>Contato</strong></p>
-                    <nav>
-                        <ul>
-                            <li><i class="bi bi-telephone"></i>&nbsp;{{ $contact->phone }}</li>
-                            <li><i class="bi bi-envelope"></i>&nbsp;{{ $contact->email }}</li>
-                            <li><i
-                                    class="bi bi-building"></i></i>&nbsp;{{ $contact->city }}/{{ $contact->state }}
-                            </li>
-                            <li><i class="bi bi-geo-alt-fill"></i>&nbsp;{{ $contact->address }}</li>
-                            <li>CEP&nbsp;{{ $contact->zipcode }}</li>
-                        </ul>
-                    </nav>
-                </div>
+                    <div class="col-sm text-center">
+                        <p><strong>Contato</strong></p>
+                        <nav>
+                            <ul>
+                                <li><i class="bi bi-telephone"></i>&nbsp;{{ $contact->phone }}</li>
+                                <li><i class="bi bi-envelope"></i>&nbsp;{{ $contact->email }}</li>
+                                <li><i
+                                        class="bi bi-building"></i></i>&nbsp;{{ $contact->city }}/{{ $contact->state }}
+                                </li>
+                                <li><i class="bi bi-geo-alt-fill"></i>&nbsp;{{ $contact->address }}</li>
+                                <li>CEP&nbsp;{{ $contact->zipcode }}</li>
+                            </ul>
+                        </nav>
+                    </div>
                 @else
                 @endif
 
                 @if (isset($socialmedias) && $socialmedias->isNotEmpty())
-                <div class="col-sm text-end">
-                    <p><strong>Siga-nos</strong></p>
-                    <nav>
-                        <ul>
-                            @foreach ($socialmedias as $media)
-                            <li>
-                                <a target="_blank" href="{{ $media->url }}">
-                                    <i class="{{ $media->icon }}"></i> {{ $media->name }}
-                                </a>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </nav>
-                </div>
+                    <div class="col-sm text-end">
+                        <p><strong>Siga-nos</strong></p>
+                        <nav>
+                            <ul>
+                                @foreach ($socialmedias as $media)
+                                    <li>
+                                        <a target="_blank" href="{{ $media->url }}">
+                                            <i class="{{ $media->icon }}"></i> {{ $media->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </nav>
+                    </div>
                 @endif
             </div>
         </div>

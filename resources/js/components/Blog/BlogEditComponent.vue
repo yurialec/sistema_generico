@@ -156,7 +156,7 @@ export default {
             });
 
             this.blog.blog.images.forEach((image, index) => {
-                formData.append(`old_data[${index}]`, JSON.stringify(image));
+                formData.append(`old_data[${index}]`, image.image_path);
             });
 
             axios.post('/admin/blog/update/' + this.blog.blog.id, formData, {

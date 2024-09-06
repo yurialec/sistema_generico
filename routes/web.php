@@ -14,6 +14,7 @@ use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
 use App\Http\Controllers\Site\SiteAboutController;
+use App\Http\Controllers\Site\SiteBlogController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
@@ -40,13 +41,8 @@ Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-Route::get('/blog', function () {
-    return view('site.blog.index');
-});
-
-Route::get('/blog/post', function () {
-    return view('site.blog.post');
-});
+Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
+Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
 
 Route::middleware('auth')->group(function () {
 
