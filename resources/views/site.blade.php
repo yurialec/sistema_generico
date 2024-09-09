@@ -74,12 +74,12 @@
                             @endforeach
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span style="background-color: #3498db;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span style="background-color: #3498db; border-radius: 100%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
                         <button class="carousel-control-next" type="button"
                             data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span style="background-color: #3498db;" class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span style="background-color: #3498db; border-radius: 100%;" class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
@@ -138,10 +138,10 @@
 
                 <div class="col-sm footer-links">
                     <ul>
-                        <li><a href="/">Início</a></li>
+                        <li><a href="{{ route('index.site') }}">Início</a></li>
                         <li><a href="{{ route('about') }}">Sobre</a></li>
-                        <li><a href="/contato">Contato</a></li>
-                        <li><a href="/blog">Blog</a>
+                        <li><a href="{{ route('contact') }}">Contato</a></li>
+                        <li><a href="{{ route('site.blog.index') }}">Blog</a>
                     </ul>
                 </div>
 

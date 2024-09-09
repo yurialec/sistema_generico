@@ -16,13 +16,13 @@
                     <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
-                            <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
+                            <i class="bi bi-check2-circle"></i> Registro atualizado com sucesso
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                         <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
                             role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
+                            <i class="bi bi-exclamation-circle"></i> Erro ao atualizar registro
                             <hr>
                             <ul v-for="msg in messages.data.errors">
                                 <li>{{ msg[0] }}</li>
@@ -72,7 +72,7 @@
                                                 <div class="input-group-text">
                                                     <button class="btn btn-outline-secondary btn-sm" type="button"
                                                         @click="showPassword()" id="button-addon2">
-                                                        <i class="fa-solid fa-eye"></i>
+                                                        <i class="bi bi-eye"></i>
                                                     </button>
                                                 </div>
                                             </div>
