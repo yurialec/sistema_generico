@@ -269,14 +269,13 @@ canvas {
 .sidebar-list {
     list-style-type: none;
     padding: 10px;
-}
 
-@media(max-width: 768px) {
-    .sidebar-list {
+    @media(max-width: 768px) {
         list-style-type: none;
         padding: 0px;
     }
 }
+
 
 .sidebar-submenu-list {
     list-style-type: none;
@@ -291,7 +290,7 @@ canvas {
 }
 
 .sidebar.deactivate {
-    width: 90px;
+    width: 60px;
 }
 
 .sidebar .sidebar-nav {

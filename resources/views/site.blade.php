@@ -160,6 +160,6 @@
         </div>
     </footer>
     <div class="container copyright text-center mt-4">
-        <p>&copy; 2024 Sua Empresa. Todos os direitos reservados.</p>
+        <p>Desenvolvido por <a style="font-size: large;" href="https://www.linkedin.com/in/yuri-alec-3976b227/" target="_blank"><i class="bi bi-linkedin"></i></a></p>
     </div>
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

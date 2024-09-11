@@ -9,30 +9,6 @@ use Illuminate\Support\Facades\Route;
 class AclMiddleware
 {
     protected $except = [
-        'users.index',
-        'users.update',
-        'users.store',
-
-        'roles.index',
-        'roles.update',
-        'roles.store',
-
-        'permissions.index',
-        'permissions.update',
-        'permissions.store',
-
-        'menu.index',
-        'menu.update',
-        'menu.store',
-
-        'site.logo.index',
-        'site.logo.update',
-        'site.logo.store',
-
-        'blog.index',
-        'blog.store',
-        'blog.update',
-
         'profile',
         'profile.view',
         'modules.list',
@@ -42,7 +18,7 @@ class AclMiddleware
     {
         $routeName = Route::currentRouteName();
 
-        if (in_array($routeName, $this->except)) {
+        if (in_array($routeName, $this->except) || str_contains($routeName, 'index') || str_contains($routeName, 'update') || str_contains($routeName, 'store')) {
             return $next($request);
         }
 
