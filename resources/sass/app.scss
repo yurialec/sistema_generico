@@ -225,6 +225,12 @@ canvas {
     height: 60px;
 }
 
+@media(max-width: 768px) {
+    .logo {
+        display: none;
+    }
+}
+
 .logo-link {
     display: flex;
     justify-content: center;
@@ -250,19 +256,26 @@ canvas {
     overflow-x: hidden;
     transition: 0.3s width ease-in-out;
     flex-shrink: 0;
+}
 
-    @media(max-width: 768px) {
-        width: 60px;
-        position: fixed;
-        z-index: 1;
-        top: 60px;
-        transition: 0.3s ease;
+@media(max-width: 768px) {
+    .sidebar {
+        margin-left: 10px;
+        height: auto;
+        border-radius: 10px;
     }
 }
 
 .sidebar-list {
     list-style-type: none;
     padding: 10px;
+}
+
+@media(max-width: 768px) {
+    .sidebar-list {
+        list-style-type: none;
+        padding: 0px;
+    }
 }
 
 .sidebar-submenu-list {
@@ -272,16 +285,13 @@ canvas {
 }
 
 @media(max-width: 768px) {
-    .sidebar {
-        width: 60px;
-        position: fixed;
-        z-index: 1;
-        width: 0;
+    .sidebar-submenu-list {
+        margin-left: auto;
     }
 }
 
 .sidebar.deactivate {
-    width: 80px;
+    width: 90px;
 }
 
 .sidebar .sidebar-nav {
@@ -293,6 +303,10 @@ canvas {
     cursor: pointer;
     transition: 0.3s background ease;
     font-size: 16px;
+
+    @media(max-width: 768px) {
+        font-size: 14px;
+    }
 }
 
 .sidebar a {
@@ -330,6 +344,8 @@ canvas {
     justify-content: center;
     font-size: 22px;
     flex-shrink: 0;
+
+    @media(max-width: 768px) {}
 }
 
 /* FIM SIDEBAR*/
@@ -410,7 +426,7 @@ footer {
     }
 
     .sidebar.deactivate {
-        width: 60px;
+        width: 200px;
     }
 
     .footer {

@@ -11,11 +11,11 @@
 
     <div class="card">
         <div class="card-header">
-            <div class="row">
-                <div class="col-sm-3 text-left">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-3 text-md-left text-center mb-2 mb-md-0">
                     <h3>Usuários</h3>
                 </div>
-                <div class="col-sm-6 text-center">
+                <div class="col-12 col-md-6 text-center mb-2 mb-md-0">
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
@@ -23,7 +23,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-3 text-end">
+                <div class="col-12 col-md-3 text-md-end text-end">
                     <a :href="urlCreateUser" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
@@ -37,41 +37,40 @@
 
         <div v-else class="card-body">
             <div class="row justify-content-center">
-                <!-- <div class="col-auto"> -->
-                    <div class="table-responsive">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nome</th>
-                                    <th scope="col">E-mail</th>
-                                    <th scope="col">Perfil</th>
-                                    <th scope="col">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="user in users.data" :key="user.id">
-                                    <th scope="row">{{ user.id }}</th>
-                                    <td>{{ user.name }}</td>
-                                    <td>{{ user.email }}</td>
-                                    <td>{{ user.role.name }}</td>
-                                    <td>
-                                        <a :href="'users/edit/' + user.id">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">Perfil</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="user in users.data" :key="user.id">
+                                <th scope="row">{{ user.id }}</th>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.role.name }}</td>
+                                <td>
+                                    <a :href="'users/edit/' + user.id">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
 
-                                        &nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;
 
-                                        <button type="button" style="color: red; padding: 0;" class="btn"
-                                            @click="confirmarExclusao(user.id)" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    <button type="button" style="color: red; padding: 0;" class="btn"
+                                        @click="confirmarExclusao(user.id)" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <!-- </div> -->
             </div>
         </div>

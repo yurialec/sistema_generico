@@ -5,11 +5,11 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <div class="row">
-                <div class="col-sm-3 text-left">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-3 text-md-left text-center mb-2 mb-md-0">
                     <h3>Permissões</h3>
                 </div>
-                <div class="col-sm-6 text-center">
+                <div class="col-12 col-md-6 text-center mb-2 mb-md-0">
                     <div class="input-group">
                         <input type="text" class="form-control" v-model="searchFilter" />
                         <button type="button" class="btn btn-primary" @click="pesquisar()">
@@ -17,7 +17,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-3 text-end">
+                <div class="col-12 col-md-3 text-md-end text-end">
                     <a :href="urlCreatePermission" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>
