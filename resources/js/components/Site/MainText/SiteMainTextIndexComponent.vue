@@ -16,7 +16,7 @@
                     <h3>Texto principal</h3>
                 </div>
 
-                <div v-show="!this.main.id" class="col-md-6 text-end">
+                <div v-show="!this.main?.id" class="col-md-6 text-end">
                     <a :href="urlCreateMainText" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                 </div>
             </div>

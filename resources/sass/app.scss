@@ -290,7 +290,16 @@ canvas {
 }
 
 .sidebar.deactivate {
-    width: 60px;
+    width: 90px;
+}
+
+.sidebar.deactivate .sidebar-nav span {
+    display: none;
+
+    @media(max-width: 768px) {
+
+        display: contents;
+    }
 }
 
 .sidebar .sidebar-nav {

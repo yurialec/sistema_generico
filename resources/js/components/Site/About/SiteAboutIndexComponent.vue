@@ -152,18 +152,14 @@ export default {
                 axios.delete('/admin/site/site-about/delete/' + this.aboutToDelete)
                     .then(response => {
                         this.getAbout();
-                        this.selectedAbout = null;
+                        this.aboutToDelete = null;
 
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
                         if (modal) {
                             modal.hide();
                         }
 
-                        if (response.data == '') {
-                            this.alertStatus = 'notAllowed';
-                        } else {
-                            this.alertStatus = true;
-                        }
+                        this.alertStatus = response.data === '' ? 'notAllowed' : true;
                     })
                     .catch(errors => {
                         const modal = Modal.getInstance(document.getElementById('exampleModal'));
