@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ValidRoutesController;
+use App\Http\Controllers\Auth\EcommerceAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Blog\BlogController;
@@ -43,6 +44,14 @@ Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkE
 
 Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
 Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
+
+
+Route::prefix('ecommerce')->group(function () {
+    Route::get('/login', [EcommerceAuthController::class, 'loginEcommerce'])->name('ecommerce.login');
+    Route::get('/register', [EcommerceAuthController::class, 'registerForm'])->name('ecommerce.register');
+    Route::post('/register', [EcommerceAuthController::class, 'registerStore'])->name('ecommerce.store');
+});
+
 
 Route::middleware('auth')->group(function () {
 

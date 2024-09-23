@@ -13,9 +13,8 @@
                 <li><a href="{{ route('about') }}">Sobre</a></li>
                 <li><a href="{{ route('contact') }}">Contato</a></li>
                 <li><a href="{{ route('site.blog.index') }}">Blog</a></li>
-                @if(Route::getCurrentRoute()->uri !== "login")
-                <li><a href="{{ route('login') }}">Login</a></li>
-                @endif
+                
+                <li><a href="{{ route('ecommerce.login') }}">Login</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>

@@ -16,6 +16,8 @@
         @else
         @endif
 
+        <p>O costumer está logado</p>
+
         @if (isset($about) && !empty($about))
         <section id="about" class="about section">
             <div class="container section-title" data-aos="fade-up">
@@ -142,6 +144,7 @@
                         <li><a href="{{ route('about') }}">Sobre</a></li>
                         <li><a href="{{ route('contact') }}">Contato</a></li>
                         <li><a href="{{ route('site.blog.index') }}">Blog</a>
+                        <li><a href="{{ route('login') }}">Área Restrita</a>
                     </ul>
                 </div>
 
