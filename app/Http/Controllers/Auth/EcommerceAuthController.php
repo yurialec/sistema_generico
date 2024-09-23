@@ -37,12 +37,6 @@ class EcommerceAuthController extends Controller
     {
         $data = $request->all();
 
-        Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:costumers'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => ['required'],
-        ]);
+        dd($data);
     }
 }
