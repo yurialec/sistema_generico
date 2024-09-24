@@ -53,6 +53,7 @@ Route::prefix('ecommerce')->group(function () {
     Route::post('/register', [RegisterController::class, 'store'])->name('ecommerce.store');
 });
 
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'redirect.client'])->group(function () {
 
@@ -191,8 +192,5 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
             $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
             return $response->json();
         });
-
-        //AUTH
-        Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     });
 });

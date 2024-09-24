@@ -19,9 +19,9 @@
                                     class="form-control @error('email') is-invalid @enderror" name="email"
                                     value="{{ old('email') }}" required autocomplete="email" autofocus>
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
 
@@ -31,9 +31,9 @@
                                     class="form-control @error('password') is-invalid @enderror" name="password"
                                     required autocomplete="current-password">
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
 
@@ -52,10 +52,10 @@
                                     {{ __('Login') }}
                                 </button>
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link d-block text-center mt-3"
-                                        href="{{ route('password.request') }}">
-                                        {{ __('Esqueceu sua senha?') }}
-                                    </a>
+                                <a class="btn btn-link d-block text-center mt-3"
+                                    href="{{ route('password.request') }}">
+                                    {{ __('Esqueceu sua senha?') }}
+                                </a>
                                 @endif
                             </div>
                         </form>

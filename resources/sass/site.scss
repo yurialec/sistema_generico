@@ -246,6 +246,76 @@ h6 {
         position: relative;
     }
 
+    /* MENU COSTUMER */
+
+    .navmenu .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: var(--nav-dropdown-background-color);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 0;
+        list-style: none;
+    }
+
+    .navmenu .dropdown-menu li {
+        width: 100%;
+    }
+
+    .navmenu .dropdown-menu a {
+        display: block;
+        padding: 10px 20px;
+        color: var(--nav-dropdown-color);
+        text-decoration: none;
+    }
+
+    .navmenu .dropdown-menu a:hover {
+        background-color: var(--nav-hover-color);
+        color: var(--contrast-color);
+    }
+
+    .cart-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .cart-container .bi-cart4 {
+        font-size: 24px;
+        color: var(--nav-color);
+        margin-right: 10px;
+    }
+
+    .cart-container .cart-count {
+        position: absolute;
+        top: -5px;
+        left: 25px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .cart-container:hover .bi-cart4,
+    .cart-container:hover .cart-count {
+        transform: scale(1.1);
+        transition: 0.3s ease;
+    }
+
+    #welcomeAlert {
+        margin: 5px;
+    }
+
+    /* FRIM MENU COSTUMER */
+
     .navmenu a,
     .navmenu a:focus {
         color: var(--nav-color);
