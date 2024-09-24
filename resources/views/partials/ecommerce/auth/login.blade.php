@@ -11,23 +11,29 @@
                                 <h3 class="text-center font-weight-light my-4">Entrar na loja</h3>
                             </div>
                             <div class="card-body">
-                                <form method="POST" action="{{route('ecommerce.register')}}">
+                                <form method="POST" action="{{ route('login') }}">
+                                    @csrf
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
+                                        <input class="form-control" id="inputEmail" type="email"
+                                            placeholder="name@example.com" />
                                         <label for="inputEmail">Email</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                                        <input class="form-control" id="inputPassword" type="password"
+                                            placeholder="Password" />
                                         <label for="inputPassword">Password</label>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                         <a class="small" href="password.html">Esqueceu a senha?</a>
-                                        <a class="btn btn-primary" href="index.html">Login</a>
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {{ __('Login') }}
+                                        </button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center py-3">
-                                <div class="small"><a href="{{route('ecommerce.register')}}">Precisa e uma conta? Registr-se!</a></div>
+                                <div class="small"><a href="{{ route('ecommerce.register') }}">Precisa e uma conta?
+                                        Registr-se!</a></div>
                             </div>
                         </div>
                     </div>

@@ -27,16 +27,4 @@ class EcommerceAuthController extends Controller
             'email' => 'Credenciais inválidas.',
         ]);
     }
-
-    public function registerForm()
-    {
-        return view('partials.ecommerce.auth.register');
-    }
-
-    public function registerStore(RegisterCostumerRequest $request)
-    {
-        $data = $request->all();
-
-        dd($data);
-    }
 }
