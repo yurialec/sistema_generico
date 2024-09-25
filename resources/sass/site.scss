@@ -314,7 +314,7 @@ h6 {
         margin: 5px;
     }
 
-    /* FRIM MENU COSTUMER */
+    /* FIM MENU COSTUMER */
 
     .navmenu a,
     .navmenu a:focus {
@@ -329,6 +329,7 @@ h6 {
         justify-content: space-between;
         white-space: nowrap;
         transition: 0.3s;
+        text-decoration: none;
     }
 
     .navmenu a i,
