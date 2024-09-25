@@ -20,7 +20,6 @@ use App\Http\Controllers\Site\SiteBlogController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +44,6 @@ Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkE
 
 Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
 Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
-
 
 Route::prefix('ecommerce')->group(function () {
     Route::get('/login', [EcommerceAuthController::class, 'loginEcommerce'])->name('ecommerce.login');
@@ -191,8 +189,5 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
             $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
             return $response->json();
         });
-
-        //AUTH
-        Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     });
 });
