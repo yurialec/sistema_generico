@@ -49,9 +49,6 @@
                 <li><a href="{{ route('about') }}">Sobre</a></li>
                 <li><a href="{{ route('contact') }}">Contato</a></li>
                 <li><a href="{{ route('site.blog.index') }}">Blog</a></li>
-                @guest
-                <li><a href="{{ route('ecommerce.login') }}">Entrar na loja</a></li>
-                @endguest
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
