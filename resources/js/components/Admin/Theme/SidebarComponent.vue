@@ -39,10 +39,6 @@
 export default {
     name: 'Sidebar',
     props: {
-        menus: {
-            type: Array,
-            required: true
-        },
         urlHome: String,
         logo: String,
     },
