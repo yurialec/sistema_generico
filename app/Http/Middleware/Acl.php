@@ -24,15 +24,15 @@ class Acl
 
         $userPermissions = Auth::user()->role->permissions->toArray();
         foreach ($userPermissions as $up) {
-            if (!in_array($permission, $up)) {
-                return redirect()
-                    ->route('home')
-                    ->withErrors([
-                        'message' => 'Você não tem permissão para acessar essa funcionalidade'
-                    ]);
+            if (in_array($permission, $up)) {
+                return $next($request);
             }
         }
 
-        return $next($request);
+        return redirect()
+            ->route('home')
+            ->withErrors([
+                'message' => 'Você não tem permissão para acessar essa funcionalidade'
+            ]);
     }
 }
