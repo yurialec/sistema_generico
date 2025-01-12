@@ -10,13 +10,11 @@ use App\Http\Controllers\Auth\EcommerceAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\MainTextController;
 use App\Http\Controllers\Site\SiteAboutController;
-use App\Http\Controllers\Site\SiteBlogController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
@@ -42,10 +40,6 @@ Route::get('/', [SiteController::class, 'index'])->name('index.site');
 Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-
-Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
-Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
-
 
 Route::prefix('ecommerce')->group(function () {
     Route::get('/login', [EcommerceAuthController::class, 'loginEcommerce'])->name('ecommerce.login');
@@ -113,6 +107,7 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                 Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('menu.edit');
                 Route::post('/update/{id}', [MenuController::class, 'update'])->name('menu.update');
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
+                Route::post('/change-order-menu/{id}', [MenuController::class, 'changeOrderMenu'])->name('menu.changeOrderMenu');
             });
 
             Route::prefix('site/')->group(function () {
@@ -175,16 +170,6 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                     Route::post('/update/{id}', [SocialMediaController::class, 'update'])->name('site.socialmedia.update');
                     Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');
                 });
-            });
-
-            Route::prefix('blog')->group(function () {
-                Route::get('/', [BlogController::class, 'index'])->name('blog.index');
-                Route::get('/list', [BlogController::class, 'list'])->name('blog.list');
-                Route::get('/create', [BlogController::class, 'create'])->name('blog.create');
-                Route::post('/store', [BlogController::class, 'store'])->name('blog.store');
-                Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
-                Route::post('/update/{id}', [BlogController::class, 'update'])->name('blog.update');
-                Route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
             });
         });
 

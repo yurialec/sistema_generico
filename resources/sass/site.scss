@@ -28,13 +28,13 @@
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
 :root {
-    --background-color: #F0F8FF;
+    --background-color: #ffffff;
     /* Background color for the entire website, including individual sections */
     --default-color: #444444;
     /* Default color used for the majority of the text content across the entire website */
     --heading-color: #384046;
     /* Color for headings, subheadings and title throughout the website */
-    --accent-color: #3498db;
+    --accent-color: #1E90FF;
     /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
     --surface-color: #ffffff;
     /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
@@ -46,7 +46,7 @@
 :root {
     --nav-color: #444444;
     /* The default color of the main navmenu links */
-    --nav-hover-color: #3498db;
+    --nav-hover-color: #1E90FF;
     /* Applied to main navmenu links when they are hovered over or active */
     --nav-mobile-background-color: #ffffff;
     /* Used as the background color for mobile navigation menu */
@@ -54,7 +54,7 @@
     /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
     --nav-dropdown-color: #444444;
     /* Used for navigation links of the dropdown items in the navigation menu. */
-    --nav-dropdown-hover-color: #3498db;
+    --nav-dropdown-hover-color: #1E90FF;
     /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
@@ -245,76 +245,6 @@ h6 {
     .navmenu li {
         position: relative;
     }
-
-    /* MENU COSTUMER */
-
-    .navmenu .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: var(--nav-dropdown-background-color);
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        padding: 0;
-        list-style: none;
-    }
-
-    .navmenu .dropdown-menu li {
-        width: 100%;
-    }
-
-    .navmenu .dropdown-menu a {
-        display: block;
-        padding: 10px 20px;
-        color: var(--nav-dropdown-color);
-        text-decoration: none;
-    }
-
-    .navmenu .dropdown-menu a:hover {
-        background-color: var(--nav-hover-color);
-        color: var(--contrast-color);
-    }
-
-    .cart-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .cart-container .bi-cart4 {
-        font-size: 24px;
-        color: var(--nav-color);
-        margin-right: 10px;
-    }
-
-    .cart-container .cart-count {
-        position: absolute;
-        top: -5px;
-        left: 25px;
-        background-color: red;
-        color: white;
-        font-size: 12px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-    }
-
-    .cart-container:hover .bi-cart4,
-    .cart-container:hover .cart-count {
-        transform: scale(1.1);
-        transition: 0.3s ease;
-    }
-
-    #welcomeAlert {
-        margin: 5px;
-    }
-
-    /* FRIM MENU COSTUMER */
 
     .navmenu a,
     .navmenu a:focus {
@@ -1927,38 +1857,16 @@ section,
 
 //FIM CARROUSEL
 
-//INICIO BLOG
-
-.blog-section {
-    padding: 20px;
-}
-
-.blog-card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: none;
+//INICIO DIV PAGINA CONTATO
+.div-contact-page {
     border-radius: 10px;
-    transition: transform 0.2s;
+    background-color: --var(--accent-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    bdisplay: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 70px 0;
 }
 
-.blog-card:hover {
-    transform: translateY(-5px);
-}
-
-.card-img-top {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    height: 225px;
-    width: 100%;
-    object-fit: cover;
-}
-
-.card-text {
-    font-size: 15px;
-    text-align: left;
-}
-
-.btn-group {
-    text-align: left;
-}
-
-//FIM BLOG
+//FIM DIV PAGINA CONTATO

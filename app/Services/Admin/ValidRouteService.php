@@ -54,7 +54,6 @@ class ValidRouteService
             "roles.list.permissions",
             "about",
             "contact",
-            "site.blog.post",
         ];
 
         $route_name = array_filter($route_name, function ($route) use ($removeItems) {

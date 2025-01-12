@@ -37,6 +37,7 @@
                         <th scope="col">Nome</th>
                         <th scope="col">Ícone</th>
                         <th scope="col">Url</th>
+                        <th scope="col">Ordem</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
@@ -46,6 +47,11 @@
                         <td>{{ menu.label }}</td>
                         <td><i :class="menu.icon"></i></td>
                         <td>{{ menu.url }}</td>
+                        <td>{{ menu.order }}&nbsp;
+                            <button @click="changeOrderMenu(menu.id)" v-if="menu.order > 1" class="btn btn-sm">
+                                <i class="bi bi-chevron-double-up"></i>
+                            </button>
+                        </td>
                         <td>
                             <a :href="'menu/edit/' + menu.id">
                                 <i class="bi bi-pencil-square"></i>
@@ -119,11 +125,11 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getUsuarios('admin/menu/list', this.searchFilter);
+            this.getMenus('admin/menu/list', this.searchFilter);
         },
         pagination(url) {
             if (url) {
-                this.getUsuarios(url);
+                this.getMenus(url);
             }
         },
         getMenus(url = 'admin/menu/list') {
@@ -166,6 +172,15 @@ export default {
                     });
             }
         },
+        changeOrderMenu(menuId) {
+            axios.post('/admin/menu/change-order-menu/' + menuId)
+                .then(response => {
+                    this.getMenus();
+                })
+                .catch(errors => {
+                    console.log(errors.response.data);
+                });
+        }
     }
 }
 </script>

@@ -14,11 +14,23 @@ class MenusSeeder extends Seeder
     public function run()
     {
         DB::table('menus')->insert([
+            'label' => 'Home',
+            'icon' => 'bi bi-house',
+            'url' => '/admin/home',
+            'active' => 1,
+            'son' => null,
+            'order' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('menus')->insert([
             'label' => 'Administrativo',
             'icon' => 'bi bi-house-gear',
             'url' => '#',
             'active' => 1,
             'son' => null,
+            'order' => 2,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -70,6 +82,7 @@ class MenusSeeder extends Seeder
             'url' => '#',
             'active' => 1,
             'son' => null,
+            'order' => 3,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -134,15 +147,14 @@ class MenusSeeder extends Seeder
         ]);
 
         DB::table('menus')->insert([
-            'label' => 'Blog',
-            'icon' => 'bi bi-journals',
-            'url' => '/admin/blog/',
+            'label' => 'Sair',
+            'icon' => 'bi bi-box-arrow-right',
+            'url' => '/admin/logout',
             'active' => 1,
             'son' => null,
+            'order' => 5,
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
-        $siteMenuId = DB::getPdo()->lastInsertId();
     }
 }

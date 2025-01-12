@@ -15,20 +15,23 @@ class SiteController extends Controller
         $contact = $this->contactSite();
         $socialmedias = $this->socialmedias();
         $about = $this->aboutSite();
-        $siteblogs = $this->siteblogs();
 
-        return view('site', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about', 'siteblogs'));
+        return view('site', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about'));
     }
 
     public function about()
     {
         $about = $this->aboutSite();
-        return view('partials.about.index', compact('about'));
+        $socialmedias = $this->socialmedias();
+
+        return view('partials.about.index', compact('about', 'socialmedias'));
     }
 
     public function contact()
     {
         $contact = $this->contactSite();
-        return view('partials.contact.index', compact('contact'));
+        $socialmedias = $this->socialmedias();
+
+        return view('partials.contact.index', compact('contact', 'socialmedias'));
     }
 }

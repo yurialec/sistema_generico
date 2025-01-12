@@ -1,4 +1,4 @@
 <sidebar-component
-    logo="{{App\Models\Site\SiteLogo::first()->image ?? ''}}"
-    url-home="{{ route('home') }}">
+    user-name="{{ auth()->user()->name }}"
+    role="{{auth()->user()->role->name}}">
 </sidebar-component>

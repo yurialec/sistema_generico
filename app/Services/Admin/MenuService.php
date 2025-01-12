@@ -74,4 +74,9 @@ class MenuService
     {
         return $this->menuRepository->delete($id);
     }
+
+    public function changeOrderMenu($id)
+    {
+        return $this->menuRepository->changeOrderMenu($id);
+    }
 }

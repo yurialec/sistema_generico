@@ -20,8 +20,5 @@ class ModuleSeeder extends Seeder
         Modules::insert([
             'name' => 'Site',
         ]);
-        Modules::insert([
-            'name' => 'Blog',
-        ]);
     }
 }

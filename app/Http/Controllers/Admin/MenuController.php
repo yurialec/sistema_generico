@@ -17,7 +17,11 @@ class MenuController extends Controller
 
     public function menus()
     {
-        $menus = Menu::with('children')->whereNull('son')->get();
+        $menus = Menu::with('children')
+            ->whereNull('son')
+            ->orderBy('order', 'asc')
+            ->get();
+
         return response()->json($menus);
     }
 
@@ -101,6 +105,23 @@ class MenuController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir usuário'
+            ], 204);
+        }
+    }
+
+    public function changeOrderMenu($id)
+    {
+        $changedMenu = $this->menuService->changeOrderMenu($id);
+        if ($changedMenu) {
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Ordem alterada com sucesso',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao alterar ordem'
             ], 204);
         }
     }
