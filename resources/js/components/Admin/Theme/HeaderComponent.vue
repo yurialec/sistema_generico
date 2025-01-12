@@ -3,7 +3,7 @@
         <a class="navbar-brand ps-3" :href="urlHome">
             <img v-if="logo" :src="'/storage/' + logo" alt="Logo" class="logo-img"
                 style="max-width: 100%; height: 50px;">
-            <h3 v-else>APEMIGOS</h3>
+            <h3 v-else>HOME</h3>
         </a>
 
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"

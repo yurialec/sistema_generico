@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ValidRoutesController;
-use App\Http\Controllers\Auth\EcommerceAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -18,6 +17,7 @@ use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\Site\SiteCarouselController;
 use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
+use App\Http\Middleware\Acl;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -41,26 +41,17 @@ Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::post('/password-reset', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-Route::prefix('ecommerce')->group(function () {
-    Route::get('/login', [EcommerceAuthController::class, 'loginEcommerce'])->name('ecommerce.login');
-    Route::get('/register', [RegisterController::class, 'registerForm'])->name('ecommerce.register');
-    Route::post('/register', [RegisterController::class, 'store'])->name('ecommerce.store');
-});
-
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::middleware(['auth', 'redirect.client'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin/')->group(function () {
 
-        //dont need acl
         Route::get('home', [HomeController::class, 'index'])->name('home');
         Route::get('menus', [MenuController::class, 'menus'])->name('menus');
-        Route::get('modules/list', [ModuleController::class, 'list'])->name('modules.list');
+        Route::get('/users/profile-view', [UserController::class, 'profileView'])->name('profile.view');
+        Route::get('/users/profile', [UserController::class, 'profile'])->name('profile');
+        Route::get('/logout', [LoginController::class, 'logout'])->name(name: 'logout');
 
-
-        Route::middleware('acl')->group(function () {
-
+        Route::middleware(['acl:manter-usuarios'])->group(function () {
             Route::prefix('users')->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('users.index');
                 Route::get('/list', [UserController::class, 'list'])->name('users.list');
@@ -69,12 +60,10 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                 Route::get('/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
                 Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
                 Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
-
-                //dont need acl
-                Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
-                Route::get('/profile', [UserController::class, 'profile'])->name('profile');
             });
+        });
 
+        Route::middleware(['acl:manter-perfis'])->group(callback: function () {
             Route::prefix('roles')->group(function () {
                 Route::get('/', [RoleController::class, 'index'])->name('roles.index');
                 Route::get('/list', [RoleController::class, 'list'])->name('roles.list');
@@ -83,11 +72,11 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                 Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('roles.edit');
                 Route::post('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
                 Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('roles.delete');
-
-                //dont need acl
                 Route::get('/list-permissions', [RoleController::class, 'listPermissions'])->name('roles.list.permissions');
             });
+        });
 
+        Route::middleware(['acl:manter-permissoes'])->group(callback: function () {
             Route::prefix('permissions')->group(function () {
                 Route::get('/', [PermissionController::class, 'index'])->name('permissions.index');
                 Route::get('/list', [PermissionController::class, 'list'])->name('permissions.list');
@@ -96,9 +85,10 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                 Route::get('/edit/{id}', [PermissionController::class, 'edit'])->name('permissions.edit');
                 Route::post('/update/{id}', [PermissionController::class, 'update'])->name('permissions.update');
                 Route::delete('/delete/{id}', [PermissionController::class, 'delete'])->name('permissions.delete');
-                Route::get('/valid-routes', [ValidRoutesController::class, 'index'])->name('valid.routes.index');
             });
+        });
 
+        Route::middleware(['acl:manter-menus'])->group(callback: function () {
             Route::prefix('menu')->group(function () {
                 Route::get('/', [MenuController::class, 'index'])->name('menu.index');
                 Route::get('/list', [MenuController::class, 'list'])->name('menu.list');
@@ -109,8 +99,10 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
                 Route::post('/change-order-menu/{id}', [MenuController::class, 'changeOrderMenu'])->name('menu.changeOrderMenu');
             });
+        });
 
-            Route::prefix('site/')->group(function () {
+        Route::prefix('site/')->group(function () {
+            Route::middleware(['acl:manter-logo'])->group(callback: function () {
                 Route::prefix('logo')->group(function () {
                     Route::get('/', [LogoController::class, 'index'])->name('site.logo.index');
                     Route::get('/list', [LogoController::class, 'list'])->name('site.logo.list');
@@ -120,7 +112,9 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                     Route::post('/update/{id}', [LogoController::class, 'update'])->name('site.logo.update');
                     Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
                 });
+            });
 
+            Route::middleware(['acl:manter-texto-principal'])->group(callback: function () {
                 Route::prefix('main-text')->group(function () {
                     Route::get('/', [MainTextController::class, 'index'])->name('site.maintext.index');
                     Route::get('/list', [MainTextController::class, 'list'])->name('site.maintext.list');
@@ -130,7 +124,9 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                     Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
                     Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
                 });
+            });
 
+            Route::middleware(['acl:manter-carousel'])->group(callback: function () {
                 Route::prefix('carousel')->group(function () {
                     Route::get('/', [SiteCarouselController::class, 'index'])->name('site.carousel.index');
                     Route::get('/list', [SiteCarouselController::class, 'list'])->name('site.carousel.list');
@@ -140,7 +136,9 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                     Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
                     Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
                 });
+            });
 
+            Route::middleware(['acl:manter-sobre'])->group(callback: function () {
                 Route::prefix('site-about')->group(function () {
                     Route::get('/', [SiteAboutController::class, 'index'])->name('site.about.index');
                     Route::get('/list', [SiteAboutController::class, 'list'])->name('site.about.list');
@@ -150,7 +148,9 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                     Route::post('/update/{id}', [SiteAboutController::class, 'update'])->name('site.about.update');
                     Route::delete('/delete/{id}', [SiteAboutController::class, 'delete'])->name('site.about.delete');
                 });
+            });
 
+            Route::middleware(['acl:manter-contato'])->group(callback: function () {
                 Route::prefix('contact')->group(function () {
                     Route::get('/', [ContactController::class, 'index'])->name('site.contact.index');
                     Route::get('/list', [ContactController::class, 'list'])->name('site.contact.list');
@@ -160,7 +160,9 @@ Route::middleware(['auth', 'redirect.client'])->group(function () {
                     Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
+            });
 
+            Route::middleware(['acl:manter-midias-sociais'])->group(callback: function () {
                 Route::prefix('social-media')->group(function () {
                     Route::get('/', [SocialMediaController::class, 'index'])->name('site.socialmedia.index');
                     Route::get('/list', [SocialMediaController::class, 'list'])->name('site.socialmedia.list');

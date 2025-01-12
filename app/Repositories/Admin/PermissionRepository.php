@@ -18,7 +18,7 @@ class PermissionRepository implements PermissionRepositoryInterface
     {
         return $this->permission
             ->when($term, function ($query) use ($term) {
-                return $query->where('name', 'like', '%' . $term . '%');
+                return $query->where('label', 'like', '%' . $term . '%');
             })
             ->paginate(10);
     }

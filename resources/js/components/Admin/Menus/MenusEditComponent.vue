@@ -44,6 +44,11 @@
                         <input type="text" class="form-control" v-model="menu.menu[0].icon">
                     </div>
 
+                    <div class="form-group">
+                        <label>Url</label>
+                        <input type="text" class="form-control" v-model="menu.menu[0].url">
+                    </div>
+
                     <div class="container mt-3">
                         <div class="row">
                             <div class="col-sm text-start">
