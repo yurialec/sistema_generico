@@ -34,9 +34,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [SiteController::class, 'index'])->name('index.site');
-Route::get('/sobre', [SiteController::class, 'about'])->name('about');
-Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
+Route::get('/', [SiteController::class, 'index'])->name('site.home');
+Route::get('/sobre', [SiteController::class, 'about'])->name('site.about');
+Route::get('/contato', [SiteController::class, 'contact'])->name('site.contact');
 
 Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
 Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
