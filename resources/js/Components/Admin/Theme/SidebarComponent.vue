@@ -77,18 +77,32 @@
 export default {
     name: 'Sidebar',
     props: {
-
     },
     data() {
         return {
-
+            loading: false,
+            sidebar: [],
         };
+    },
+    mounted() {
+        this.getSidebarMenu();
     },
     created() {
 
     },
     methods: {
-
+        getSidebarMenu() {
+            this.loading = true;
+            axios.get('admin/sidebar')
+                .then(response => {
+                    this.sidebar = response.data.sidebar;
+                })
+                .catch(errors => {
+                    console.log(errors.message);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        }
     }
 };
 </script>

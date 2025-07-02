@@ -15,10 +15,20 @@ class MenuController extends Controller
         $this->menuService = $menuService;
     }
 
-    public function menus()
+    public function sidebar()
     {
-        $menus = Menu::with('children')->whereNull('son')->get();
-        return response()->json($menus);
+        $sidebar = $this->menuService->sidebar();
+        if ($sidebar) {
+            return response()->json([
+                'status' => true,
+                'sidebar' => $sidebar,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao carregar sidebar.'
+            ], 500);
+        }
     }
 
     public function index()
@@ -44,7 +54,7 @@ class MenuController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar menu'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -60,7 +70,7 @@ class MenuController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -84,7 +94,7 @@ class MenuController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar menu'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -101,7 +111,7 @@ class MenuController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir usuário'
-            ], 204);
+            ], 500);
         }
     }
 }

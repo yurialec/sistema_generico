@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin/')->group(function () {
         //dont need acl
         Route::get('home', [HomeController::class, 'index'])->name('home');
-        Route::get('menus', [MenuController::class, 'menus'])->name('menus');
+        Route::get('sidebar', [MenuController::class, 'sidebar'])->name('sidebar');
         Route::get('modules/list', [ModuleController::class, 'list'])->name('modules.list');
         Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 

@@ -13,6 +13,11 @@ class MenuService
         $this->menuRepository = $menuRepository;
     }
 
+    public function sidebar()
+    {
+        return $this->menuRepository->sidebar();
+    }
+
     public function getAllMenus($term)
     {
         return $this->menuRepository->all($term);

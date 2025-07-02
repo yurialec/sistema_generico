@@ -5,6 +5,7 @@ namespace App\Repositories\Admin;
 use App\Interfaces\Admin\MenuRepositoryInterface;
 use App\Models\Admin\Menu;
 use Exception;
+use Log;
 
 class MenuRepository implements MenuRepositoryInterface
 {
@@ -13,6 +14,20 @@ class MenuRepository implements MenuRepositoryInterface
     public function __construct(Menu $menu)
     {
         $this->menu = $menu;
+    }
+
+    public function sidebar()
+    {
+        try {
+            return $this->menu
+                ->with('children')
+                ->whereNulls('son')
+                ->get();
+
+        } catch (Exception $err) {
+            Log::error('Erro sidebar', ['Erro' => $err->getMessage()]);
+            return false;
+        }
     }
 
     public function all($term)
