@@ -34,7 +34,7 @@ class SiteAboutController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -63,7 +63,7 @@ class SiteAboutController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar configuração'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -92,7 +92,7 @@ class SiteAboutController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar Contrúdo Sobre'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -112,7 +112,7 @@ class SiteAboutController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir Conteúdo Sobre'
-            ], 204);
+            ], 500);
         }
     }
 }

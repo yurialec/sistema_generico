@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <users-create-component
     url-index-user="{{ route('users.index') }}">

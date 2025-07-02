@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-about-index-component
     url-create-about="{{ route('site.about.create') }}">

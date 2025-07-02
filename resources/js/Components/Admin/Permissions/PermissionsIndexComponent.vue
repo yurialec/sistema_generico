@@ -1,77 +1,91 @@
 <template>
-    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <div class="row align-items-center">
-                <div class="col-12 col-md-3 text-md-left text-center mb-2 mb-md-0">
-                    <h3>Permissões</h3>
-                </div>
-                <div class="col-12 col-md-6 text-center mb-2 mb-md-0">
-                    <div class="input-group">
-                        <input type="text" class="form-control" v-model="searchFilter" />
-                        <button type="button" class="btn btn-primary" @click="pesquisar()">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-12 col-md-3 text-md-end text-end">
-                    <a :href="urlCreatePermission" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="loading" class="d-flex justify-content-center">
+    <div>
+        <div v-if="loading" class="d-flex justify-content-center my-4">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-
-        <div v-else class="card-body">
-            <div class="table-responsive">
-                <table class="table table-sm table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center">#</th>
-                            <th scope="col" class="text-center">Nome</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="permission in permissions.data" :key="permission.id">
-                            <td class="text-center">{{ permission.id }}</td>
-                            <td class="text-center">{{ permission.label }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div v-else class="card">
+            <div class="card-header py-2">
+                <div class="row align-items-center g-2">
+                    <div class="col-md-3 col-12">
+                        <h5 class="mb-0">Permissões</h5>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" v-model="searchFilter"
+                                placeholder="Buscar..." />
+                            <button type="button" class="btn btn-sm btn-primary" @click="search">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12 text-md-end">
+                        <a :href="urlCreatePermission" class="btn btn-sm btn-success">
+                            <i class="bi bi-plus-circle me-1"></i> Cadastrar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-2">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover text-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Label</th>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(permission, index) in permissions.data" :key="permission.id">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ permission.label }}</td>
+                                <td>{{ permission.name }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger me-1" data-bs-toggle="modal"
+                                        data-bs-target="#modalDelete" @click="confirmExclusion(permission.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <a :href="urlEditPermission.replace('_id', permission.id)"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr v-if="permissions.data.length === 0">
+                                <td colspan="4" class="text-center">Nenhum registro encontrado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer py-2">
+                <nav v-if="permissions.links.length > 0">
+                    <ul class="pagination pagination-sm justify-content-center mb-0">
+                        <li v-for="(link, i) in permissions.links" :key="i"
+                            :class="['page-item', { active: link.active, disabled: !link.url }]">
+                            <a class="page-link" href="#" v-html="link.label" @click.prevent="pagination(link.url)"></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
-        <div class="card-footer">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li v-for="(link, key) in permissions.links" :key="key" class="page-item"
-                        :class="{ 'active': link.active }">
-                        <a class="page-link" href="#" @click.prevent="paginacao(link.url)" v-html="link.label"></a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação de Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Tem certeza que deseja deletar este registro?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" @click="excluirRegistro">Excluir</button>
+        <div class="modal fade" id="modalDelete" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="mb-0">Deseja realmente excluir este registro?</p>
+                        <button type="button" class="btn btn-sm btn-secondary m-1"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-sm btn-danger" @click="deleteRegister">Excluir</button>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,66 +99,66 @@ import { Modal } from 'bootstrap';
 export default {
     props: {
         urlCreatePermission: String,
+        urlEditPermission: String,
     },
     data() {
         return {
+            loading: false,
             permissions: {
                 data: [],
                 links: []
             },
             searchFilter: '',
             permissionToDelete: null,
-            alertStatus: null,
-            msg: [],
-            loading: null,
         };
     },
     mounted() {
         this.getPermissions();
     },
     methods: {
-        confirmarExclusao(permissionId) {
-            this.permissionToDelete = permissionId;
-        },
-        excluirRegistro() {
-            if (this.permissionToDelete !== null) {
-                axios.delete('/admin/permissions/delete/' + this.permissionToDelete)
-                    .then(response => {
-                        this.getPermissions();
-                        this.permissionToDelete = null;
-                        // Fecha a modal
-                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        this.alertStatus = true;
-                    })
-                    .catch(errors => {
-
-                    });
-            }
-        },
-        pesquisar() {
-            this.getPermissions(`/admin/permissions/list?search=${this.searchFilter}`);
-        },
-        paginacao(url) {
-            if (url) {
-                this.getPermissions(url);
-            }
-        },
         getPermissions(url = '/admin/permissions/list') {
             this.loading = true;
             axios.get(url)
                 .then(response => {
                     this.permissions = response.data.permission;
-
                 })
                 .catch(errors => {
-
+                    alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
+        },
+        search() {
+            this.getPermissions(`/admin/permissions/list?search=${this.searchFilter}`);
+        },
+        pagination(url) {
+            if (url) {
+                this.getPermissions(url);
+            }
+        },
+        confirmExclusion(permissionId) {
+            this.permissionToDelete = permissionId;
+        },
+        deleteRegister() {
+            if (this.permissionToDelete !== null) {
+                axios.delete('/admin/permissions/delete/' + this.permissionToDelete)
+                    .then(response => {
+                        this.permissionToDelete = null;
+                        this.getPermissions();
+
+                        const modal = Modal.getInstance(document.getElementById('modalDelete'));
+                        modal?.hide();
+                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+                        alertSuccess('Excluido com sucesso!');
+                    })
+                    .catch(errors => {
+                        alertDanger(errors);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            }
         },
     }
 }

@@ -21,9 +21,8 @@ class MenuRepository implements MenuRepositoryInterface
         try {
             return $this->menu
                 ->with('children')
-                ->whereNulls('son')
+                ->whereNull('son')
                 ->get();
-
         } catch (Exception $err) {
             Log::error('Erro sidebar', ['Erro' => $err->getMessage()]);
             return false;

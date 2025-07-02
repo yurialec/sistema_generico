@@ -1,7 +1,7 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
     <permissions-edit-component
-        permission-by-id="{{ json_encode($permission) }}"
+        id="{{ $id }}"
         url-index-permissions="{{ route('permissions.index') }}">
     </permissions-edit-component>
 @endsection

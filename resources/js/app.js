@@ -1,11 +1,10 @@
 import './bootstrap';
 import './sidebar';
+
 import { createApp, defineAsyncComponent } from 'vue';
-import Swal from 'sweetalert2';
+import FloatingAlert from './Components/FloatingAlert.vue';
 
 const app = createApp({});
-
-app.config.globalProperties.$swal = Swal;
 
 const components = import.meta.glob('./Components/**/*.vue');
 for (const [path, definition] of Object.entries(components)) {
@@ -14,3 +13,14 @@ for (const [path, definition] of Object.entries(components)) {
 }
 
 app.mount('#app');
+
+const alertApp = createApp(FloatingAlert);
+const alertInstance = alertApp.mount(document.createElement('div'));
+document.body.appendChild(alertInstance.$el);
+
+window.alertSuccess = (msg) => {
+    alertInstance.show(msg, 'success');
+};
+window.alertDanger = (msg) => {
+    alertInstance.show(msg, 'danger');
+};

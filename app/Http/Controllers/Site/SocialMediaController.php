@@ -34,7 +34,7 @@ class SocialMediaController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -63,7 +63,7 @@ class SocialMediaController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar rede social'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -92,7 +92,7 @@ class SocialMediaController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar rede social'
-            ], 204);
+            ], 500);
         }
     }
 

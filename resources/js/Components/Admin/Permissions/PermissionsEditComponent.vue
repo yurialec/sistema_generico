@@ -1,46 +1,35 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar Permissão</h4>
-        </div>
-        <div class="card-body">
-            <div id="formulario" class="row justify-content-center">
-                <div class="col-sm-6">
-
-                    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in this.messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <form method="POST" action="" @submit.prevent="salvar()">
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" class="form-control" v-model="permission.name">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="text-start" style="margin-top: 10px;">
-                                        <a :href="this.urlIndexPermissions" class="btn btn-secondary btn-sm">Voltar</a>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-end" style="margin-top: 10px;">
-                                        <a href="#" class="btn btn-primary btn-sm" @click="salvar()">Salvar
-                                            Alterações</a>
-                                    </div>
-                                </div>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Editar Permissões</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div class="mb-3">
+                                <label for="descricao" class="form-label">Descrição</label>
+                                <input type="text" id="descricao" class="form-control" v-model="permission.label"
+                                    required />
                             </div>
-                        </div>
-                    </form>
+
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome</label>
+                                <input type="text" id="nome" class="form-control" v-model="permission.name" required />
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexPermissions" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,37 +41,46 @@ import axios from 'axios';
 
 export default {
     props: {
-        permissionById: {
-            type: Object,
-        },
+        id: String,
         urlIndexPermissions: String,
     },
     data() {
         return {
-            permission: JSON.parse(this.permissionById),
-            alertStatus: null,
-            msg: [],
+            loading: false,
+            permission: {
+                name: '',
+                label: '',
+            },
         };
     },
+    mounted() {
+        this.find();
+    },
     methods: {
-        salvar() {
-            axios.post('/admin/permissions/update/' + this.permission.id, this.permission)
+        find() {
+            this.loading = true;
+            axios.get('/admin/permissions/find/' + this.id)
                 .then(response => {
-                    this.alertStatus = true;
+                    this.permission = response.data.permission;
                 })
                 .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
+                    alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
                 });
-        }
+        },
+        save() {
+            this.loading = false;
+            axios.post('/admin/permissions/update/' + this.id, this.permission)
+                .then(response => {
+                    alertSuccess('Operação realizada com sucesso!');
+                })
+                .catch(errors => {
+                    alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
     }
 }
 </script>
-<style>
-#formulario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-}
-</style>

@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-carousel-index-component
     url-create-carousel="{{ route('site.carousel.create') }}">

@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-main-text-index-component
     url-create-main-text="{{ route('site.maintext.create') }}">>

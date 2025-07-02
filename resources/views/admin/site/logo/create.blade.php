@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-logo-create-component
     url-index-logo="{{ route('site.logo.index') }}">

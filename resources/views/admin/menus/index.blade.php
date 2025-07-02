@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
     <menus-index-component
         url-create-menu="{{ route('menu.create') }}">

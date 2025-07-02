@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-socialmedia-index-component
     url-create-social-media="{{ route('site.socialmedia.create') }}">

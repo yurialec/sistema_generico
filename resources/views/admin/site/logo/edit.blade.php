@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-logo-edit-component
     logo-by-id="{{ json_encode($logo) }}"

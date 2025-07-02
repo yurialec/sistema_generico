@@ -1,6 +1,6 @@
 <template>
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light shadow">
-        <a class="navbar-brand ps-3" href="">Home</a>
+        <a class="navbar-brand ps-3" :href="urlHome">Home</a>
 
         <!-- Botão de abrir sidebar -->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
@@ -37,6 +37,8 @@
 
 <script>
 export default {
-
+    props: {
+        urlHome: String,
+    },
 };
 </script>

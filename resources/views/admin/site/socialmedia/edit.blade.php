@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-socialmedia-edit-component
     social-media-by-id="{{ json_encode($socialmedia) }}"

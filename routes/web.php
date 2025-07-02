@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ValidRoutesController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\HomeController;
@@ -47,11 +45,12 @@ Route::middleware(['auth'])->group(function () {
         //dont need acl
         Route::get('home', [HomeController::class, 'index'])->name('home');
         Route::get('sidebar', [MenuController::class, 'sidebar'])->name('sidebar');
-        Route::get('modules/list', [ModuleController::class, 'list'])->name('modules.list');
         Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-        Route::middleware('acl')->group(function () {
+        Route::get('/users/profile-view', [UserController::class, 'profileView'])->name('profile.view');
+        Route::get('/users/profile', [UserController::class, 'profile'])->name('profile');
 
+        Route::middleware('acl:keep-users')->group(function () {
             Route::prefix('users')->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('users.index');
                 Route::get('/list', [UserController::class, 'list'])->name('users.list');
@@ -60,12 +59,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
                 Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
                 Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
-
-                //dont need acl
-                Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
-                Route::get('/profile', [UserController::class, 'profile'])->name('profile');
             });
+        });
 
+        Route::middleware('acl:keep-roles')->group(function () {
             Route::prefix('roles')->group(function () {
                 Route::get('/', [RoleController::class, 'index'])->name('roles.index');
                 Route::get('/list', [RoleController::class, 'list'])->name('roles.list');
@@ -74,22 +71,25 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('roles.edit');
                 Route::post('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
                 Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('roles.delete');
-
-                //dont need acl
-                Route::get('/list-permissions', [RoleController::class, 'listPermissions'])->name('roles.list.permissions');
             });
+        });
 
+        Route::get('/roles/list-permissions', action: [RoleController::class, 'listPermissions'])->name('roles.list.permissions');
+
+        Route::middleware('acl:keep-permissions')->group(function () {
             Route::prefix('permissions')->group(function () {
                 Route::get('/', [PermissionController::class, 'index'])->name('permissions.index');
                 Route::get('/list', [PermissionController::class, 'list'])->name('permissions.list');
                 Route::get('/create', [PermissionController::class, 'create'])->name('permissions.create');
                 Route::post('/store', [PermissionController::class, 'store'])->name('permissions.store');
                 Route::get('/edit/{id}', [PermissionController::class, 'edit'])->name('permissions.edit');
+                Route::get('/find/{id}', [PermissionController::class, 'find'])->name('permissions.find');
                 Route::post('/update/{id}', [PermissionController::class, 'update'])->name('permissions.update');
                 Route::delete('/delete/{id}', [PermissionController::class, 'delete'])->name('permissions.delete');
-                Route::get('/valid-routes', [ValidRoutesController::class, 'index'])->name('valid.routes.index');
             });
+        });
 
+        Route::middleware('acl:keep-menu')->group(function () {
             Route::prefix('menu')->group(function () {
                 Route::get('/', [MenuController::class, 'index'])->name('menu.index');
                 Route::get('/list', [MenuController::class, 'list'])->name('menu.list');
@@ -99,8 +99,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/update/{id}', [MenuController::class, 'update'])->name('menu.update');
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
             });
+        });
 
-            Route::prefix('site/')->group(function () {
+        Route::prefix('site/')->group(function () {
+            Route::middleware('acl:keep-logo')->group(function () {
                 Route::prefix('logo')->group(function () {
                     Route::get('/', [LogoController::class, 'index'])->name('site.logo.index');
                     Route::get('/list', [LogoController::class, 'list'])->name('site.logo.list');
@@ -110,7 +112,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [LogoController::class, 'update'])->name('site.logo.update');
                     Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
                 });
+            });
 
+            Route::middleware('acl:keep-main-text')->group(function () {
                 Route::prefix('main-text')->group(function () {
                     Route::get('/', [MainTextController::class, 'index'])->name('site.maintext.index');
                     Route::get('/list', [MainTextController::class, 'list'])->name('site.maintext.list');
@@ -120,7 +124,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
                     Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
                 });
+            });
 
+            Route::middleware('acl:keep-carousel')->group(function () {
                 Route::prefix('carousel')->group(function () {
                     Route::get('/', [SiteCarouselController::class, 'index'])->name('site.carousel.index');
                     Route::get('/list', [SiteCarouselController::class, 'list'])->name('site.carousel.list');
@@ -130,7 +136,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
                     Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
                 });
+            });
 
+            Route::middleware('acl:keep-site-about')->group(function () {
                 Route::prefix('site-about')->group(function () {
                     Route::get('/', [SiteAboutController::class, 'index'])->name('site.about.index');
                     Route::get('/list', [SiteAboutController::class, 'list'])->name('site.about.list');
@@ -140,7 +148,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [SiteAboutController::class, 'update'])->name('site.about.update');
                     Route::delete('/delete/{id}', [SiteAboutController::class, 'delete'])->name('site.about.delete');
                 });
+            });
 
+            Route::middleware('acl:keep-contact')->group(function () {
                 Route::prefix('contact')->group(function () {
                     Route::get('/', [ContactController::class, 'index'])->name('site.contact.index');
                     Route::get('/list', [ContactController::class, 'list'])->name('site.contact.list');
@@ -150,7 +160,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
+            });
 
+            Route::middleware('acl:keep-social-media')->group(function () {
                 Route::prefix('social-media')->group(function () {
                     Route::get('/', [SocialMediaController::class, 'index'])->name('site.socialmedia.index');
                     Route::get('/list', [SocialMediaController::class, 'list'])->name('site.socialmedia.list');
@@ -161,7 +173,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');
                 });
             });
+        });
 
+        Route::middleware('acl:keep-blog')->group(function () {
             Route::prefix('blog')->group(function () {
                 Route::get('/', [BlogController::class, 'index'])->name('blog.index');
                 Route::get('/list', [BlogController::class, 'list'])->name('blog.list');
@@ -172,11 +186,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
             });
         });
+
     });
 
     Route::get('/cep/{cep}', function ($cep) {
         $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
         return $response->json();
     });
-
 });

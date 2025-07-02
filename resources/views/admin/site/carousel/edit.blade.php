@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-carousel-edit-component
     carousel-by-id="{{ json_encode($carousel) }}"

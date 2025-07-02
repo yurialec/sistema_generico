@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Permission\StorePermissionReqest;
+use App\Http\Requests\Admin\Permission\UpdatePermissionRequest;
 use App\Http\Requests\Admin\Role\UpdateRoleRequest;
 use App\Services\Admin\PermissionService;
 use Illuminate\Http\Request;
@@ -23,8 +25,7 @@ class PermissionController extends Controller
 
     public function list(Request $request)
     {
-        $permission = $this->permissionService->getAllPermissions($request->input('search'));
-
+        $permission = $this->permissionService->list($request->input('search'));
         if ($permission) {
             return response()->json([
                 'status' => true,
@@ -33,7 +34,7 @@ class PermissionController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -43,7 +44,7 @@ class PermissionController extends Controller
         return view('admin.permissions.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePermissionReqest $request)
     {
         $permission = $this->permissionService->storePermission($request->all());
 
@@ -56,21 +57,33 @@ class PermissionController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar permissão'
-            ], 204);
+            ], 500);
         }
     }
 
     public function edit(string $id)
     {
-        $permission = $this->permissionService->getPermissionById($id);
+        return view('admin.permissions.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $permission = $this->permissionService->find($id);
+
         if ($permission) {
-            return view('admin.permissions.edit', compact('permission'));
+            return response()->json([
+                'status' => true,
+                'permission' => $permission,
+            ], 200);
         } else {
-            return redirect(route('permissions.index'))->withErrors(['message' => 'Permissão não encontrado']);
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar permissão'
+            ], 500);
         }
     }
 
-    public function update(UpdateRoleRequest $request, string $id)
+    public function update(UpdatePermissionRequest $request, string $id)
     {
         $permission = $this->permissionService->updatePermission($id, $request->all());
 
@@ -83,7 +96,7 @@ class PermissionController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar permissão'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -99,7 +112,7 @@ class PermissionController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir permissão'
-            ], 204);
+            ], 500);
         }
     }
 }

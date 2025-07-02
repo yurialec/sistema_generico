@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
     <permissions-create-component
         url-index-permission="{{ route('permissions.index') }}">

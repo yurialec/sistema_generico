@@ -13,12 +13,12 @@ class PermissionService
         $this->permissionRepository = $permissionRepository;
     }
 
-    public function getAllPermissions($term)
+    public function list($term)
     {
-        return $this->permissionRepository->all($term);
+        return $this->permissionRepository->list($term);
     }
 
-    public function getPermissionById($id)
+    public function find($id)
     {
         return $this->permissionRepository->find($id);
     }

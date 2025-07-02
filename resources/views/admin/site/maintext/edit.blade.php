@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-main-text-edit-component
     main-text-by-id="{{ json_encode($mainText) }}"

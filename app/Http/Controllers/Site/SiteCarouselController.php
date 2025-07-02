@@ -36,7 +36,7 @@ class SiteCarouselController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -65,7 +65,7 @@ class SiteCarouselController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar carousel'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -94,7 +94,7 @@ class SiteCarouselController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar carousel'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -114,7 +114,7 @@ class SiteCarouselController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir Carousel'
-            ], 204);
+            ], 500);
         }
     }
 }

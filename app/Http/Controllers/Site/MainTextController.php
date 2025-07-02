@@ -34,7 +34,7 @@ class MainTextController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -63,7 +63,7 @@ class MainTextController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar conteúdo principal'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -93,7 +93,7 @@ class MainTextController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar conteudo'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -113,7 +113,7 @@ class MainTextController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir conteúdo'
-            ], 204);
+            ], 500);
         }
     }
 }

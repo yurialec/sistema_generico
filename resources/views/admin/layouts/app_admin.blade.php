@@ -21,10 +21,15 @@
     @vite(['resources/js/app.js', 'resources/sass/app_admin.scss'])
 </head>
 <script>
-    
+
 </script>
 
 <body id="app" class="sb-nav-fixed">
+    @section('content')
+        <div class="container mt-4">
+            <alert-component></alert-component>
+        </div>
+    @endsection
     @include('admin.layouts.header')
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">

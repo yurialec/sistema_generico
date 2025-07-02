@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <blog-index-component
     url-create-blog="{{ route('blog.create') }}">

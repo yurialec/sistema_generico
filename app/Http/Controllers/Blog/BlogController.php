@@ -33,7 +33,7 @@ class BlogController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -62,7 +62,7 @@ class BlogController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar blog'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -91,7 +91,7 @@ class BlogController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar blog'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -111,7 +111,7 @@ class BlogController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir Blog'
-            ], 204);
+            ], 500);
         }
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
     <users-edit-component
         user-by-id="{{ json_encode($user) }}"

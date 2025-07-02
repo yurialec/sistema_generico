@@ -34,7 +34,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -57,7 +57,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar usuário'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -80,7 +80,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar usuário'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -97,7 +97,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir usuário'
-            ], 204);
+            ], 500);
         }
     }
 

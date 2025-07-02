@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('admin.layouts.app_admin')
 @section('content')
 <site-contact-edit-component
     contact-by-id="{{ json_encode($contact) }}"

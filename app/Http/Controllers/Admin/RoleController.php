@@ -33,7 +33,7 @@ class RoleController extends Controller
         } else {
             return response()->json([
                 'message' => 'Nenhum registro encontrado.',
-                'status' => 204
+                'status' => 500
             ]);
         }
     }
@@ -56,7 +56,7 @@ class RoleController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao cadastrar perfil'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -84,7 +84,7 @@ class RoleController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar perfil'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -100,7 +100,7 @@ class RoleController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao excluir perfil'
-            ], 204);
+            ], 500);
         }
     }
 
@@ -116,7 +116,7 @@ class RoleController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Nenhum registro encontrado.',
-            ], 204);
+            ], 500);
         }
     }
 }
