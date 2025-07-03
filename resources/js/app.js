@@ -1,8 +1,9 @@
 import './bootstrap';
 import './sidebar';
+import FloatingAlertPlugin from './plugins/floatingAlert';
+import ConfirmPlugin from './plugins/confirm';
 
 import { createApp, defineAsyncComponent } from 'vue';
-import FloatingAlert from './Components/FloatingAlert.vue';
 
 const app = createApp({});
 
@@ -12,15 +13,7 @@ for (const [path, definition] of Object.entries(components)) {
     app.component(name, defineAsyncComponent(definition));
 }
 
+app.use(FloatingAlertPlugin);
+app.use(ConfirmPlugin);
+
 app.mount('#app');
-
-const alertApp = createApp(FloatingAlert);
-const alertInstance = alertApp.mount(document.createElement('div'));
-document.body.appendChild(alertInstance.$el);
-
-window.alertSuccess = (msg) => {
-    alertInstance.show(msg, 'success');
-};
-window.alertDanger = (msg) => {
-    alertInstance.show(msg, 'danger');
-};

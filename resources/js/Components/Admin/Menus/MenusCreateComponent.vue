@@ -72,11 +72,11 @@ export default {
             this.loading = true;
             axios.post('/admin/menu/store', this.menu)
                 .then(response => {
-                    alertSuccess('Cadastrado com sucesso!');
+                    this.alertSuccess('Cadastrado com sucesso!');
                     this.clearForm();
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });

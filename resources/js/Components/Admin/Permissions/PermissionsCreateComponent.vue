@@ -58,11 +58,11 @@ export default {
             this.loading = true;
             axios.post('/admin/permissions/store', this.permission)
                 .then(response => {
-                    alertSuccess('Operação realizada com sucesso!');
+                    this.alertSuccess('Operação realizada com sucesso!');
                     this.clearForm();
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });

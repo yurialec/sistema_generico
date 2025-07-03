@@ -103,7 +103,7 @@ export default {
                     this.menu = response.data.menu;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -112,7 +112,7 @@ export default {
             axios.post('/admin/menu/update/' + this.id, this.menu)
                 .then(response => {
                     window.scrollTo(0, 0);
-                    alertSuccess('Alterado com sucesso!');
+                    this.alertSuccess('Alterado com sucesso!');
                 })
                 .catch(errors => {
                     alertDanger(errors);

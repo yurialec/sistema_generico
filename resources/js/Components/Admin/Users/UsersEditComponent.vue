@@ -116,7 +116,7 @@ export default {
                     this.user = response.data.user;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -135,7 +135,7 @@ export default {
                     this.roles = response.data.roles.data;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -153,10 +153,10 @@ export default {
             this.loading = true;
             axios.post('/admin/users/update/' + this.user.id, payload)
                 .then(response => {
-                    alertSuccess('Operação realizada com sucesso!');
+                    this.alertSuccess('Operação realizada com sucesso!');
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 })
                 .finally(() => {
                     this.loading = false;

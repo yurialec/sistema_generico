@@ -6,7 +6,7 @@
         <div class="card-body">
             <div v-if="loading" class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden"></span>
                 </div>
             </div>
 
@@ -159,7 +159,7 @@ export default {
                     this.userProfile.permissions = this.user.role.permissions;
                 })
                 .catch(error => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 })
                 .finally(() => {
                     this.loading = false;
@@ -179,10 +179,10 @@ export default {
             this.loading = true;
             axios.post('/admin/users/update/' + this.user.id, payload)
                 .then(response => {
-                    alertSuccess('Dados alterados com sucesso!');
+                    this.alertSuccess('Dados alterados com sucesso!');
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 })
                 .finally(() => {
                     this.loading = false;

@@ -66,7 +66,7 @@ export default {
                     this.role = response.data.role;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -79,7 +79,7 @@ export default {
                     this.setSelectedPermissions();
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -96,10 +96,10 @@ export default {
             this.loading = true;
             axios.post('/admin/roles/update/' + this.id, dataToSend)
                 .then(response => {
-                    alertSuccess('Operação realizada com sucesso!');
+                    this.alertSuccess('Operação realizada com sucesso!');
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });

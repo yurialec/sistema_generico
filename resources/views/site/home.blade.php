@@ -128,7 +128,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100">
-                        <img src="/placeholder.svg?height=200&width=350" class="card-img-top" alt="Post 1">
+                        <img src="#" class="card-img-top" alt="Post 1">
                         <div class="card-body">
                             <h5 class="card-title text-primary">Título do Post 1</h5>
                             <p class="card-text">
@@ -144,7 +144,7 @@
                 </div>
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100">
-                        <img src="/placeholder.svg?height=200&width=350" class="card-img-top" alt="Post 2">
+                        <img src="#" class="card-img-top" alt="Post 2">
                         <div class="card-body">
                             <h5 class="card-title text-primary">Título do Post 2</h5>
                             <p class="card-text">
@@ -160,7 +160,7 @@
                 </div>
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100">
-                        <img src="/placeholder.svg?height=200&width=350" class="card-img-top" alt="Post 3">
+                        <img src="#" class="card-img-top" alt="Post 3">
                         <div class="card-body">
                             <h5 class="card-title text-primary">Título do Post 3</h5>
                             <p class="card-text">

@@ -123,7 +123,7 @@ export default {
                     this.roles = response.data.roles.data;
                 })
                 .catch(() => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 })
                 .finally(() => {
                     this.loading = false;
@@ -145,12 +145,12 @@ export default {
 
             axios.post('/admin/users/store', this.user)
                 .then(res => {
-                    alertSuccess('Operação realizada com sucesso!');
+                    this.alertSuccess('Operação realizada com sucesso!');
                     window.scrollTo(0, 0);
                     this.clearForm();
                 })
                 .catch(err => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                     window.scrollTo(0, 0);
                 });
         },

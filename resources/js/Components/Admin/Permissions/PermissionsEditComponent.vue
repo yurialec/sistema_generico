@@ -64,7 +64,7 @@ export default {
                     this.permission = response.data.permission;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -73,7 +73,7 @@ export default {
             this.loading = false;
             axios.post('/admin/permissions/update/' + this.id, this.permission)
                 .then(response => {
-                    alertSuccess('Operação realizada com sucesso!');
+                    this.alertSuccess('Operação realizada com sucesso!');
                 })
                 .catch(errors => {
                     alertDanger(errors);

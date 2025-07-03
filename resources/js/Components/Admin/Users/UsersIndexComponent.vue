@@ -45,8 +45,7 @@
                             <td>{{ user.email }}</td>
                             <td>{{ user.role.name }}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-danger me-1" data-bs-toggle="modal"
-                                    data-bs-target="#modalDelete" @click="confirmExclusion(user.id)">
+                                <button class="btn btn-sm btn-outline-danger me-1" @click="deleteRegister(user.id)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 <a :href="urlEditUser.replace('_id', user.id)" class="btn btn-sm btn-outline-primary">
@@ -72,27 +71,10 @@
             </nav>
         </div>
     </div>
-    <div class="modal fade" id="modalDelete" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="mb-0">Deseja realmente excluir este registro?</p>
-                    <button type="button" class="btn btn-sm btn-secondary m-1" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-sm btn-danger" @click="deleteRegister">Excluir</button>
-                </div>
-                <div class="modal-footer justify-content-center">
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { Modal } from 'bootstrap';
 
 export default {
     props: {
@@ -107,7 +89,6 @@ export default {
                 links: []
             },
             searchFilter: '',
-            userToDelete: null,
         };
     },
     mounted() {
@@ -134,30 +115,20 @@ export default {
                     this.loading = false;
                 });
         },
-        confirmExclusion(userId) {
-            this.userToDelete = userId;
-        },
-        deleteRegister() {
-            if (this.userToDelete !== null) {
-                axios.delete('/admin/users/delete/' + this.userToDelete)
+        deleteRegister(id) {
+            this.confirmYesNo('Excluir usuário?').then(() => {
+                this.loading = true;
+                axios.delete('/admin/users/delete/' + id)
                     .then(response => {
-                        this.userToDelete = null;
                         this.getUsers();
-
-                        const modal = Modal.getInstance(document.getElementById('modalDelete'));
-                        modal?.hide();
-                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-
-                        alertSuccess('Excluido com sucesso!');
+                        this.alertSuccess('Excluido com sucesso!');
                     })
                     .catch(errors => {
-                        const modal = Modal.getInstance(document.getElementById('modalDelete'));
-                        modal?.hide();
-                        document.querySelectorAll('.modal-backdrop')
-                            .forEach(el => el.remove());
-                        alertDanger(errors);
+                        this.alertDanger(errors);
+                    }).finally(() => {
+                        this.loading = false;
                     });
-            }
+            });
         },
     }
 }

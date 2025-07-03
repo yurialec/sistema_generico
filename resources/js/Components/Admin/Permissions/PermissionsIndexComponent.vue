@@ -44,8 +44,8 @@
                                 <td>{{ permission.label }}</td>
                                 <td>{{ permission.name }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-danger me-1" data-bs-toggle="modal"
-                                        data-bs-target="#modalDelete" @click="confirmExclusion(permission.id)">
+                                    <button class="btn btn-sm btn-outline-danger me-1"
+                                        @click="confirmExclusion(permission.id)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                     <a :href="urlEditPermission.replace('_id', permission.id)"
@@ -70,23 +70,6 @@
                         </li>
                     </ul>
                 </nav>
-            </div>
-        </div>
-        <div class="modal fade" id="modalDelete" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p class="mb-0">Deseja realmente excluir este registro?</p>
-                        <button type="button" class="btn btn-sm btn-secondary m-1"
-                            data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-sm btn-danger" @click="deleteRegister">Excluir</button>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -123,7 +106,7 @@ export default {
                     this.permissions = response.data.permission;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
@@ -136,29 +119,21 @@ export default {
                 this.getPermissions(url);
             }
         },
-        confirmExclusion(permissionId) {
-            this.permissionToDelete = permissionId;
-        },
-        deleteRegister() {
-            if (this.permissionToDelete !== null) {
-                axios.delete('/admin/permissions/delete/' + this.permissionToDelete)
+        confirmExclusion(id) {
+            this.confirmYesNo('Deseja excluir a permissão?').then(() => {
+                axios.delete('/admin/permissions/delete/' + id)
                     .then(response => {
                         this.permissionToDelete = null;
                         this.getPermissions();
-
-                        const modal = Modal.getInstance(document.getElementById('modalDelete'));
-                        modal?.hide();
-                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-
-                        alertSuccess('Excluido com sucesso!');
+                        this.alertSuccess('Excluido com sucesso!');
                     })
                     .catch(errors => {
-                        alertDanger(errors);
+                        this.alertDanger(errors);
                     })
                     .finally(() => {
                         this.loading = false;
                     });
-            }
+            });
         },
     }
 }
