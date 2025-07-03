@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Models\Admin\Menu;
 use App\Repositories\Admin\MenuRepository;
 
 class MenuService
@@ -23,13 +24,24 @@ class MenuService
         return $this->menuRepository->all($term);
     }
 
-    public function getMenuById($id)
+    public function find($id)
     {
         return $this->menuRepository->find($id);
     }
 
     public function createMenu($data)
     {
+        $data = [
+            'label' => $data['label'],
+            'icon' => $data['icon'],
+            'url' => $data['url'] ? $data['url'] : '#',
+            'active' => 1,
+            'son' => null,
+            'order' => Menu::whereNull('son')->max('order') + 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
+
         return $this->menuRepository->create($data);
     }
 
@@ -49,7 +61,7 @@ class MenuService
         $menusToAdd = [];
         $menusToRemove = [];
 
-        foreach ($data['menu'][0]['children'] as $childData) {
+        foreach ($data['children'] as $childData) {
             if (isset($childData['id']) && in_array($childData['id'], $existingIds)) {
                 $child = $existingChildren->where('id', $childData['id'])->first();
                 $child->update($childData);
@@ -59,7 +71,7 @@ class MenuService
         }
 
         foreach ($existingChildren as $existingChild) {
-            if (!in_array($existingChild->id, array_column($data['menu'][0]['children'], 'id'))) {
+            if (!in_array($existingChild->id, array_column($data['children'], 'id'))) {
                 $menusToRemove[] = $existingChild->id;
                 $existingChild->delete();
             }
@@ -70,13 +82,17 @@ class MenuService
             $menu->children()->create($menuToAdd);
         }
 
-        $menu->update($data['menu'][0]);
-
+        $menu->update($data);
         return $menu;
     }
 
     public function deleteMenu($id)
     {
         return $this->menuRepository->delete($id);
+    }
+
+    public function changeOrderMenu($id)
+    {
+        return $this->menuRepository->changeOrderMenu($id);
     }
 }

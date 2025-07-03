@@ -2,7 +2,7 @@
     <div>
         <div v-if="loading" class="d-flex justify-content-center my-4">
             <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden"></span>
             </div>
         </div>
         <div v-else class="card">

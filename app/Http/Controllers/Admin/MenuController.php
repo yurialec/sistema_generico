@@ -77,11 +77,26 @@ class MenuController extends Controller
 
     public function edit(string $id)
     {
-        $menu = $this->menuService->getMenuById($id);
-        return view('admin.menus.edit', compact('menu'));
+        return view('admin.menus.edit', compact('id'));
     }
 
-    public function update(Request $request, string $id)
+    public function find($id)
+    {
+        $menu = $this->menuService->find($id);
+        if ($menu) {
+            return response()->json([
+                'status' => true,
+                'menu' => $menu,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar menu'
+            ], 500);
+        }
+    }
+
+    public function update(Request $request, $id)
     {
         $menu = $this->menuService->updateMenu($id, $request->all());
 
@@ -112,6 +127,23 @@ class MenuController extends Controller
                 'status' => false,
                 'message' => 'Erro ao excluir usuário'
             ], 500);
+        }
+    }
+
+    public function changeOrderMenu($id)
+    {
+        $changedMenu = $this->menuService->changeOrderMenu($id);
+        if ($changedMenu) {
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Ordem alterada com sucesso',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao alterar ordem'
+            ], 204);
         }
     }
 }

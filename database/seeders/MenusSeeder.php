@@ -19,6 +19,7 @@ class MenusSeeder extends Seeder
             'url' => '#',
             'active' => 1,
             'son' => null,
+            'order' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -70,6 +71,7 @@ class MenusSeeder extends Seeder
             'url' => '#',
             'active' => 1,
             'son' => null,
+            'order' => 2,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -139,6 +141,7 @@ class MenusSeeder extends Seeder
             'url' => '/admin/blog/',
             'active' => 1,
             'son' => null,
+            'order' => 3,
             'created_at' => now(),
             'updated_at' => now()
         ]);

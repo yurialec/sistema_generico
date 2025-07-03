@@ -18,7 +18,7 @@ class RoleService
         return $this->roleRepository->all($term);
     }
 
-    public function getRoleById($id)
+    public function find($id)
     {
         return $this->roleRepository->find($id);
     }

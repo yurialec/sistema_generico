@@ -1,137 +1,77 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Cadastrar novo usuário</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <form method="POST" action="" @submit.prevent="save()" class="col-lg-6" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="this.alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa
-                        funcionalidade
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="messages in messages.data.errors">
-                            <li>{{ messages[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="equalPasswords === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> As senha precisam ser iguais
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text" class="form-control" v-model="user.name">
-                    </div>
-
-                    <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="text" class="form-control" v-model="user.email" @input="validateEmail"
-                            autocomplete="off">
-
-                        <div v-if="validEmail === false" class="alert alert-danger mt-3" role="alert">
-                            E-mail inválido.
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Perfil</label>
-                        <select class="form-control" v-model="user.role_id">
-                            <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
-                        </select>
-                    </div>
-
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm">
-                                <label>Senha</label>
-                                <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                    v-model="user.password" @input="passwordCheck" autocomplete="new-password">
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Cadastrar usuário</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save" autocomplete="off">
+                            <div class="mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" class="form-control" v-model="user.name" required autocomplete="off">
                             </div>
-                            <div class="col-sm">
-                                <label>Confirmar senha</label>
 
-                                <div class="input-group">
-                                    <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                        v-model="confirmPassword" autocomplete="new-password">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                @click="showPassword()" id="button-addon2">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">E-mail</label>
+                                <input type="email" class="form-control" v-model="user.email" @input="validateEmail"
+                                    required autocomplete="off">
+                                <div v-if="validEmail === false" class="alert alert-danger mt-2 mb-0 p-2 py-1"
+                                    role="alert">
+                                    E-mail inválido.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Perfil</label>
+                                <select class="form-select" v-model="user.role_id" required>
+                                    <option value="" disabled>Selecione um perfil</option>
+                                    <option v-for="role in roles" :value="role.id" :key="role.id">{{ role.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Senha</label>
+                                    <input :type="showPass ? 'text' : 'password'" class="form-control"
+                                        v-model="user.password" @input="passwordCheck" required autocomplete="off">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Confirmar senha</label>
+                                    <div class="input-group">
+                                        <input :type="showPass ? 'text' : 'password'" class="form-control"
+                                            v-model="confirmPassword" required autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" @click="togglePassword">
+                                            <i class="bi" :class="showPass ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-sm mt-2">
-                            <div>
-                                <h6>Requisitos mínimos para a senha:</h6>
+                            <div class="mb-3" v-if="user.password">
+                                <h6>Requisitos mínimos da senha:</h6>
+                                <small :class="has_six_chars ? 'text-success' : 'text-danger'">- No mínimo 6
+                                    caracteres.</small><br>
+                                <small :class="has_lowercase ? 'text-success' : 'text-danger'">- Contém
+                                    letras.</small><br>
+                                <small :class="has_number ? 'text-success' : 'text-danger'">- Contém
+                                    números.</small><br>
+                                <small :class="has_special ? 'text-success' : 'text-danger'">- Contém caractere
+                                    especial.</small><br>
+                                <small v-if="user.password !== confirmPassword" class="text-danger">- A confirmação deve
+                                    ser igual à senha.</small>
                             </div>
-                            <div>
-                                <small style="color: red; margin-bottom: 1px;" v-if="!has_six_chars">No mínimo 6
-                                    caracteres.</small>
-                                <small style="color: green; margin-bottom: 1px;" v-else>No mínimo 6
-                                    caracteres.</small>
-                                <br>
-                                <small style="color: red; margin-bottom: 1px;" v-if="!has_lowercase">Conter pelo
-                                    menos uma
-                                    letra.</small>
-                                <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos uma
-                                    letra.</small>
-                                <br>
-                                <small style="color: red; margin-bottom: 1px;" v-if="!has_number">Conter pelo menos
-                                    um
-                                    número.</small>
-                                <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos um
-                                    número.</small>
-                                <br>
-                                <small style="color: red; margin-bottom: 1px;" v-if="!has_special">Conter pelo menos
-                                    um
-                                    caractere especial.</small>
-                                <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos um
-                                    caractere
-                                    especial.</small>
-                                <br>
-                                <small style="color: red; margin-bottom: 1px;"
-                                    v-if="user.password !== confirmPassword">A confirmação de senha precisa
-                                    ser igual
-                                    a senha.</small>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexUser" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexUser" class="btn btn-secondary btn-sm">Voltar</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -146,70 +86,79 @@ export default {
     },
     data() {
         return {
-            roles: [],
+            loading: false,
+            alertStatus: null,
+            validEmail: null,
+            confirmPassword: '',
+            showPass: false,
             user: {
                 name: '',
                 email: '',
-                role_id: '',
+                password: '',
+                role_id: ''
             },
-            validEmail: null,
-            confirmPassword: '',
-            inputPass: false,
-            has_number: '',
-            has_lowercase: '',
-            has_special: '',
-            has_six_chars: '',
-            alertStatus: null,
-            equalPasswords: null,
-            messages: [],
+            roles: [],
+            messages: {},
+            has_number: false,
+            has_lowercase: false,
+            has_special: false,
+            has_six_chars: false,
         };
     },
     mounted() {
         this.getRoles();
     },
     methods: {
+        togglePassword() {
+            this.showPass = !this.showPass;
+        },
         validateEmail() {
-            const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            this.validEmail = emailPattern.test(this.user.email);
+            const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
+            this.validEmail = pattern.test(this.user.email);
         },
         getRoles() {
+            this.loading = true;
             axios.get('/admin/roles/list')
                 .then(response => {
                     this.roles = response.data.roles.data;
                 })
-                .catch(errors => {
-
+                .catch(() => {
+                    alertDanger(errors);
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
         },
-        save() {
-
-            this.user.password == this.confirmPassword ? this.equalPasswords = true : this.equalPasswords = false;
-
-            if (this.equalPasswords == true) {
-                axios.post('/admin/users/store', this.user)
-                    .then(response => {
-                        this.alertStatus = true;
-                        this.messages = response.data;
-
-                        window.scrollTo(0, 0);
-                    })
-                    .catch(errors => {
-                        this.alertStatus = false;
-                        this.messages = errors.response;
-                    });
-            }
-        },
         passwordCheck() {
-            if (this.user.password) {
-                this.has_number = /\d/.test(this.user.password);
-                this.has_lowercase = /[a-zA-Z]/.test(this.user.password);
-                this.has_special = /[!@#\$%\^\&*\)\(+=._-]/.test(this.user.password);
-                this.has_six_chars = this.user.password.length >= 6;
+            const password = this.user.password;
+            this.has_number = /\d/.test(password);
+            this.has_lowercase = /[a-zA-Z]/.test(password);
+            this.has_special = /[!@#\$%\^\&*\)\(+=._-]/.test(password);
+            this.has_six_chars = password.length >= 6;
+        },
+        save() {
+            if (this.user.password !== this.confirmPassword) {
+                this.alertStatus = false;
+                this.messages = { data: { errors: [['As senhas não coincidem.']] } };
+                return;
             }
+
+            axios.post('/admin/users/store', this.user)
+                .then(res => {
+                    alertSuccess('Operação realizada com sucesso!');
+                    window.scrollTo(0, 0);
+                    this.clearForm();
+                })
+                .catch(err => {
+                    alertDanger(errors);
+                    window.scrollTo(0, 0);
+                });
         },
-        showPassword() {
-            this.inputPass = !this.inputPass;
-        },
+        clearForm() {
+            this.user = { name: '', email: '', password: '', role_id: '' };
+            this.confirmPassword = '';
+            this.validEmail = null;
+        }
     }
 }
 </script>

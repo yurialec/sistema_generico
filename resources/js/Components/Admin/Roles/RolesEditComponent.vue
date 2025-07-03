@@ -1,60 +1,33 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar perfil</h4>
-        </div>
-        <div class="card-body">
-            <div class="row justify-content-center">
-                <div class="col-sm-6">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="loading" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-
-                    <form v-else method="POST" action="" @submit.prevent="salvar">
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" class="form-control" disabled v-model="role.role.name">
-                        </div>
-
-                        <br>
-
-                        <div class="form-group">
-                            <multiselect v-model="role.permissionsSelected" :options="permissions" :multiple="true"
-                                label="label" track-by="id">
-                            </multiselect>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="text-start" style="margin-top: 10px;">
-                                    <a :href="urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
-                                </div>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Editar perfil</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div class="mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" class="form-control" v-model="role.name" required>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="text-end" style="margin-top: 10px;">
-                                    <a href="#" class="btn btn-primary btn-sm" @click="salvar">Salvar
-                                        Alterações</a>
-                                </div>
+                            <div class="mb-3">
+                                <multiselect v-model="role.permissionsSelected" :options="permissions" :multiple="true"
+                                    label="label" track-by="id">
+                                </multiselect>
                             </div>
-                        </div>
-                    </form>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexRole" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,44 +41,34 @@ import Multiselect from 'vue-multiselect';
 export default {
     components: { Multiselect },
     props: {
-        roleById: {
-            type: String,
-            required: true
-        },
+        id: String,
         urlIndexRole: String,
     },
     data() {
         return {
+            loading: false,
             role: {
-                role: JSON.parse(this.roleById),
+                name: '',
                 permissionsSelected: [],
             },
-            alertStatus: null,
-            messages: [],
             permissions: [],
-            loading: null,
         };
     },
     mounted() {
+        this.find();
         this.getPermissions();
     },
     methods: {
-        salvar() {
-            const permissionsIds = this.role.permissionsSelected.map(permission => permission.id);
-
-            const dataToSend = {
-                role_id: this.role.role.id,
-                name: this.role.role.name,
-                permissions: permissionsIds
-            };
-
-            axios.post('/admin/roles/update/' + this.role.role.id, dataToSend)
+        find() {
+            this.loading = true;
+            axios.get('/admin/roles/find/' + this.id)
                 .then(response => {
-                    this.alertStatus = true;
+                    this.role = response.data.role;
                 })
                 .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
+                    alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
         getPermissions() {
@@ -116,13 +79,33 @@ export default {
                     this.setSelectedPermissions();
                 })
                 .catch(errors => {
+                    alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
+        save() {
+            const permissionsIds = this.role.permissionsSelected.map(permission => permission.id);
 
+            const dataToSend = {
+                role_id: this.role.id,
+                name: this.role.name,
+                permissions: permissionsIds
+            };
+
+            this.loading = true;
+            axios.post('/admin/roles/update/' + this.id, dataToSend)
+                .then(response => {
+                    alertSuccess('Operação realizada com sucesso!');
+                })
+                .catch(errors => {
+                    alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
         },
         setSelectedPermissions() {
-            const selectedPermissions = this.role.role.permissions.map(permission => {
+            const selectedPermissions = this.role.permissions.map(permission => {
                 return this.permissions.find(p => p.id === permission.id);
             });
             this.role.permissionsSelected = selectedPermissions;

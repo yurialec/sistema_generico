@@ -1,71 +1,93 @@
 <template>
-    <div v-if="this.alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro exluido com sucesso
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-sm-3 text-left">
-                    <h3>Perfis</h3>
-                </div>
-                <div class="col-sm-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" v-model="searchFilter" />
-                        <button type="button" class="btn btn-primary" @click="pesquisar()">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="loading" class="d-flex justify-content-center">
+    <div>
+        <div v-if="loading" class="d-flex justify-content-center my-4">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-
-        <div v-else class="card-body">
-            <div class="table-responsive">
-                <table class="table table-sm table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nome</th>
-                            <th>Permissões</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="role in this.roles.data" :key="role.id">
-                            <th>{{ role.id }}</th>
-                            <td>{{ role.name }}</td>
-
-                            <td>
-                                <span v-for="permission in role['permissions']" class="badge bg-success"
-                                    id="span-role-permissions">{{ permission.label }}</span>&nbsp;
-                            </td>
-
-                            <td>
-                                <a :href="'roles/edit/' + role.id">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div v-else class="card">
+            <div class="card-header py-2">
+                <div class="row align-items-center g-2">
+                    <div class="col-md-3 col-12">
+                        <h5 class="mb-0">Perfis</h5>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" v-model="searchFilter"
+                                placeholder="Buscar..." />
+                            <button type="button" class="btn btn-sm btn-primary" @click="search">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12 text-md-end">
+                        <a :href="urlCreateRole" class="btn btn-sm btn-success">
+                            <i class="bi bi-plus-circle me-1"></i> Cadastrar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-2">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover text-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Permissões</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="role in this.roles.data" :key="role.id">
+                                <th>{{ role.id }}</th>
+                                <td>{{ role.name }}</td>
+                                <td>
+                                    <span v-for="permission in role['permissions']" class="badge bg-success"
+                                        id="span-role-permissions">{{ permission.label }}</span>&nbsp;
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger me-1" data-bs-toggle="modal"
+                                        data-bs-target="#modalDelete" @click="confirmExclusion(role.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <a :href="urlEditRole.replace('_id', role.id)"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer py-2">
+                <nav v-if="roles.links.length > 0">
+                    <ul class="pagination pagination-sm justify-content-center mb-0">
+                        <li v-for="(link, key) in roles.links" :key="key"
+                            :class="['page-item', { active: link.active, disabled: !link.url }]">
+                            <a class="page-link" href="#" v-html="link.label" @click.prevent="pagination(link.url)"></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
-        <div class="card-footer">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li v-for="(link, key) in roles.links" :key="key" class="page-item"
-                        :class="{ 'active': link.active }">
-                        <a class="page-link" href="#" @click.prevent="paginacao(link.url)" v-html="link.label"></a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="modal fade" id="modalDelete" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="mb-0">Deseja realmente excluir este registro?</p>
+                        <button type="button" class="btn btn-sm btn-secondary m-1"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-sm btn-danger" @click="deleteRegister">Excluir</button>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -76,34 +98,23 @@ import axios from 'axios';
 export default {
     props: {
         urlCreateRole: String,
+        urlEditRole: String,
     },
     data() {
         return {
+            loading: false,
             roles: {
                 data: [],
                 links: []
             },
             searchFilter: '',
-            alertStatus: null,
-            msg: [],
-            loading: null,
+            roleToDelete: null,
         };
     },
     mounted() {
         this.getRoles();
     },
     methods: {
-        confirmarExclusao(roleId) {
-            this.roleToDelete = roleId;
-        },
-        pesquisar() {
-            this.getRoles(`/admin/roles/list?search=${this.searchFilter}`);
-        },
-        paginacao(url) {
-            if (url) {
-                this.getRoles(url);
-            }
-        },
         getRoles(url = '/admin/roles/list') {
             this.loading = true;
             axios.get(url)
@@ -111,11 +122,43 @@ export default {
                     this.roles = response.data.roles;
                 })
                 .catch(errors => {
-
+                    alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
-        }
+        },
+        search() {
+            this.getRoles(`/admin/roles/list?search=${this.searchFilter}`);
+        },
+        pagination(url) {
+            if (url) {
+                this.getRoles(url);
+            }
+        },
+        confirmExclusion(roleId) {
+            this.roleToDelete = roleId;
+        },
+        deleteRegister() {
+            if (this.roleToDelete !== null) {
+                axios.delete('/admin/roles/delete/' + this.roleToDelete)
+                    .then(response => {
+                        this.roleToDelete = null;
+                        this.getRoles();
+
+                        const modal = Modal.getInstance(document.getElementById('modalDelete'));
+                        modal?.hide();
+                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+                        alertSuccess('Excluido com sucesso!');
+                    })
+                    .catch(errors => {
+                        alertDanger(errors);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            }
+        },
     }
 }
 </script>

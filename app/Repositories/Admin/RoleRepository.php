@@ -7,6 +7,7 @@ use App\Models\Admin\Permissions;
 use App\Models\Admin\Roles;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class RoleRepository implements RoleRepositoryInterface
 {
@@ -23,28 +24,44 @@ class RoleRepository implements RoleRepositoryInterface
 
     public function all($term)
     {
-        return $this->role
-            ->when($term, function ($query) use ($term) {
-                return $query->where('name', 'like', '%' . $term . '%');
-            })
-            ->where('id', '>=', Auth::user()->role_id)
-            ->paginate(10);
+        try {
+            return $this->role
+                ->when($term, function ($query) use ($term) {
+                    return $query->where('name', 'like', '%' . $term . '%');
+                })
+                ->where('id', '>=', Auth::user()->role_id)
+                ->paginate(10);
+        } catch (Exception $err) {
+            Log::error('Erro ao listar perfis', [$err->getMessage()]);
+            return false;
+        }
+
     }
 
     public function find($id)
     {
-        return $this->role->find($id);
+        try {
+            return $this->role->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro ao localizar perfil', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function create(array $data)
     {
-        return $this->role->create($data);
+        try {
+            return $this->role->create($data);
+        } catch (Exception $err) {
+            Log::error('Erro ao cadastrar perfil', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function update($id, $data)
     {
-        $role = $this->role->find($id);
-        if ($role) {
+        try {
+            $role = $this->role->find($id);
 
             $role->update($data);
 
@@ -73,21 +90,31 @@ class RoleRepository implements RoleRepositoryInterface
             }
 
             return $role;
+        } catch (Exception $err) {
+            Log::error('Erro ao editar perfil', [$err->getMessage()]);
+            return false;
         }
     }
 
     public function delete($id)
     {
-        $role = $this->role->find($id);
-        if ($role) {
+        try {
+            $role = $this->role->find($id);
             $role->delete();
             return true;
+        } catch (Exception $err) {
+            Log::error('Erro ao deletar perfil', [$err->getMessage()]);
+            return false;
         }
-        return false;
     }
 
     public function listPermissions()
     {
-        return $this->permissions->get();
+        try {
+            return $this->permissions->get();
+        } catch (Exception $err) {
+            Log::error('Erro listar permissões perfil', [$err->getMessage()]);
+            return false;
+        }
     }
 }

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CadastrarUsuarioRequest;
+use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Services\Admin\UserService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,7 +43,7 @@ class UserController extends Controller
         return view('admin.users.create');
     }
 
-    public function store(CadastrarUsuarioRequest $request): JsonResponse
+    public function store(StoreUserRequest $request)
     {
         $user = $this->userService->createUser($request->all());
 
@@ -61,10 +60,25 @@ class UserController extends Controller
         }
     }
 
-    public function edit(string $id)
+    public function edit($id)
     {
-        $user = $this->userService->getUserById($id);
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $user = $this->userService->find($id);
+        if ($user) {
+            return response()->json([
+                'status' => true,
+                'user' => $user,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar usuário'
+            ], 500);
+        }
     }
 
     public function update(Request $request, string $id)
@@ -106,7 +120,7 @@ class UserController extends Controller
         return view('admin.users.profile');
     }
 
-    public function profile(): JsonResponse
+    public function profile()
     {
         $profile = Auth::user();
 

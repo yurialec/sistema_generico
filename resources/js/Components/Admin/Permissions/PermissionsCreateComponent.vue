@@ -18,12 +18,10 @@
                                 <input type="text" id="descricao" class="form-control" v-model="permission.label"
                                     required />
                             </div>
-
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome</label>
                                 <input type="text" id="nome" class="form-control" v-model="permission.name" required />
                             </div>
-
                             <div class="d-flex justify-content-between mt-4">
                                 <a :href="urlIndexPermission" class="btn btn-outline-secondary btn-sm">Voltar</a>
                                 <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
@@ -46,18 +44,18 @@ export default {
     },
     data() {
         return {
+            loading: false,
             permission: {
                 name: '',
                 label: '',
             },
-            loading: null,
         };
     },
     mounted() {
     },
     methods: {
         save() {
-            this.loading = false;
+            this.loading = true;
             axios.post('/admin/permissions/store', this.permission)
                 .then(response => {
                     alertSuccess('Operação realizada com sucesso!');

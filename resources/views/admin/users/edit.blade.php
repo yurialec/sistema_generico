@@ -1,7 +1,7 @@
 @extends('admin.layouts.app_admin')
 @section('content')
     <users-edit-component
-        user-by-id="{{ json_encode($user) }}"
+        id="{{ $id }}"
         url-index-user="{{ route('users.index') }}">
     </users-edit-component>
 @endsection

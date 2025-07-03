@@ -10,7 +10,12 @@ class Menu extends Model
     use HasFactory;
 
     protected $fillable = [
-        'label', 'icon', 'url', 'active', 'son'
+        'label',
+        'icon',
+        'url',
+        'active',
+        'son',
+        'order'
     ];
 
     public function children()

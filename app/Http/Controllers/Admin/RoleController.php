@@ -60,14 +60,24 @@ class RoleController extends Controller
         }
     }
 
-    public function edit(string $id)
+    public function edit($id)
     {
-        $role = $this->roleService->getRoleById($id);
+        return view('admin.roles.edit', compact('id'));
+    }
 
+    public function find($id)
+    {
+        $role = $this->roleService->find($id);
         if ($role) {
-            return view('admin.roles.edit', compact('role'));
+            return response()->json([
+                'status' => true,
+                'role' => $role,
+            ], 200);
         } else {
-            return redirect(route('roles.index'))->withErrors(['message' => 'Perfil não encontrado']);
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao localizar perfil.'
+            ], 500);
         }
     }
 

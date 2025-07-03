@@ -6,6 +6,7 @@ use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Log;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -18,53 +19,59 @@ class UserRepository implements UserRepositoryInterface
 
     public function all($term)
     {
-        return $this->user
-            ->when($term, function ($query) use ($term) {
-                return $query->where('name', 'like', '%' . $term . '%');
-            })
-            ->paginate(10);
+        try {
+            return $this->user
+                ->when($term, function ($query) use ($term) {
+                    return $query->where('name', 'like', '%' . $term . '%');
+                })
+                ->paginate(10);
+        } catch (Exception $err) {
+            Log::error('Erro ao listar usuários', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function find($id)
     {
-        return $this->user->find($id);
+        try {
+            return $this->user->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro ao localizar usuário', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function create(array $data)
     {
-        return $this->user->create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role_id' => $data['role_id']
-        ]);
+        try {
+            return $this->user->create($data);
+        } catch (Exception $err) {
+            Log::error('Erro ao cadastrar usuários', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function update($id, $data)
     {
-        $user = $this->user->find($id);
-        $updateData = [
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'role_id' => $data['role_id']
-        ];
-
-        if (isset($data['password'])) {
-            $updateData['password'] = Hash::make($data['password']);
+        try {
+            $user = $this->user->find($id);
+            $user->update($data);
+            return $user;
+        } catch (Exception $err) {
+            Log::error('Erro ao atualizar usuário', [$err->getMessage()]);
+            return false;
         }
-
-        $user->update($updateData);
-
-        return $user;
     }
 
     public function delete($id)
     {
-        $user = $this->user->find($id);
-        if ($user) {
+        try {
+            $user = $this->user->find($id);
             $user->delete();
             return true;
+        } catch (Exception $err) {
+            Log::error('Erro ao atualizar usuário', [$err->getMessage()]);
+            return false;
         }
-        return false;
     }
 }

@@ -1,8 +1,7 @@
 @extends('admin.layouts.app_admin')
 @section('content')
-
     <menus-edit-component
-        menu-by-id="{{ json_encode($menu) }}"
+        id="{{ $id }}"
         url-index-menu="{{ route('menu.index') }}">
     </menus-edit-component>
 @endsection

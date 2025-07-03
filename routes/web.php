@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\HomeController;
@@ -35,6 +36,7 @@ Auth::routes();
 Route::get('/', [SiteController::class, 'index'])->name('site.home');
 Route::get('/sobre', [SiteController::class, 'about'])->name('site.about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('site.contact');
+Route::get('/enviar-link', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 
 Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
 Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
@@ -47,18 +49,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('sidebar', [MenuController::class, 'sidebar'])->name('sidebar');
         Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-        Route::get('/users/profile-view', [UserController::class, 'profileView'])->name('profile.view');
-        Route::get('/users/profile', [UserController::class, 'profile'])->name('profile');
-
         Route::middleware('acl:keep-users')->group(function () {
             Route::prefix('users')->group(function () {
                 Route::get('/', [UserController::class, 'index'])->name('users.index');
                 Route::get('/list', [UserController::class, 'list'])->name('users.list');
                 Route::get('/create', [UserController::class, 'create'])->name('users.create');
                 Route::post('/store', [UserController::class, 'store'])->name('users.store');
-                Route::get('/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
+                Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+                Route::get('/find/{id}', [UserController::class, 'find'])->name('users.find');
                 Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
                 Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+                Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
+                Route::get('/profile', [UserController::class, 'profile'])->name('profile');
             });
         });
 
@@ -70,11 +72,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/store', [RoleController::class, 'store'])->name('roles.store');
                 Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('roles.edit');
                 Route::post('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
+                Route::get('/find/{id}', [RoleController::class, 'find'])->name('roles.find');
                 Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('roles.delete');
+                Route::get('/list-permissions', action: [RoleController::class, 'listPermissions'])->name('roles.list.permissions');
             });
         });
-
-        Route::get('/roles/list-permissions', action: [RoleController::class, 'listPermissions'])->name('roles.list.permissions');
 
         Route::middleware('acl:keep-permissions')->group(function () {
             Route::prefix('permissions')->group(function () {
@@ -97,7 +99,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/store', [MenuController::class, 'store'])->name('menu.store');
                 Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('menu.edit');
                 Route::post('/update/{id}', [MenuController::class, 'update'])->name('menu.update');
+                Route::get('/find/{id}', [MenuController::class, 'find'])->name('menu.find');
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
+                Route::post('/change-order-menu/{id}', [MenuController::class, 'changeOrderMenu'])->name('menu.changeOrderMenu');
             });
         });
 

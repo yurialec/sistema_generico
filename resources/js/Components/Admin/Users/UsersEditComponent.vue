@@ -1,146 +1,74 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar Usuário</h4>
-        </div>
-        <div class="card-body">
-            <div class="row justify-content-center">
-                <div class="col-sm-6">
-
-                    <div v-if="loading" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Editar Usuário</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome</label>
+                                <input type="text" class="form-control" v-model="user.name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Perfil</label>
+                                <select class="form-control" v-model="user.role_id">
+                                    <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">E-mail</label>
+                                <input type="email" class="form-control" v-model="user.email" @input="validateEmail"
+                                    required autocomplete="off">
+                                <div v-if="validEmail === false" class="alert alert-danger mt-2 mb-0 p-2 py-1"
+                                    role="alert">
+                                    E-mail inválido.
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-warning" @click="changePass">Alterar senha</button>
+                            <div v-if="changePassword" class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Senha</label>
+                                    <input :type="showPass ? 'text' : 'password'" class="form-control"
+                                        v-model="user.password" @input="passwordCheck" required autocomplete="off">
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Confirmar senha</label>
+                                    <div class="input-group">
+                                        <input :type="showPass ? 'text' : 'password'" class="form-control"
+                                            v-model="confirmPassword" required autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" @click="togglePassword">
+                                            <i class="bi" :class="showPass ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3" v-if="user.password">
+                                <h6>Requisitos mínimos da senha:</h6>
+                                <small :class="has_six_chars ? 'text-success' : 'text-danger'">- No mínimo 6
+                                    caracteres.</small><br>
+                                <small :class="has_lowercase ? 'text-success' : 'text-danger'">- Contém
+                                    letras.</small><br>
+                                <small :class="has_number ? 'text-success' : 'text-danger'">- Contém
+                                    números.</small><br>
+                                <small :class="has_special ? 'text-success' : 'text-danger'">- Contém caractere
+                                    especial.</small><br>
+                                <small v-if="user.password !== confirmPassword" class="text-danger">- A confirmação deve
+                                    ser igual à senha.</small>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexUser" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
+                            </div>
+                        </form>
                     </div>
-
-                    <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
-                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                            role="alert">
-                            <i class="bi bi-check2-circle"></i> Registro atualizado com sucesso
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-
-                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                            role="alert">
-                            <i class="bi bi-exclamation-circle"></i> Erro ao atualizar registro
-                            <hr>
-                            <ul v-for="msg in messages.data.errors">
-                                <li>{{ msg[0] }}</li>
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" class="form-control" v-model="user.user.name">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Perfil</label>
-                            <select class="form-control" v-model="user.user.role_id">
-                                <option v-for="role in this.roles" :value="role.id">{{ role.name }}</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>E-mail</label>
-                            <input type="text" class="form-control" v-model="user.user.email" @input="validateEmail"
-                                autocomplete="off">
-
-                            <div style="margin-top: 10px;" v-if="validEmail === false" class="alert alert-danger"
-                                role="alert">
-                                E-mail inválido.
-                            </div>
-                        </div>
-
-
-                        <div class="form-group" v-show="changePassword">
-                            <hr>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <label>Senha</label>
-                                        <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                            v-model="user.password" @input="passwordCheck" autocomplete="new-password">
-                                    </div>
-                                    <div class="col-sm">
-                                        <label>Confirmar senha</label>
-                                        <div class="input-group">
-                                            <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                                v-model="confirmPassword" autocomplete="new-password">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                        @click="showPassword()" id="button-addon2">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm" style="margin-top: 5px;">
-                                <div>
-                                    <h6>Requisitos mínimos para a senha:</h6>
-                                </div>
-                                <div>
-                                    <small style="color: red; margin-bottom: 1px;" v-if="!has_six_chars">No mínimo 6
-                                        caracteres.</small>
-                                    <small style="color: green; margin-bottom: 1px;" v-else>No mínimo 6
-                                        caracteres.</small>
-                                    <br>
-                                    <small style="color: red; margin-bottom: 1px;" v-if="!has_lowercase">Conter pelo
-                                        menos uma
-                                        letra.</small>
-                                    <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos uma
-                                        letra.</small>
-                                    <br>
-                                    <small style="color: red; margin-bottom: 1px;" v-if="!has_number">Conter pelo menos
-                                        um
-                                        número.</small>
-                                    <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos um
-                                        número.</small>
-                                    <br>
-                                    <small style="color: red; margin-bottom: 1px;" v-if="!has_special">Conter pelo menos
-                                        um
-                                        caractere especial.</small>
-                                    <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos um
-                                        caractere
-                                        especial.</small>
-                                    <br>
-                                    <small style="color: red; margin-bottom: 1px;"
-                                        v-if="user.password !== confirmPassword">A confirmação de senha precisa
-                                        ser igual
-                                        a senha.</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="container" style="margin-top: 10px;">
-                            <div class="row">
-                                <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" @click.prevent="changePass()">
-                                        Alterar senha
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-5">
-                            <div class="col-sm-6">
-                                <div class="text-start">
-                                    <a :href="urlIndexUser" class="btn btn-secondary btn-sm">Voltar</a>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -149,52 +77,56 @@
 
 <script>
 import axios from 'axios';
-import { computed } from 'vue';
-import { useStore } from 'vuex';
 
 export default {
     props: {
-        userById: {
-            type: String,
-            required: true
-        },
+        id: String,
         urlIndexUser: String,
-    },
-    setup() {
-        const store = useStore();
-        const loggedUser = computed(() => store.getters.getUser);
-
-        return {
-            loggedUser
-        };
     },
     data() {
         return {
+            loading: false,
             roles: [],
             user: {
-                user: JSON.parse(this.userById),
+                name: '',
+                email: '',
                 password: '',
+                role_id: '',
             },
             confirmPassword: '',
+            showPass: false,
             inputPass: false,
             has_number: '',
             has_lowercase: '',
             has_special: '',
             has_six_chars: '',
-            alertStatus: null,
-            messages: [],
             changePassword: false,
             validEmail: null,
-            loading: null,
         };
     },
     mounted() {
+        this.find();
         this.getRoles();
     },
     methods: {
+        find() {
+            this.loading = true;
+            axios.get('/admin/users/find/' + this.id)
+                .then(response => {
+                    this.user = response.data.user;
+                })
+                .catch(errors => {
+                    alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
+        togglePassword() {
+            this.showPass = !this.showPass;
+        },
         validateEmail() {
             const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            this.validEmail = emailPattern.test(this.user.user.email);
+            this.validEmail = emailPattern.test(this.user.email);
         },
         getRoles() {
             this.loading = true;
@@ -203,28 +135,31 @@ export default {
                     this.roles = response.data.roles.data;
                 })
                 .catch(errors => {
-
+                    alertDanger(errors);
                 }).finally(() => {
-                    this.loading = false
+                    this.loading = false;
                 });
         },
         save() {
             const payload = {
-                name: this.user.user.name,
-                email: this.user.user.email,
-                role_id: this.user.user.role_id,
+                name: this.user.name,
+                email: this.user.email,
+                role_id: this.user.role_id,
             };
             if (this.user.password) {
                 payload.password = this.user.password;
             }
-            axios.post('/admin/users/update/' + this.user.user.id, payload)
+
+            this.loading = true;
+            axios.post('/admin/users/update/' + this.user.id, payload)
                 .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
+                    alertSuccess('Operação realizada com sucesso!');
                 })
                 .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
+                    alertDanger(errors);
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
         },
         changePass() {

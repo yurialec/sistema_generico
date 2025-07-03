@@ -4,22 +4,6 @@
             <h4>Meu Cadastro</h4>
         </div>
         <div class="card-body">
-
-            <div v-if="this.alertStatus === true"
-                class="alert alert-success alert-dismissible fade show col-lg-4 offset-lg-4" role="alert">
-                <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-            <div v-if="this.alertStatus === false" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                <hr>
-                <ul v-for="msg in this.messages.data.errors">
-                    <li>{{ msg[0] }}</li>
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
             <div v-if="loading" class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -137,6 +121,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            loading: false,
             user: {},
             userProfile: {
                 name: '',
@@ -153,9 +138,6 @@ export default {
             has_six_chars: '',
             changePassword: false,
             validEmail: null,
-            alertStatus: null,
-            msg: [],
-            loading: null,
         };
     },
     mounted() {
@@ -177,10 +159,10 @@ export default {
                     this.userProfile.permissions = this.user.role.permissions;
                 })
                 .catch(error => {
-
+                    alertDanger(errors);
                 })
                 .finally(() => {
-                    this.loading = false
+                    this.loading = false;
                 });
         },
         save() {
@@ -193,14 +175,17 @@ export default {
             if (this.userProfile.password) {
                 payload.password = this.userProfile.password;
             }
+
+            this.loading = true;
             axios.post('/admin/users/update/' + this.user.id, payload)
                 .then(response => {
-                    this.alertStatus = true;
-                    this.msg = response.data;
+                    alertSuccess('Dados alterados com sucesso!');
                 })
                 .catch(errors => {
-                    this.alertStatus = false;
-                    this.msg = errors.response.data;
+                    alertDanger(errors);
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
         },
         changePass() {
