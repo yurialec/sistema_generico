@@ -18,7 +18,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('blog.index');
+        return view('admin.blog.index');
     }
 
     public function list()
@@ -43,7 +43,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('blog.create');
+        return view('admin.blog.create');
     }
 
     /**
@@ -69,10 +69,9 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $blog = $this->blogService->getById($id);
-        return view('blog.edit', compact('blog'));
+        return view('admin.blog.edit', compact('id'));
     }
 
     /**

@@ -152,6 +152,9 @@ export default {
                 .catch(err => {
                     this.alertDanger(errors);
                     window.scrollTo(0, 0);
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
         },
         clearForm() {

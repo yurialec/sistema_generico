@@ -110,7 +110,7 @@ export default {
                     this.users = response.data.users;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });
