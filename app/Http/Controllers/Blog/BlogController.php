@@ -74,6 +74,23 @@ class BlogController extends Controller
         return view('admin.blog.edit', compact('id'));
     }
 
+    public function find($id)
+    {
+        $blog = $this->blogService->find($id);
+
+        if ($blog) {
+            return response()->json([
+                'status' => true,
+                'blog' => $blog,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar blog'
+            ], 500);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */

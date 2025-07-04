@@ -5,85 +5,55 @@
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
-                <div class="col-sm-6">
-
-                    <div v-if="loading" class="d-flex justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div v-if="loading" class="d-flex justify-content-center my-4">
                         <div class="spinner-border" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
-
-                    <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
-                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                            role="alert">
-                            <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <form v-else @submit.prevent="save" autocomplete="off">
+                        <div class="mb-3">
+                            <label class="form-label">Título</label>
+                            <input type="text" class="form-control" v-model="blog.title" />
                         </div>
 
-                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                            role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                            <hr>
-                            <ul v-for="msg in messages.data.errors">
-                                <li>{{ msg[0] }}</li>
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <div class="mb-3">
+                            <label class="form-label">Descrição</label>
+                            <input type="text" class="form-control" v-model="blog.description" />
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label>Título</label>
-                            <input type="text" class="form-control" v-model="blog.blog.title">
-                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Imagens</label>
+                            <input type="file" class="form-control my-2" multiple @change="onFileChange" />
 
-                        <div class="form-group mb-3">
-                            <label>Descrição</label>
-                            <input type="text" class="form-control" v-model="blog.blog.description">
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label>Imagem</label>
-
-                            <input class="form-control mb-3 mt-3" type="file" multiple @change="onFileChange" />
-
-                            <div class="jumbotron">
-                                <div class="row">
-                                    <div v-for="image in blog.blog.images" class="div-blog-image col-md-4"
-                                        :key="image.id">
-                                        <button @click="removeImage(image.id)" class="btn btn-danger btn-sm mb-2"
-                                            type="button"
-                                            style="position: absolute;  top: 5px;  right: 5px;  z-index: 10;">
-                                            &times;
-                                        </button>
-                                        <img :src="'/storage/' + image.image_path" class="preview img-thumbnail"
-                                            style="width: 100%;  border-radius: 10px;  object-fit: cover;" />
-                                    </div>
-
-                                    <div v-for="(newImage, index) in this.newImages" :key="index"
-                                        class="div-blog-image col-md-4">
-                                        <button @click="removeNewImages(index)" class="btn btn-danger btn-sm mb-2"
-                                            type="button"
-                                            style="position: absolute;  top: 5px;  right: 5px;  z-index: 10;">
-                                            &times;
-                                        </button>
-                                        <img :src="newImage.preview" class="preview img-thumbnail"
-                                            style="width: 100%;  border-radius: 10px;  object-fit: cover;" />
-                                    </div>
+                            <div class="row g-3">
+                                <div v-for="image in blog.images" :key="'old-' + image.id"
+                                    class="col-md-4 position-relative">
+                                    <button type="button"
+                                        class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                                        @click="removeImage(image.id)">
+                                        &times;
+                                    </button>
+                                    <img :src="'/storage/' + image.image_path" class="img-thumbnail w-100"
+                                        style="border-radius: 10px; object-fit: cover;" />
                                 </div>
 
+                                <div v-for="(newImage, index) in newImages" :key="'new-' + index"
+                                    class="col-md-4 position-relative">
+                                    <button type="button"
+                                        class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                                        @click="removeNewImages(index)">
+                                        &times;
+                                    </button>
+                                    <img :src="newImage.preview" class="img-thumbnail w-100"
+                                        style="border-radius: 10px; object-fit: cover;" />
+                                </div>
                             </div>
                         </div>
 
-                        <div class="row mt-5">
-                            <div class="col-sm-6">
-                                <div class="text-start">
-                                    <a :href="urlIndexBlog" class="btn btn-secondary btn-sm">Voltar</a>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                                </div>
-                            </div>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a :href="urlIndexBlog" class="btn btn-secondary btn-sm">Voltar</a>
+                            <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
                         </div>
                     </form>
                 </div>
@@ -97,80 +67,73 @@ import axios from 'axios';
 
 export default {
     props: {
-        blogById: {
-            type: String,
-            required: true
-        },
+        id: String,
         urlIndexBlog: String,
     },
     data() {
         return {
-            blog: {
-                blog: JSON.parse(this.blogById),
-            },
-            alertStatus: null,
-            messages: [],
-            loading: null,
+            loading: false,
+            blog: { images: [] },
             newImages: [],
-            file: '',
         };
     },
     mounted() {
+        this.find();
     },
     methods: {
+        find() {
+            this.loading = true;
+            axios.get('/admin/blog/find/' + this.id)
+                .then(response => {
+                    this.blog = response.data.blog;
+                })
+                .catch(this.alertDanger)
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
         onFileChange(e) {
-            const selectedFiles = e.target.files;
-            for (let i = 0; i < selectedFiles.length; i++) {
-                let reader = new FileReader();
-                let file = selectedFiles[i];
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                const reader = new FileReader();
                 reader.onload = (event) => {
                     this.newImages.push({
-                        file: file,
-                        name: file.name,
-                        preview: event.target.result
+                        file,
+                        preview: event.target.result,
                     });
                 };
                 reader.readAsDataURL(file);
-            }
+            });
         },
         removeImage(id) {
-            const index = this.blog.blog.images.findIndex(image => image.id === id);
-            if (index !== -1) {
-                this.blog.blog.images.splice(index, 1);
-            }
+            this.blog.images = this.blog.images.filter(image => image.id !== id);
         },
         removeNewImages(index) {
             this.newImages.splice(index, 1);
         },
-        loadImage(e) {
-            this.newImage = e.target.files[0];
-            this.urlImage = URL.createObjectURL(this.newImage);
-        },
         save() {
             const formData = new FormData();
-            formData.append('title', this.blog.blog.title);
-            formData.append('description', this.blog.blog.description);
+            formData.append('title', this.blog.title);
+            formData.append('description', this.blog.description);
 
-            this.newImages.forEach((image, index) => {
-                formData.append(`new_images[${index}]`, image.file);
+            this.newImages.forEach((image, i) => {
+                formData.append(`new_images[${i}]`, image.file);
             });
 
-            this.blog.blog.images.forEach((image, index) => {
-                formData.append(`old_data[${index}]`, image.image_path);
+            this.blog.images.forEach((image, i) => {
+                formData.append(`old_data[${i}]`, image.image_path);
             });
 
-            axios.post('/admin/blog/update/' + this.blog.blog.id, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(response => {
-                this.alertStatus = true;
-                this.messages = response.data;
-            }).catch(errors => {
-                this.alertStatus = false;
-                this.messages = errors.response;
-            });
+            this.loading = true;
+            axios.post(`/admin/blog/update/${this.blog.id}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+                .then(() => this.alertSuccess('Operação realizada com sucesso!'))
+                .catch(this.alertDanger)
+                .finally(() => {
+                    this.loading = false;
+                });
         },
-    }
-}
+    },
+};
 </script>

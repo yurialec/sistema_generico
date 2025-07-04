@@ -77,7 +77,6 @@
 
 <script>
 import axios from 'axios';
-import { Modal } from 'bootstrap';
 
 export default {
     props: {

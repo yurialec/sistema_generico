@@ -76,70 +76,52 @@
         </div>
     </div>
 
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Launch static backdrop modal
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" ref="myModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Imagens do Blog</h5>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
                 </div>
                 <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="viewImgModal" tabindex="-1" aria-labelledby="viewImgModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewImgModalLabel">Visualizar imagen do blog</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div id="carouselExample" class="carousel slide">
-                        <div class="carousel-inner">
-                            <div v-for="(image, index) in selectedBlog" :key="index"
-                                :class="['carousel-item', { active: index === 0 }]">
-                                <img :src="'/storage/' + image.image_path" class="d-block w-100 h-30 mb-4" alt="...">
+                    <div v-if="selectedBlog.length > 0">
+                        <div id="carouselExample" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div v-for="(image, index) in selectedBlog" :key="index"
+                                    :class="['carousel-item', { active: index === 0 }]">
+                                    <img :src="'/storage/' + image.image_path" class="d-block w-100"
+                                        style="max-height: 300px; object-fit: contain;">
+                                </div>
                             </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </button>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="prev">
-                            <span style="background-color: #333; border-radius: 10px;"
-                                class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="next">
-                            <span style="background-color: #333; border-radius: 10px;"
-                                class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                    </div>
+                    <div v-else>
+                        <p class="text-muted">Nenhuma imagem disponível.</p>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="closeModal">Fechar</button>
+                </div>
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
 import axios from 'axios';
 import { Carousel } from 'bootstrap';
+import { Modal } from 'bootstrap';
 
 export default {
     props: {
@@ -153,8 +135,9 @@ export default {
                 data: [],
                 links: []
             },
-            selectedBlog: {},
+            selectedBlog: [],
             searchFilter: null,
+            modalInstance: null,
         };
     },
     mounted() {
@@ -196,13 +179,31 @@ export default {
             });
         },
         viewImage(blog) {
-            this.selectedBlog = blog.images;
+            this.selectedBlog = blog.images || [];
             this.$nextTick(() => {
-                const carouselElement = document.getElementById('carouselExample');
-                const carousel = Carousel.getOrCreateInstance(carouselElement);
-                carousel.to(0);
+                if (!this.modalInstance) {
+                    this.modalInstance = new Modal(this.$refs.myModal);
+                }
+                this.modalInstance.show();
+
+                const carouselEl = document.getElementById('carouselExample');
+                if (carouselEl) {
+                    const carousel = Carousel.getOrCreateInstance(carouselEl);
+                    carousel.to(0);
+                }
             });
-        }
+        },
+        openModal() {
+            if (!this.modalInstance) {
+                this.modalInstance = new Modal(this.$refs.myModal);
+            }
+            this.modalInstance.show();
+        },
+        closeModal() {
+            if (this.modalInstance) {
+                this.modalInstance.hide();
+            }
+        },
     }
 }
 </script>

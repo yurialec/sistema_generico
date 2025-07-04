@@ -1,7 +1,7 @@
 @extends('site.layouts.app')
 @section('content')
-    
-<!-- Hero Section -->
+
+    <!-- Hero Section -->
     <section id="home" class="hero-section">
         <div class="container">
             <div class="row align-items-center">
@@ -126,54 +126,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <img src="#" class="card-img-top" alt="Post 1">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">Título do Post 1</h5>
-                            <p class="card-text">
-                                Resumo do primeiro post do blog. Aqui você pode dar uma prévia
-                                do conteúdo para despertar o interesse do leitor.
-                            </p>
-                            <small class="text-muted">Publicado em 15/12/2023</small>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <a href="#" class="btn btn-primary">Ler Mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <img src="#" class="card-img-top" alt="Post 2">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">Título do Post 2</h5>
-                            <p class="card-text">
-                                Resumo do segundo post do blog. Mantenha o texto interessante
-                                e informativo para engajar seus visitantes.
-                            </p>
-                            <small class="text-muted">Publicado em 10/12/2023</small>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <a href="#" class="btn btn-primary">Ler Mais</a>
+                @foreach ($siteblogs as $blog)
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <img src="{{'storage/' . $blog->images[0]['image_path'] }}" class="card-img-top" alt="Post 1">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">{{ $blog->title }}</h5>
+                                <p class="card-text"> {{ $blog->description }}</p>
+                                <small
+                                    class="text-muted">{{ \Carbon\Carbon::parse($blog->created_at)->format('d/m/Y') }}</small>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{{ route('site.blog.post', $blog->id) }}" class="btn btn-primary">Ler Mais</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <img src="#" class="card-img-top" alt="Post 3">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">Título do Post 3</h5>
-                            <p class="card-text">
-                                Resumo do terceiro post do blog. Use este espaço para
-                                compartilhar conhecimento e estabelecer autoridade no seu nicho.
-                            </p>
-                            <small class="text-muted">Publicado em 05/12/2023</small>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <a href="#" class="btn btn-primary">Ler Mais</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

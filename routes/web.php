@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('home', [HomeController::class, 'index'])->name('home');
         Route::get('sidebar', [MenuController::class, 'sidebar'])->name('sidebar');
         Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+        Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
+        Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 
         Route::middleware('acl:keep-users')->group(function () {
             Route::prefix('users')->group(function () {
@@ -59,8 +61,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/find/{id}', [UserController::class, 'find'])->name('users.find');
                 Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update');
                 Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
-                Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
-                Route::get('/profile', [UserController::class, 'profile'])->name('profile');
             });
         });
 
@@ -186,6 +186,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/create', [BlogController::class, 'create'])->name('blog.create');
                 Route::post('/store', [BlogController::class, 'store'])->name('blog.store');
                 Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
+                Route::get('/find/{id}', [BlogController::class, 'find'])->name('blog.edit');
                 Route::post('/update/{id}', [BlogController::class, 'update'])->name('blog.update');
                 Route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
             });

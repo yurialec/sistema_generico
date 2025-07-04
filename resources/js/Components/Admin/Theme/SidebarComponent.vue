@@ -65,7 +65,7 @@ export default {
                     this.sidebar = response.data.sidebar;
                 })
                 .catch(errors => {
-                    alertDanger(errors);
+                    this.alertDanger(errors);
                 }).finally(() => {
                     this.loading = false;
                 });

@@ -2,6 +2,6 @@
 @section('content')
 <blog-edit-component
     id="{{ $id }}"
-    url-index-blog="{{ route('admin.blog.index') }}">
+    url-index-blog="{{ route('blog.index') }}">
 </blog-edit-component>
 @endsection

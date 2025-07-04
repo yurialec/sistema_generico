@@ -19,7 +19,7 @@ class BlogService
         return $this->blogRepository->all();
     }
 
-    public function getById($id)
+    public function find($id)
     {
         return $this->blogRepository->find($id);
     }

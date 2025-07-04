@@ -1,116 +1,97 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Meu Cadastro</h4>
-        </div>
-        <div class="card-body">
-            <div v-if="loading" class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden"></span>
-                </div>
-            </div>
-
-            <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-4 offset-lg-4"
-                autocomplete="off">
-                <div class="form-group">
-                    <label>Nome</label>
-                    <input type="text" class="form-control" v-model="userProfile.name" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" v-model="userProfile.email" @input="validateEmail"
-                        autocomplete="off">
-
-                    <div style="margin-top: 10px;" v-if="validEmail === false" class="alert alert-danger" role="alert">
-                        E-mail inválido.
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">Meu Cadastro</h4>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Perfil</label>
-                    <input type="text" disabled class="form-control" v-model="userProfile.role">
-                </div>
-
-                <div class="form-group">
-                    <label>Permissões</label><br>
-
-                    <strong>
-                        <p v-show="userProfile.permissions.length == 0">Você não tem nenhuma permissão</p>
-                    </strong>
-
-                    <span id="span-role-permissions" v-for="permission in userProfile.permissions" :key="permission.id"
-                        class="badge bg-success">
-                        {{ permission.label }}
-                    </span>
-                </div>
-
-                <div class="form-group" v-show="changePassword">
-                    <hr>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm">
-                                <label>Senha</label>
-                                <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                    v-model="userProfile.password" @input="passwordCheck" autocomplete="new-password">
+                    <div class="card-body">
+                        <div v-if="loading" class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Carregando...</span>
                             </div>
-                            <div class="col-sm">
-                                <label>Confirmar senha</label>
-                                <div class="input-group">
-                                    <input :type="inputPass ? 'text' : 'password'" class="form-control"
-                                        v-model="confirmPassword" autocomplete="new-password">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <button class="btn" style="padding: 0;" type="button"
-                                                @click="showPassword()" id="button-addon2">
+                        </div>
+
+                        <form v-else @submit.prevent="save()" autocomplete="off">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome</label>
+                                <input type="text" id="name" class="form-control" v-model="userProfile.name"
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" class="form-control" v-model="userProfile.email"
+                                    @input="validateEmail" autocomplete="off">
+                                <div class="mt-2" v-if="validEmail === false">
+                                    <div class="alert alert-danger p-2" role="alert">E-mail inválido.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Perfil</label>
+                                <input type="text" class="form-control" v-model="userProfile.role" disabled>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Permissões</label>
+                                <div>
+                                    <p v-if="userProfile.permissions.length === 0"><strong>Você não tem nenhuma
+                                            permissão</strong></p>
+                                    <span v-for="permission in userProfile.permissions" :key="permission.id"
+                                        class="badge bg-success me-1">
+                                        {{ permission.label }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div v-if="changePassword">
+                                <hr class="my-4">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-sm-6">
+                                        <label class="form-label">Senha</label>
+                                        <input :type="inputPass ? 'text' : 'password'" class="form-control"
+                                            v-model="userProfile.password" @input="passwordCheck"
+                                            autocomplete="new-password">
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label class="form-label">Confirmar Senha</label>
+                                        <div class="input-group">
+                                            <input :type="inputPass ? 'text' : 'password'" class="form-control"
+                                                v-model="confirmPassword" autocomplete="new-password">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                @click="showPassword()">
                                                 <i class="bi bi-eye"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <h6>Requisitos mínimos para a senha:</h6>
+                                    <small :class="has_six_chars ? 'text-success' : 'text-danger'">No mínimo 6
+                                        caracteres.</small><br>
+                                    <small :class="has_lowercase ? 'text-success' : 'text-danger'">Conter pelo menos uma
+                                        letra.</small><br>
+                                    <small :class="has_number ? 'text-success' : 'text-danger'">Conter pelo menos um
+                                        número.</small><br>
+                                    <small :class="has_special ? 'text-success' : 'text-danger'">Conter pelo menos um
+                                        caractere especial.</small><br>
+                                    <small class="text-danger" v-if="userProfile.password !== confirmPassword">A
+                                        confirmação de senha precisa ser igual à senha.</small>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="col-sm" style="margin-top: 5px;">
-                        <div>
-                            <h6>Requisitos mínimos para a senha:</h6>
-                        </div>
-                        <div>
-                            <small style="color: red; margin-bottom: 1px;" v-if="!has_six_chars">No mínimo 6
-                                caracteres.</small>
-                            <small style="color: green; margin-bottom: 1px;" v-else>No mínimo 6 caracteres.</small>
-                            <br>
-                            <small style="color: red; margin-bottom: 1px;" v-if="!has_lowercase">Conter pelo menos uma
-                                letra.</small>
-                            <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos uma letra.</small>
-                            <br>
-                            <small style="color: red; margin-bottom: 1px;" v-if="!has_number">Conter pelo menos um
-                                número.</small>
-                            <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos um número.</small>
-                            <br>
-                            <small style="color: red; margin-bottom: 1px;" v-if="!has_special">Conter pelo menos um
-                                caractere especial.</small>
-                            <small style="color: green; margin-bottom: 1px;" v-else>Conter pelo menos um caractere
-                                especial.</small>
-                            <br>
-                            <small style="color: red; margin-bottom: 1px;"
-                                v-if="userProfile.password !== confirmPassword">A confirmação de senha precisa ser igual
-                                a senha.</small>
-                        </div>
+                            <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mt-4">
+                                <button class="btn btn-outline-primary w-100 w-sm-auto" type="button"
+                                    @click="changePass()">Alterar senha</button>
+                                <button class="btn btn-primary w-100 w-sm-auto" type="submit">Atualizar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <div class="container" style="margin-top: 10px;">
-                    <div class="row">
-                        <div class="col text-start">
-                            <button class="btn btn-primary btn-sm" @click.prevent="changePass()">Alterar senha</button>
-                        </div>
-                        <div class="col text-end">
-                            <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </template>
@@ -150,7 +131,7 @@ export default {
         },
         getProfile() {
             this.loading = true;
-            axios.get('admin/users/profile')
+            axios.get('admin/profile')
                 .then(response => {
                     this.user = response.data.profile;
                     this.userProfile.name = this.user.name;

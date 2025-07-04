@@ -14,13 +14,11 @@ class SiteBlogController extends Controller
     {
         $socialmedias = $this->socialmedias();
         $blogs = $this->blogs();
-
-        return view('site.blog.index', compact('socialmedias', 'blogs'));
+        return view('blog.index', compact('socialmedias', 'blogs'));
     }
 
     public function post(Blog $blog)
     {
-        $blog = $this->blogById($blog->id);
-        return view('site.blog.post', compact('blog'));
+        return view('blog.post', compact('blog'));
     }
 }

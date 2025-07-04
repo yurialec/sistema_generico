@@ -10,13 +10,13 @@ class SiteController extends Controller
 
     public function index()
     {
-        $mainText = $this->mainText();
-        $carousels = $this->carousels();
-        $contact = $this->contactSite();
+        $mainText     = $this->mainText();
+        $carousels    = $this->carousels();
+        $contact      = $this->contactSite();
         $socialmedias = $this->socialmedias();
-        $about = $this->aboutSite();
-        $siteblogs = $this->siteblogs();
-
+        $about        = $this->aboutSite();
+        $siteblogs    = $this->siteblogs();
+        
         return view('site.home', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about', 'siteblogs'));
     }
 
