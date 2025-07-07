@@ -14,12 +14,12 @@ class LogoService
         $this->logoRepository = $logoRepository;
     }
 
-    public function getAllLogo()
+    public function getLogo()
     {
-        return $this->logoRepository->all();
+        return $this->logoRepository->getLogo();
     }
 
-    public function getLogoById($id)
+    public function find($id)
     {
         return $this->logoRepository->find($id);
     }
@@ -31,34 +31,21 @@ class LogoService
 
         $data['image'] = $image_urn;
 
+        $data = [
+            'name' => $data['name'],
+            'image' => $data['image'],
+        ];
+
         return $this->logoRepository->create($data);
     }
 
     public function updateLogo($id, $data)
     {
-        $logo = $this->logoRepository->find($id);
-
-        if (isset($logo->image)) {
-            Storage::disk('public')->delete($logo->image);
-        }
-
-        if (isset($data['imageFile'])) {
-            $image = $data['imageFile'];
-            $data['image_urn'] = $image->store('site/logo/images', 'public');
-        } else {
-            unset($data['image_urn']);
-        }
-
         return $this->logoRepository->update($id, $data);
     }
 
     public function deleteLogo($id)
     {
-        $logo = $this->logoRepository->find($id);
-        if (isset($logo->image)) {
-            Storage::disk('public')->delete($logo->image);
-        }
-
         return $this->logoRepository->delete($id);
     }
 }

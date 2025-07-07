@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Site\Logo\StoreLogoRequest;
 use App\Services\Site\LogoService;
 use Illuminate\Http\Request;
 
@@ -19,12 +20,12 @@ class LogoController extends Controller
      */
     public function index()
     {
-        return view('site.logo.index');
+        return view('admin.site.logo.index');
     }
 
-    public function list()
+    public function getLogo()
     {
-        $logo = $this->logoService->getAllLogo();
+        $logo = $this->logoService->getLogo();
 
         if ($logo) {
             return response()->json([
@@ -44,13 +45,13 @@ class LogoController extends Controller
      */
     public function create()
     {
-        return view('site.logo.create');
+        return view('admin.site.logo.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreLogoRequest $request)
     {
         $logo = $this->logoService->createLogo($request->all());
 
@@ -72,8 +73,24 @@ class LogoController extends Controller
      */
     public function edit(string $id)
     {
-        $logo = $this->logoService->getLogoById($id);
-        return view('site.logo.edit', compact('logo'));
+        return view('admin.site.logo.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $logo = $this->logoService->find($id);
+
+        if ($logo) {
+            return response()->json([
+                'status' => true,
+                'logo' => $logo,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar Logotipo'
+            ], 500);
+        }
     }
 
     /**

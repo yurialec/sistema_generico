@@ -11,7 +11,7 @@ export default {
                                     <div class="modal-dialog modal-sm modal-dialog-centered">
                                         <div class="modal-content border-0 shadow-sm rounded-3 text-center p-4" style="max-width: 300px; margin: auto;">
                                         <div class="mb-3">
-                                            <i class="bi bi-exclamation-circle-fill text-warning" style="font-size: 48px;"></i>
+                                            <i class="bi bi-exclamation-circle text-warning" style="font-size: 48px;"></i>
                                         </div>
                                         <p class="text-muted mb-4">${mensagem}</p>
                                         <div class="d-flex justify-content-center gap-2">

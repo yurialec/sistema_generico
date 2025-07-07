@@ -104,10 +104,11 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware('acl:keep-logo')->group(function () {
                 Route::prefix('logo')->group(function () {
                     Route::get('/', [LogoController::class, 'index'])->name('site.logo.index');
-                    Route::get('/list', [LogoController::class, 'list'])->name('site.logo.list');
+                    Route::get('/get-logo', [LogoController::class, 'getLogo'])->name('site.logo.getLogo');
                     Route::get('/create', [LogoController::class, 'create'])->name('site.logo.create');
                     Route::post('/store', [LogoController::class, 'store'])->name('site.logo.store');
                     Route::get('/edit/{id}', [LogoController::class, 'edit'])->name('site.logo.edit');
+                    Route::get('/find/{id}', [LogoController::class, 'find'])->name('site.logo.find');
                     Route::post('/update/{id}', [LogoController::class, 'update'])->name('site.logo.update');
                     Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
                 });

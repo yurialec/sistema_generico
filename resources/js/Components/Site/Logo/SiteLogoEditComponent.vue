@@ -3,52 +3,31 @@
         <div class="card-header">
             <h4>Editar Logo</h4>
         </div>
-        <div class="card-body">
+        <div v-if="loading" class="d-flex justify-content-center py-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+        <div v-else class="card-body">
             <div class="d-flex justify-content-center">
-
-                <div v-if="loading" class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-
-                <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-6" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div class="form-group">
+                <form method="POST" @submit.prevent="save()" class="col-lg-6" autocomplete="off">
+                    <div class="form-group mb-3">
                         <label>Nome</label>
-                        <input type="text" class="form-control" v-model="logo.logo.name">
+                        <input type="text" class="form-control" v-model="logo.name">
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label>Imagem</label>
                         <input type="file" class="form-control" @change="loadImage">
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexLogo" class="btn btn-secondary btn-sm">Voltar</a>
-                            </div>
+                        <div v-if="logo.imageUrl" class="mt-2">
+                            <img :src="logo.imageUrl" alt="Logo atual" class="img-thumbnail" style="max-height: 100px;">
                         </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                            </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-6 text-start">
+                            <a :href="urlIndexLogo" class="btn btn-secondary btn-sm">Voltar</a>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
                         </div>
                     </div>
                 </form>
@@ -62,48 +41,71 @@ import axios from 'axios';
 
 export default {
     props: {
-        logoById: {
-            type: String,
-            required: true
-        },
         urlIndexLogo: String,
+        id: String,
     },
     data() {
         return {
+            loading: false,
             logo: {
-                logo: JSON.parse(this.logoById),
+                name: '',
+                image: '',
+                imageFile: null,
+                imageUrl: '',
             },
-            alertStatus: null,
-            messages: [],
-            loading: null,
         };
     },
     mounted() {
+        this.find();
     },
     methods: {
-        loadImage(e) {
-            this.logo.logo.imageFile = e.target.files[0];
-        },
-        save() {
-            let formData = new FormData();
-            formData.append('name', this.logo.logo.name);
-            if (this.logo.logo.imageFile) {
-                formData.append('imageFile', this.logo.logo.imageFile);
-            }
-
-            axios.post('/admin/site/logo/update/' + this.logo.logo.id, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+        find() {
+            this.loading = true;
+            axios.get('/admin/site/logo/find/' + this.id)
                 .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
+                    const data = response.data.logo;
+                    this.logo.name = data.name;
+                    this.logo.image = data.image;
+                    this.logo.imageUrl = data.imageUrl;
                 })
                 .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
+                    this.alertDanger(errors);
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
+        },
+        loadImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.logo.imageFile = file;
+
+                const reader = new FileReader();
+                reader.onload = e => {
+                    this.logo.imageUrl = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        save() {
+            const formData = new FormData();
+            formData.append('name', this.logo.name);
+            if (this.logo.imageFile) {
+                formData.append('image', this.logo.imageFile);
+            }
+
+            this.loading = true;
+
+            axios.post('/admin/site/logo/update/' + this.id, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(() => {
+                this.alertSuccess('Logo atualizada com sucesso!');
+                window.location.href = this.urlIndexLogo;
+            }).catch(error => {
+                this.alertDanger(error?.response?.data?.message || 'Erro ao atualizar logotipo.');
+            }).finally(() => {
+                this.loading = false;
+            });
         },
     }
 }

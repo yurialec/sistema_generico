@@ -1,6 +1,9 @@
 <template>
-    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light shadow">
-        <a class="navbar-brand ps-3" :href="urlHome">Home</a>
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light shadow">        
+        <a class="navbar-brand ps-3" :href="urlHome">
+            <img v-if="logoRoute" :src="logoRoute" alt="Home" class="img-fluid" style="max-height: 40px;">
+            <p v-if="!logoRoute">Home</p>
+        </a>
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
             <i class="fas fa-bars"></i>
         </button>
@@ -31,6 +34,7 @@ export default {
         urlHome: String,
         urlProfile: String,
         urlLogout: String,
+        logoRoute: String,
     },
 };
 </script>

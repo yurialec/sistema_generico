@@ -1,110 +1,71 @@
 <template>
-    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro excluído com sucesso
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div v-if="loading" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
     </div>
-
-    <div v-if="alertStatus == 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
-        <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa funcionalidade
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-6 text-start">
-                    <h3>Logotipo</h3>
+    <div v-else class="card shadow-sm border-0">
+        <div class="card-header py-3 bg-light">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-6">
+                    <h5 class="mb-0">Logotipo</h5>
                 </div>
-
-                <div class="col-md-6 text-end">
-                    <a v-show="!logo?.id" :href="urlCreateLogo" type="button"
-                        class="btn btn-primary btn-sm">Cadastrar</a>
+                <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
+                    <a v-if="!logo?.id" :href="urlCreateLogo" class="btn btn-sm btn-success">
+                        <i class="bi bi-plus-circle me-1"></i> Cadastrar
+                    </a>
                 </div>
             </div>
         </div>
-
-        <div v-if="loading" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
-        <div v-else class="card-body">
-            <div v-if="!logo?.id" class="text-center">
-                <p>Nenhum resultado encontrado</p>
-            </div>
-
-            <div v-else class="table-responsive">
-                <table class="table table-sm table-hover">
-                    <thead>
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover align-middle text-nowrap mb-0">
+                    <thead class="table-light">
                         <tr>
                             <th scope="col">Preview</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">Ações</th>
+                            <th scope="col" class="text-end">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">
-                                <img :src="'/storage/' + logo.image" width="80">
-                            </th>
-                            <td>{{ logo.name }}</td>
+                        <tr v-if="logo?.id">
                             <td>
-                                <button type="button" style="color: #333; padding: 0;" class="btn"
-                                    data-bs-toggle="modal" data-bs-target="#viewImgModal">
+                                <img :src="'/storage/' + logo.image" alt="Logo preview" class="img-thumbnail"
+                                    style="width: 80px;">
+                            </td>
+                            <td>{{ logo.name }}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"
+                                    @click="openImage">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                &nbsp;&nbsp;&nbsp;
-
-                                <a :href="'/admin/site/logo/edit/' + logo.id">
+                                <a :href="urlEditLogo.replace('_id', logo.id)"
+                                    class="btn btn-sm btn-outline-primary me-1" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                &nbsp;&nbsp;&nbsp;
-
-                                <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" @click="confirmExclusion(logo.id)">
-                                    <i class="bi bi-trash3"></i>
+                                <button class="btn btn-sm btn-outline-danger" @click="deleteRegister(logo.id)"
+                                    title="Excluir">
+                                    <i class="bi bi-trash"></i>
                                 </button>
                             </td>
+                        </tr>
+                        <tr v-else>
+                            <td colspan="3" class="text-center text-muted py-3">Nenhum registro encontrado.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <!-- Modal de Exclusão -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="modalImage" tabindex="-1" aria-labelledby="modalImageLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação de Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="modalImageLabel">Visualizar Imagem</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
-                <div class="modal-body">
-                    Tem certeza que deseja deletar este registro?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" @click="deleteRecord">Excluir</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Visualização de Imagem -->
-    <div class="modal fade" id="viewImgModal" tabindex="-1" aria-labelledby="viewImgModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewImgModalLabel">Visualizar imagem</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div style="text-align: center;">
-                        <img :src="'/storage/' + logo.image" width="450">
-                        <small>Nome: {{ logo.name }}</small>
-                    </div>
+                <div class="modal-body text-center">
+                    <img :src="'/storage/' + logo.image" alt="Visualização do logo" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
@@ -118,12 +79,10 @@ import { Modal } from 'bootstrap';
 export default {
     props: {
         urlCreateLogo: String,
+        urlEditLogo: String,
     },
     data() {
         return {
-            logoToDelete: null,
-            alertStatus: null,
-            msg: [],
             loading: false,
             logo: {},
         };
@@ -134,45 +93,37 @@ export default {
     methods: {
         getLogo() {
             this.loading = true;
-            axios.get('admin/site/logo/list')
+            axios.get('admin/site/logo/get-logo')
                 .then(response => {
                     this.logo = response.data.logo || {};
                 })
                 .catch(errors => {
-                    this.alertStatus = 'error';
-                }).finally(() => {
+                    this.alertDanger(errors);
+                })
+                .finally(() => {
                     this.loading = false;
                 });
         },
-        confirmExclusion(logoId) {
-            this.logoToDelete = logoId;
-        },
-        deleteRecord() {
-            if (this.logoToDelete !== null) {
-                axios.delete('/admin/site/logo/delete/' + this.logoToDelete)
-                    .then(response => {
+        deleteRegister(id) {
+            this.confirmYesNo('Deseja excluir a logo?').then(() => {
+                this.loading = true;
+                axios.delete(`/admin/site/logo/delete/${id}`)
+                    .then(() => {
                         this.getLogo();
-
-                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        this.alertStatus = response.data === '' ? 'notAllowed' : true;
-
+                        this.alertSuccess('Excluído com sucesso!');
                     })
                     .catch(errors => {
-                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        if (errors.response.status === 405) {
-                            this.alertStatus = 'notAllowed';
-                        }
+                        this.alertDanger(errors);
+                    })
+                    .finally(() => {
+                        this.loading = false;
                     });
-            }
+            });
         },
+        openImage() {
+            const modal = new Modal(document.getElementById('modalImage'));
+            modal.show();
+        }
     }
 }
 </script>
