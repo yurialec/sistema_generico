@@ -135,17 +135,6 @@ class MenusSeeder extends Seeder
             ]
         ]);
 
-        DB::table('menus')->insert([
-            'label' => 'Blog',
-            'icon' => 'bi bi-journals',
-            'url' => '/admin/blog/',
-            'active' => 1,
-            'son' => null,
-            'order' => 3,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
         $siteMenuId = DB::getPdo()->lastInsertId();
     }
 }

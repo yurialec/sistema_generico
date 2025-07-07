@@ -116,36 +116,6 @@
         </div>
     </section>
 
-    <!-- Blog Section -->
-    <section id="blog" class="section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center mb-5">
-                    <h2 class="text-primary">Nosso Blog</h2>
-                    <p class="lead">Fique por dentro das últimas novidades e dicas</p>
-                </div>
-            </div>
-            <div class="row">
-                @foreach ($siteblogs as $blog)
-                    <div class="col-lg-4 mb-4">
-                        <div class="card h-100">
-                            <img src="{{'storage/' . $blog->images[0]['image_path'] }}" class="card-img-top" alt="Post 1">
-                            <div class="card-body">
-                                <h5 class="card-title text-primary">{{ $blog->title }}</h5>
-                                <p class="card-text"> {{ $blog->description }}</p>
-                                <small
-                                    class="text-muted">{{ \Carbon\Carbon::parse($blog->created_at)->format('d/m/Y') }}</small>
-                            </div>
-                            <div class="card-footer bg-transparent">
-                                <a href="{{ route('site.blog.post', $blog->id) }}" class="btn btn-primary">Ler Mais</a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
     <!-- Contact Section -->
     <section id="contact" class="section-padding bg-white">
         <div class="container">

@@ -21,7 +21,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'keep-site-about', 'label' => 'Manter Sobre'],
             ['name' => 'keep-contact', 'label' => 'Manter Contato'],
             ['name' => 'keep-social-media', 'label' => 'Manter Midias Sociais'],
-            ['name' => 'keep-blog', 'label' => 'Manter Blog'],
         ];
 
         foreach ($permissions as $permission) {

@@ -19,9 +19,6 @@
                     <a class="nav-link" href="#carousel">Galeria</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#blog">Blog</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#contact">Contato</a>
                 </li>
             </ul>

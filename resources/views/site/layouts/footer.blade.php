@@ -21,7 +21,6 @@
                     <li><a href="#home" class="text-white-50">Início</a></li>
                     <li><a href="#about" class="text-white-50">Sobre</a></li>
                     <li><a href="#carousel" class="text-white-50">Galeria</a></li>
-                    <li><a href="#blog" class="text-white-50">Blog</a></li>
                     <li><a href="#contact" class="text-white-50">Contato</a></li>
                     <li><a href="{{ route('login') }}" class="text-white-50">Área Restrita</a></li>
                 </ul>

@@ -9,7 +9,6 @@ export default defineConfig({
             input: [
                 'resources/js/app.js',
                 'resources/sass/app_admin.scss',
-                'resources/sass/blog.scss',
                 'resources/sass/site.scss',
             ],
             refresh: true,
