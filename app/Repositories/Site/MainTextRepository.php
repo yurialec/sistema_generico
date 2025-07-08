@@ -4,6 +4,8 @@ namespace App\Repositories\Site;
 
 use App\Interfaces\Site\MainTextRepositoryInterface;
 use App\Models\Site\MainText;
+use Exception;
+use Log;
 
 class MainTextRepository implements MainTextRepositoryInterface
 {
@@ -14,39 +16,58 @@ class MainTextRepository implements MainTextRepositoryInterface
         $this->mainText = $mainText;
     }
 
-    public function all()
+    public function getMainText()
     {
-        return $this->mainText->get();
+        try {
+            return $this->mainText->first();
+        } catch (Exception $err) {
+            Log::error('Erro o listar texto pricipal', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function find($id)
     {
-        return $this->mainText->find($id);
+        try {
+            return $this->mainText->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro o listar texto pricipal', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function create(array $data)
     {
-        return $this->mainText->create([
-            'title' => $data['title'],
-            'text' => $data['text'],
-        ]);
+        try {
+            return $this->mainText->create($data);
+        } catch (Exception $err) {
+            Log::error('Erro o cadastrar texto pricipal', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function update($id, $data)
     {
-        $mainText = $this->mainText->find($id);
-        $mainText->update($data);
-
-        return $mainText;
+        try {
+            $mainText = $this->mainText->find($id);
+            $mainText->update($data);
+            return $mainText;
+        } catch (Exception $err) {
+            Log::error('Erro o editar texto pricipal', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function delete($id)
     {
-        $mainText = $this->mainText->find($id);
-        if ($mainText) {
+        try {
+            $mainText = $this->mainText->find($id);
             $mainText->delete();
             return true;
+        } catch (Exception $err) {
+            Log::error('Erro o editar texto pricipal', [$err->getMessage()]);
+            return false;
         }
-        return false;
     }
+
 }

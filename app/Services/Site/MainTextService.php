@@ -14,12 +14,12 @@ class MainTextService
         $this->mainTextRepository = $mainTextRepository;
     }
 
-    public function getAll()
+    public function getMainText()
     {
-        return $this->mainTextRepository->all();
+        return $this->mainTextRepository->getMainText();
     }
 
-    public function getById($id)
+    public function find($id)
     {
         return $this->mainTextRepository->find($id);
     }

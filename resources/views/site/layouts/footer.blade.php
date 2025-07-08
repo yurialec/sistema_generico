@@ -1,8 +1,15 @@
+@php
+    $logo = App\Models\Site\SiteLogo::first();
+@endphp
 <footer class="section-padding">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-4">
-                <h5 class="mb-3">Sua Logo</h5>
+                @if ($logo)
+                    <img width="100" src="{{ asset('/storage/' . $logo->image) }}">
+                @else
+                    Home
+                @endif
                 <p>
                     Descrição breve da sua empresa ou slogan.
                     Mantenha uma mensagem clara e objetiva sobre seus serviços.

@@ -1,81 +1,50 @@
 <template>
-    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa-regular fa-circle-check"></i> Registro excluído com sucesso
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div v-if="alertStatus === 'notAllowed'" class="alert alert-warning alert-dismissible fade show" role="alert">
-        <i class="fa-solid fa-triangle-exclamation"></i> Você não tem permissão para acessar essa funcionalidade
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-6 text-start">
-                    <h3>Texto principal</h3>
-                </div>
-
-                <div v-show="!this.main?.id" class="col-md-6 text-end">
-                    <a :href="urlCreateMainText" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="loading" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
-        <div v-else class="card-body">
-            <div v-if="!main || main.length === 0" class="text-center">
-                <p>Nenhum resultado encontrado</p>
-            </div>
-
-            <div v-else class="table-responsive">
-                <table class="table table-sm table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Título</th>
-                            <th scope="col">Texto</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ main.title }}</td>
-                            <td>{{ main.text }}</td>
-                            <td>
-                                <a :href="'/admin/site/main-text/edit/' + main?.id">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                &nbsp;&nbsp;&nbsp;
-                                <button type="button" style="color: red; padding: 0;" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" @click="confirmExclusion(main.id)">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div v-if="loading" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden"></span>
         </div>
     </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação de Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div v-else class="card shadow-sm border-0">
+        <div class="card-header py-3 bg-light">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-6">
+                    <h5 class="mb-0">Texto principal</h5>
                 </div>
-                <div class="modal-body">
-                    Tem certeza que deseja deletar este registro?
+                <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
+                    <a v-if="!main?.id" :href="urlCreateMainText" type="button" class="btn btn-sm btn-success"><i
+                            class="bi bi-plus-circle me-1"></i> Cadastrar</a>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" @click="deleteRecord">Excluir</button>
+            </div>
+            <div class="card-body p-3">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle text-nowrap mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Título</th>
+                                <th scope="col">Texto</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="main">
+                                <td>{{ main.title }}</td>
+                                <td class="text-ellipsis">{{ main.text }}</td>
+                                <td>
+                                    <a :href="urlEditMain.replace('_id', main.id)"
+                                        class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-danger" @click="deleteRegister(main.id)"
+                                        title="Excluir">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-else>
+                                <td colspan="3" class="text-center">Nenhum registro encontrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -84,18 +53,19 @@
 
 <script>
 import axios from 'axios';
-import { Modal } from 'bootstrap';
 
 export default {
     props: {
         urlCreateMainText: String,
+        urlEditMain: String,
     },
     data() {
         return {
-            mainToDelete: null,
-            alertStatus: null,
-            loading: true,
-            main: [],
+            loading: false,
+            main: {
+                title: '',
+                text: '',
+            },
         };
     },
     mounted() {
@@ -104,47 +74,39 @@ export default {
     methods: {
         getMainText() {
             this.loading = true;
-            axios.get('/admin/site/main-text/list')
+            axios.get('/admin/site/main-text/get-main-text')
                 .then(response => {
-                    this.main = response.data.mainText[0];
+                    this.main = response.data.mainText;
                 })
-                .catch(() => {
-                    this.alertStatus = 'error';
+                .catch(errors => {
+                    this.alertDanger(errors);
                 })
                 .finally(() => {
-                    
+                    this.loading = false;
                 });
-
-            this.loading = false;
         },
-        confirmExclusion(mainId) {
-            this.mainToDelete = mainId;
-        },
-        deleteRecord() {
-            if (this.mainToDelete !== null) {
-                axios.delete('/admin/site/main-text/delete/' + this.mainToDelete)
+        deleteRegister(id) {
+            this.confirmYesNo('Deseja excluir o conteúdo?').then(() => {
+                axios.delete('/admin/site/main-text/delete/' + id)
                     .then(response => {
                         this.getMainText();
-
-                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        this.alertStatus = response.data === '' ? 'notAllowed' : true;
+                        this.alertSuccess('Operação realizada com sucesso!');
                     })
                     .catch(errors => {
-                        const modal = Modal.getInstance(document.getElementById('exampleModal'));
-                        if (modal) {
-                            modal.hide();
-                        }
-
-                        if (errors.response.status === 405) {
-                            this.alertStatus = 'notAllowed';
-                        }
+                        this.alertDanger(errors);
+                    }).finally(() => {
+                        this.loading = false;
                     });
-            }
+            });
         },
     }
 }
 </script>
+<style>
+.text-ellipsis {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>

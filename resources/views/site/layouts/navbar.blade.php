@@ -1,8 +1,14 @@
+@php
+    $logo = App\Models\Site\SiteLogo::first();
+@endphp
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
     <div class="container">
         <a class="navbar-brand text-primary" href="#home">
-            <i class="fas fa-cube me-2"></i>
-            Sua Logo
+            @if ($logo)
+                <img width="100" src="{{ asset('/storage/' . $logo->image) }}">
+            @else
+                Home
+            @endif
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

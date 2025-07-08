@@ -1,55 +1,36 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar Logo</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div v-if="loading" class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Editar Conteúdo Principal</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div class="mb-3">
+                                <label class="form-label">Titulo</label>
+                                <input type="text" class="form-control" v-model="main.title">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Texto</label>
+                                <textarea class="form-control" rows="5" v-model="main.text"></textarea>
+                                <small v-show="main.text.length > 255" class="text-danger">
+                                    <strong>Você atingiu o máximo de caracteres.</strong>
+                                </small>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexMainText" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Editar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <form v-else method="POST" @submit.prevent="save()" class="col-lg-6" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul>
-                            <li v-for="msg in messages.errors" :key="msg">{{ msg }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text" class="form-control" v-model="main.main.title">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Texto</label>
-                        <textarea class="form-control" rows="5" v-model="main.main.text"></textarea>
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexMainText" class="btn btn-secondary btn-sm">Voltar</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -60,34 +41,40 @@ import axios from 'axios';
 
 export default {
     props: {
-        mainTextById: {
-            type: String,
-            required: true
-        },
+        id: String,
         urlIndexMainText: String,
     },
     data() {
         return {
-            main: {
-                main: JSON.parse(this.mainTextById),
-            },
-            alertStatus: null,
-            messages: [],
             loading: false,
+            main: {
+                title: '',
+                text: '',
+            },
         };
     },
+    mounted() {
+        this.find();
+    },
     methods: {
+        find() {
+            axios.get('/admin/site/main-text/find/' + this.id)
+                .then(response => {
+                    this.main = response.data.main;
+                }).catch(errors => {
+                    this.alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
         save() {
             this.loading = true;
-            axios.post('/admin/site/main-text/update/' + this.main.main.id, this.main.main)
+            axios.post('/admin/site/main-text/update/' + this.id, this.main)
                 .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
-                    this.loading = false;
-                })
-                .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response.data;
+                    this.alertSuccess('Operação realizada com sucesso!');
+                }).catch(errors => {
+                    this.alertDanger(errors);
+                }).finally(() => {
                     this.loading = false;
                 });
         },

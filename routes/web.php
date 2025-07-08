@@ -117,10 +117,11 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware('acl:keep-main-text')->group(function () {
                 Route::prefix('main-text')->group(function () {
                     Route::get('/', [MainTextController::class, 'index'])->name('site.maintext.index');
-                    Route::get('/list', [MainTextController::class, 'list'])->name('site.maintext.list');
+                    Route::get('/get-main-text', [MainTextController::class, 'getMainText'])->name('site.maintext.getMainText');
                     Route::get('/create', [MainTextController::class, 'create'])->name('site.maintext.create');
                     Route::post('/store', [MainTextController::class, 'store'])->name('site.maintext.store');
                     Route::get('/edit/{id}', [MainTextController::class, 'edit'])->name('site.maintext.edit');
+                    Route::get('/find/{id}', [MainTextController::class, 'find'])->name('site.maintext.find');
                     Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
                     Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
                 });

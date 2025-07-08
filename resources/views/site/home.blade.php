@@ -2,33 +2,30 @@
 @section('content')
 
     <!-- Hero Section -->
-    <section id="home" class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-4">Seu Texto Principal</h1>
-                    <p class="lead mb-4">
-                        Este é o texto principal do seu site. Aqui você pode descrever sua empresa,
-                        serviços ou qualquer mensagem importante que deseja transmitir aos visitantes.
-                    </p>
-                    <a href="#about" class="btn btn-light btn-lg">Saiba Mais</a>
-                </div>
-                <div class="col-lg-6">
-                    <img src="{{asset('img/tela-widescreen.jpg')}}" alt="Hero Image" class="img-fluid rounded">
+
+    @if(isset($mainText))
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold mb-4">{{$mainText->title}}</h1>
+                        <p class="lead mb-4">
+                            {{$mainText->text}}
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="{{asset('img/tela-widescreen.jpg')}}" alt="Hero Image" class="img-fluid rounded">
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @else
+        ''
+    @endif
 
     <!-- Carousel Section -->
     <section id="carousel" class="section-padding">
         <div class="container">
-            <div class="row">
-                <div class="col-12 text-center mb-5">
-                    <h2 class="text-primary">Nossa Galeria</h2>
-                    <p class="lead">Confira alguns dos nossos trabalhos e momentos especiais</p>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">

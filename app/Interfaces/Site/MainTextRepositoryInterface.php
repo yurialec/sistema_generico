@@ -4,7 +4,7 @@ namespace App\Interfaces\Site;
 
 interface MainTextRepositoryInterface
 {
-    public function all();
+    public function getMainText();
     public function find($id);
     public function create(array $data);
     public function update($id, array $data);

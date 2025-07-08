@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Site\MainText\StoreMaintextRequest;
 use App\Services\Site\MainTextService;
 use Illuminate\Http\Request;
 
@@ -19,12 +20,12 @@ class MainTextController extends Controller
      */
     public function index()
     {
-        return view('site.maintext.index');
+        return view('admin.site.maintext.index');
     }
 
-    public function list()
+    public function getMainText()
     {
-        $mainText = $this->mainTextService->getAll();
+        $mainText = $this->mainTextService->getMainText();
 
         if ($mainText) {
             return response()->json([
@@ -44,13 +45,13 @@ class MainTextController extends Controller
      */
     public function create()
     {
-        return view('site.maintext.create');
+        return view('admin.site.maintext.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMaintextRequest $request)
     {
         $mainTex = $this->mainTextService->create($request->all());
 
@@ -72,9 +73,24 @@ class MainTextController extends Controller
      */
     public function edit(string $id)
     {
-        $mainText = $this->mainTextService->getById($id);
+        return view('admin.site.maintext.edit', compact('id'));
+    }
 
-        return view('site.maintext.edit', compact('mainText'));
+    public function find($id)
+    {
+        $main = $this->mainTextService->find($id);
+
+        if ($main) {
+            return response()->json([
+                'status' => true,
+                'main' => $main,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar conteudo'
+            ], 500);
+        }
     }
 
     /**
