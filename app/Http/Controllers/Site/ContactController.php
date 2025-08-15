@@ -20,7 +20,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('site.contact.index');
+        return view('admin.site.contact.index');
     }
 
     /**
@@ -28,7 +28,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('site.contact.create');
+        return view('admin.site.contact.create');
     }
 
     public function list()
@@ -74,7 +74,7 @@ class ContactController extends Controller
     public function edit(string $id)
     {
         $contact = $this->contactService->getById($id);
-        return view('site.contact.edit', compact('contact'));
+        return view('admin.site.contact.edit', compact('contact'));
     }
 
     /**

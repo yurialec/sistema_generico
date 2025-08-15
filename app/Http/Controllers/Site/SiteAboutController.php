@@ -19,7 +19,7 @@ class SiteAboutController extends Controller
      */
     public function index()
     {
-        return view('site.about.index');
+        return view('admin.site.about.index');
     }
 
     public function list()
@@ -44,7 +44,7 @@ class SiteAboutController extends Controller
      */
     public function create()
     {
-        return view('site.about.create');
+        return view('admin.site.about.create');
     }
 
     /**
@@ -70,16 +70,31 @@ class SiteAboutController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $about = $this->aboutService->getById($id);
-        return view('site.about.edit', compact('about'));
+        return view('admin.site.about.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $about = $this->aboutService->find($id);
+        if ($about) {
+            return response()->json([
+                'status' => true,
+                'about' => $about,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar configuração'
+            ], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $about = $this->aboutService->update($id, $request->all());
 

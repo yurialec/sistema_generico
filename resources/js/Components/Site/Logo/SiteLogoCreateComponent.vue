@@ -4,13 +4,11 @@
             <div class="card-header bg-light">
                 <h5 class="mb-0">Cadastrar logotipo</h5>
             </div>
-
             <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
                 <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Carregando...</span>
+                    <span class="visually-hidden"></span>
                 </div>
             </div>
-
             <div v-else class="card-body">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-8 col-lg-6">
@@ -70,8 +68,8 @@ export default {
             }).then(() => {
                 this.alertSuccess('Operação realizada com sucesso!');
                 window.location.href = this.urlIndexLogo;
-            }).catch(error => {
-                this.alertDanger(error?.response?.data?.message || 'Erro ao cadastrar logotipo.');
+            }).catch(errors => {
+                this.alertDanger(errors);
             }).finally(() => {
                 this.loading = false;
             });

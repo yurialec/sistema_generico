@@ -1,68 +1,41 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar Sobre</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Editar Sobre</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div class="mb-3">
+                                <label>Imagem</label>
+                                <img v-show="!newImage" :src="'/storage/' + about.image" class="form-control h-50 w-50 mb-3  mx-auto d-block"
+                                    width="200">
 
-                <div v-if="loading" class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                                <img v-show="newImage" class="form-control mb-3 " :src="urlImage" width="200">
+                                <input type="file" class="form-control h-50 w-50 mb-3  mx-auto d-block" @change="loadImage">
+                            </div>
+                            <div class="mb-3">
+                                <label>Título</label>
+                                <input type="text" class="form-control" v-model="about.title">
+                            </div>
+                            <div class="mb-3">
+                                <label>Descrição</label>
+                                <input type="text" class="form-control" v-model="about.description">
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexAbout" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-6" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label>Imagem</label>
-
-                        <img v-show="!newImage" :src="'/storage/' + about.about.image" class="form-control mb-3"
-                            width="200">
-
-                        <img v-show="newImage" class="form-control mb-3" :src="urlImage" width="200">
-
-                        <input type="file" class="form-control mb-3" @change="loadImage">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label>Título</label>
-                        <input type="text" class="form-control" v-model="about.about.title">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label>Descrição</label>
-                        <input type="text" class="form-control" v-model="about.about.description">
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexAbout" class="btn btn-secondary btn-sm">Voltar</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -73,27 +46,35 @@ import axios from 'axios';
 
 export default {
     props: {
-        aboutById: {
-            type: String,
-            required: true
-        },
+        id: String,
         urlIndexAbout: String,
     },
     data() {
         return {
+            loading: false,
             about: {
-                about: JSON.parse(this.aboutById),
+
             },
-            alertStatus: null,
-            messages: [],
-            loading: null,
             newImage: null,
             urlImage: null,
         };
     },
     mounted() {
+        this.find();
     },
     methods: {
+        find() {
+
+            this.loading = true;
+            axios.get('/admin/site/site-about/find/' + this.id)
+                .then(response => {
+                    this.about = response.data.about;
+                }).catch(errors => {
+                    this.alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
         loadImage(e) {
             this.newImage = e.target.files[0];
             this.urlImage = URL.createObjectURL(this.newImage);
@@ -105,24 +86,24 @@ export default {
                 formData.append('image', this.newImage);
             }
 
-            if (this.about.about.title) {
-                formData.append('title', this.about.about.title);
+            if (this.about.title) {
+                formData.append('title', this.about.title);
             }
 
-            if (this.about.about.description) {
-                formData.append('description', this.about.about.description);
+            if (this.about.description) {
+                formData.append('description', this.about.description);
             }
 
-            axios.post('/admin/site/site-about/update/' + this.about.about.id, formData, {
+            axios.post('/admin/site/site-about/update/' + this.about.id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(response => {
-                this.alertStatus = true;
-                this.messages = response.data;
+                this.alertSuccess('Operação realizada com sucesso!');
             }).catch(errors => {
-                this.alertStatus = false;
-                this.messages = errors.response;
+                this.alertDanger(errors);
+            }).finally(() => {
+                this.loading = false;
             });
         },
     }

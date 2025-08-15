@@ -114,7 +114,7 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section-padding bg-white">
+    <!-- <section id="contact" class="section-padding bg-white">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center mb-5">
@@ -175,5 +175,5 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 @endsection

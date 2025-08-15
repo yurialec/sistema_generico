@@ -1,63 +1,38 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Cadastrar Sobre</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <form method="POST" @submit.prevent="save" class="col-lg-6" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === 'notAllowed'" class="alert alert-warning alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        Você não tem permissão para acessar essa funcionalidade
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="messages in messages.data.errors" :key="messages[0]">
-                            <li>{{ messages[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Imagem</label>
-                        <img v-show="urlImage" class="form-control mb-3" :src="urlImage" width="200">
-                        <input type="file" required class="form-control" @change="loadImage">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Título</label>
-                        <input type="text" class="form-control" v-model="about.title">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Descrição</label>
-                        <textarea class="form-control" rows="5" v-model="about.description"></textarea>
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexAbout" class="btn btn-secondary btn-sm">Voltar</a>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Cadastrar Sobre</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div class="mb-3">
+                                <input type="file" required class="form-control mb-3" @change="loadImage">
+                                <img v-if="urlImage" class="form-control h-50 w-50 mb-3  mx-auto d-block" :src="urlImage">
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
+                            <div class="mb-3">
+                                <label class="form-label">Título</label>
+                                <input type="text" maxlength="255" class="form-control" v-model="about.title">
                             </div>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Descrição</label>
+                                <textarea maxlength="1000" class="form-control" rows="5"
+                                    v-model="about.description"></textarea>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexAbout" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -72,14 +47,13 @@ export default {
     },
     data() {
         return {
+            loading: false,
             about: {
                 title: '',
                 description: '',
                 image: null,
             },
             urlImage: null,
-            alertStatus: null,
-            messages: [],
         };
     },
     methods: {
@@ -102,19 +76,16 @@ export default {
                 formData.append('description', this.about.description);
             }
 
+            this.loading = true;
             axios.post('/admin/site/site-about/store', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-                .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
-                })
-                .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
-                });
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(response => {
+                this.alertSuccess('Operação realizada com sucesso!');
+            }).catch(errors => {
+                this.alertDanger(errors);
+            }).finally(() => {
+                this.loading = false;
+            });
         },
     }
 }

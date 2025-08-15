@@ -145,6 +145,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/list', [SiteAboutController::class, 'list'])->name('site.about.list');
                     Route::get('/create', [SiteAboutController::class, 'create'])->name('site.about.create');
                     Route::post('/store', [SiteAboutController::class, 'store'])->name('site.about.store');
+                    Route::get('/find/{id}', [SiteAboutController::class, 'find'])->name('site.about.find');
                     Route::get('/edit/{id}', [SiteAboutController::class, 'edit'])->name('site.about.edit');
                     Route::post('/update/{id}', [SiteAboutController::class, 'update'])->name('site.about.update');
                     Route::delete('/delete/{id}', [SiteAboutController::class, 'delete'])->name('site.about.delete');

@@ -5,17 +5,17 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="login-card mx-auto">
-                    <div class="login-header">
+                    <!-- <div class="login-header">
                         <div class="login-icon">
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <h3>Bem-vindo de volta!</h3>
                         <p class="mb-0 opacity-75">Faça login para acessar sua conta</p>
-                    </div>
+                    </div> -->
                     <div class="login-body">
-                        <div class="welcome-text">
+                        <!-- <div class="welcome-text">
                             <p class="mb-0">Entre com suas credenciais para continuar</p>
-                        </div>
+                        </div> -->
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-4">
@@ -86,14 +86,14 @@
                     </div>
                 </div>
                 <!-- Informações adicionais -->
-                <div class="text-center mt-4">
+                <!-- <div class="text-center mt-4">
                     <p class="text-muted">
                         <small>
                             <i class="fas fa-shield-alt me-1"></i>
                             Seus dados estão protegidos e seguros
                         </small>
                     </p>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

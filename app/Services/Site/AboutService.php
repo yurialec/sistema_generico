@@ -20,7 +20,7 @@ class AboutService
         return $this->aboutRepository->all();
     }
 
-    public function getById($id)
+    public function find($id)
     {
         return $this->aboutRepository->find($id);
     }

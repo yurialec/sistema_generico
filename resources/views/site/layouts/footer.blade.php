@@ -32,7 +32,7 @@
                     <li><a href="{{ route('login') }}" class="text-white-50">Área Restrita</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 mb-4">
+            <!-- <div class="col-lg-3 mb-4">
                 <h6 class="mb-3">Serviços</h6>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-white-50">Serviço 1</a></li>
@@ -40,7 +40,7 @@
                     <li><a href="#" class="text-white-50">Serviço 3</a></li>
                     <li><a href="#" class="text-white-50">Serviço 4</a></li>
                 </ul>
-            </div>
+            </div> -->
             <div class="col-lg-3 mb-4">
                 <h6 class="mb-3">Contato</h6>
                 <ul class="list-unstyled">

@@ -1,9 +1,16 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Cadastrar Informações Contato</h4>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Cadastrar Informações Contato</h5>
+            </div>
         </div>
-        <div class="card-body">
+        <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden"></span>
+            </div>
+        </div>
+        <div v-else class="card-body">
             <div class="d-flex justify-content-center">
                 <form method="POST" @submit.prevent="save" class="col-lg-6" autocomplete="off">
                     <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"

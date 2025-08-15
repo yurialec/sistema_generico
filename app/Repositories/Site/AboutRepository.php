@@ -4,6 +4,8 @@ namespace App\Repositories\Site;
 
 use App\Interfaces\Site\AboutRepositoryInterface;
 use App\Models\Site\SiteAbout;
+use Exception;
+use Log;
 
 class AboutRepository implements AboutRepositoryInterface
 {
@@ -16,64 +18,87 @@ class AboutRepository implements AboutRepositoryInterface
 
     public function all()
     {
-        return $this->about->get();
+        try {
+            return $this->about->first();
+        } catch (Exception $err) {
+            Log::error('Erro ao localizar sobre', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function find($id)
     {
-        return $this->about->find($id);
+        try {
+            return $this->about->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro ao localizar sobre', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function create(array $data)
     {
-        if (isset($data['image'])) {
-            $createData['image'] = $data['image'];
-        }
+        try {
+            if (isset($data['image'])) {
+                $createData['image'] = $data['image'];
+            }
 
-        if (isset($data['title'])) {
-            $createData['title'] = $data['title'];
-        }
+            if (isset($data['title'])) {
+                $createData['title'] = $data['title'];
+            }
 
-        if (isset($data['description'])) {
-            $createData['description'] = $data['description'];
-        }
+            if (isset($data['description'])) {
+                $createData['description'] = $data['description'];
+            }
 
-        return $this->about->create($createData);
+            return $this->about->create($createData);
+        } catch (Exception $err) {
+            Log::error('Erro ao cadastrar sobre', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function update($id, $data)
     {
-        $about = $this->about->find($id);
+        try {
+            $about = $this->about->find($id);
 
-        $updateData = [
-            'title'       => null,
-            'description' => null,
-        ];
+            $updateData = [
+                'title' => null,
+                'description' => null,
+            ];
 
-        if (isset($data['image_urn'])) {
-            $updateData['image'] = $data['image_urn'];
+            if (isset($data['image_urn'])) {
+                $updateData['image'] = $data['image_urn'];
+            }
+
+            if (isset($data['title'])) {
+                $updateData['title'] = $data['title'];
+            }
+
+            if (isset($data['description'])) {
+                $updateData['description'] = $data['description'];
+            }
+
+            $about->update($updateData);
+
+            return $about;
+
+        } catch (Exception $err) {
+            Log::error('Erro ao cadastrar sobre', [$err->getMessage()]);
+            return false;
         }
-
-        if (isset($data['title'])) {
-            $updateData['title'] = $data['title'];
-        }
-
-        if (isset($data['description'])) {
-            $updateData['description'] = $data['description'];
-        }
-
-        $about->update($updateData);
-
-        return $about;
     }
 
     public function delete($id)
     {
-        $about = $this->about->find($id);
-        if ($about) {
+        try {
+            $about = $this->about->find($id);
             $about->delete();
             return true;
+        } catch (Exception $err) {
+            Log::error('Erro ao cadastrar sobre', [$err->getMessage()]);
+            return false;
         }
-        return false;
     }
 }
