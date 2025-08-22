@@ -1,6 +1,7 @@
 @extends('admin.layouts.app_admin')
 @section('content')
-<site-carousel-index-component
-    url-create-carousel="{{ route('site.carousel.create') }}">
-</site-carousel-index-component>
+    <site-carrousel-index-component
+        url-create-carousel="{{ route('site.carousel.create') }}"
+        url-edit-carousel="{{ route('site.carousel.edit', '_id') }}">
+    </site-carrousel-index-component>
 @endsection

@@ -1,106 +1,79 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar Informações Contato</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-
-                <div v-if="loading" class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Editar Informações Contato</h5>
+            </div>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div v-if="loadingZip" class="d-flex justify-content-center">
+                                <button class="btn btn-primary" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div v-else>
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">CEP</label>
+                                            <input type="text" class="form-control" @keyup="searchCep()"
+                                                v-model="contact.zipcode" v-mask="'#####-###'" autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Estado</label>
+                                            <select class="form-select" v-model="contact.state">
+                                                <option v-for="(name, abbreviation) in states" :key="abbreviation"
+                                                    :value="abbreviation">
+                                                    {{ name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Endereço</label>
+                                            <input type="text" class="form-control" v-model="contact.address"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Telefone</label>
+                                            <input type="text" class="form-control" v-model="contact.phone"
+                                                @input="validatePhone" maxlength="11" autocomplete="off">
+                                            <small v-if="validPhone === false" class="text-danger">
+                                                Telefone inválido
+                                            </small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">E-mail</label>
+                                            <input type="email" class="form-control" v-model="contact.email"
+                                                @input="validateEmail" autocomplete="off">
+                                            <small v-if="validEmail === false" class="text-danger">
+                                                E-mail inválido
+                                            </small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Cidade</label>
+                                            <input type="text" class="form-control" v-model="contact.city"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexContact" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Editar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <form v-else method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="loading === true" class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        </button>
-                    </div>
-
-
-                    <div v-else class="container">
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="form-group mb-3">
-                                    <label>CEP</label>
-                                    <input type="text" class="form-control" @keyup="searchCep()"
-                                        v-model="contact.contact.zipcode" autocomplete="off" v-mask="'########'">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>Estado</label>
-                                    <select class="form-control" v-model="contact.contact.state">
-                                        <option v-for="(name, abbreviation) in states" :key="abbreviation"
-                                            :value="abbreviation">
-                                            {{ name }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>Endereço</label>
-                                    <input type="text" class="form-control" v-model="contact.contact.address"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="form-group mb-3">
-                                    <label>Telefone</label>
-                                    <input type="text" class="form-control" v-model="contact.contact.phone"
-                                        @input="validatePhone" maxlength="11" autocomplete="off">
-
-                                    <small v-if="this.validPhone === false" class="text-danger">Telefone
-                                        inválido</small>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>E-mail</label>
-                                    <input type="text" class="form-control" v-model="contact.contact.email"
-                                        @input="validateEmail" autocomplete="off">
-
-                                    <small v-if="this.validEmail === false" class="text-danger">
-                                        E-mail inválido
-                                    </small>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>Cidade</label>
-                                    <input type="text" class="form-control" v-model="contact.contact.city"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexContact" class="btn btn-secondary btn-sm">Voltar</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -111,20 +84,14 @@ import axios from 'axios';
 
 export default {
     props: {
-        contactById: {
-            type: String,
-            required: true
-        },
+        id: String,
         urlIndexContact: String,
     },
     data() {
         return {
-            contact: {
-                contact: JSON.parse(this.contactById),
-            },
-            alertStatus: null,
-            messages: [],
-            loading: null,
+            loading: false,
+            loadingZip: false,
+            contact: {},
             dataZipCode: null,
             validPhone: null,
             validEmail: null,
@@ -161,52 +128,60 @@ export default {
         };
     },
     mounted() {
+        this.find();
     },
     methods: {
+        find() {
+            axios.get(`/admin/site/contact/find/${this.id}`)
+                .then(response => {
+                    this.contact = response.data.contact;
+                }).catch(errors => {
+                    this.alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
+        },
         searchCep() {
-            if (this.contact.contact.zipcode.length == 8) {
-                this.loading = true;
-                axios.get('admin/cep/' + this.contact.contact.zipcode)
+            let zip = this.contact.zipcode.replace(/[^a-zA-Z0-9 ]/g, '');
+            if (zip.length == 8) {
+                this.loadingZip = true;
+                axios.get('cep/' + this.contact.zipcode)
                     .then(response => {
                         this.dataZipCode = response.data;
-
-                        console.log(this.dataZipCode);
-
-
                         if (this.dataZipCode) {
-                            this.contact.contact.city = this.dataZipCode.localidade
-                            this.contact.contact.state = this.dataZipCode.uf
-                            this.contact.contact.address = this.dataZipCode.logradouro
-                            this.contact.contact.zipcode = this.dataZipCode.cep
+                            this.contact.city = this.dataZipCode.localidade
+                            this.contact.state = this.dataZipCode.uf
+                            this.contact.address = this.dataZipCode.logradouro
+                            this.contact.zipcode = this.dataZipCode.cep
                         }
-                    }).catch(error =>
-                        console.log(error)
-                    ).finally(() => {
-                        this.loading = false;
+                    }).catch(errors => {
+                        this.alertDanger(errors);
+                    }).finally(() => {
+                        this.loadingZip = false;
                     });
             }
         },
         validateEmail() {
             const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            this.validEmail = emailPattern.test(this.contact.contact.email);
+            this.validEmail = emailPattern.test(this.contact.email);
         },
         validatePhone() {
 
             this.validPhone = true;
-            this.contact.contact.phone = this.contact.contact.phone.replace(/\D/g, '');
+            this.contact.phone = this.contact.phone.replace(/\D/g, '');
 
-            if (!(this.contact.contact.phone.length >= 10 && this.contact.contact.phone.length <= 11)) {
+            if (!(this.contact.phone.length >= 10 && this.contact.phone.length <= 11)) {
                 this.validPhone = false;
                 return;
             }
 
-            if (this.contact.contact.phone.length === 11 && parseInt(this.contact.contact.phone.substring(2, 3)) !== 9) {
+            if (this.contact.phone.length === 11 && parseInt(this.contact.phone.substring(2, 3)) !== 9) {
                 this.validPhone = false;
                 return;
             }
 
             for (var n = 0; n < 10; n++) {
-                if (this.contact.contact.phone == new Array(11).join(n) || this.contact.contact.phone == new Array(12).join(n)) this.validPhone = false;
+                if (this.contact.phone == new Array(11).join(n) || this.contact.phone == new Array(12).join(n)) this.validPhone = false;
             }
 
             var codigosDDD = [11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -218,42 +193,46 @@ export default {
                 86, 87, 88, 89, 91, 92, 93, 94, 95,
                 96, 97, 98, 99];
 
-            if (codigosDDD.indexOf(parseInt(this.contact.contact.phone.substring(0, 2))) == -1) this.validPhone = false;
+            if (codigosDDD.indexOf(parseInt(this.contact.phone.substring(0, 2))) == -1) this.validPhone = false;
 
             if (new Date().getFullYear() < 2017) this.validPhone = true;
-            if (this.contact.contact.phone.length == 10 && [2, 3, 4, 5, 7].indexOf(parseInt(this.contact.contact.phone.substring(2, 3))) == -1) this.validPhone = false;
+            if (this.contact.phone.length == 10 && [2, 3, 4, 5, 7].indexOf(parseInt(this.contact.phone.substring(2, 3))) == -1) this.validPhone = false;
 
             if (!this.validPhone) return;
         },
         save() {
             let formData = new FormData();
 
-            if (this.contact.contact.phone) {
-                formData.append('phone', this.contact.contact.phone);
+            if (this.contact.phone) {
+                formData.append('phone', this.contact.phone);
             }
-            if (this.contact.contact.email) {
-                formData.append('email', this.contact.contact.email);
+            if (this.contact.email) {
+                formData.append('email', this.contact.email);
             }
-            if (this.contact.contact.city) {
-                formData.append('city', this.contact.contact.city);
+            if (this.contact.city) {
+                formData.append('city', this.contact.city);
             }
-            if (this.contact.contact.state) {
-                formData.append('state', this.contact.contact.state);
+            if (this.contact.state) {
+                formData.append('state', this.contact.state);
             }
-            if (this.contact.contact.address) {
-                formData.append('address', this.contact.contact.address);
-            }
-            if (this.contact.contact.zipcode) {
-                formData.append('zipcode', this.contact.contact.zipcode);
+            if (this.contact.address) {
+                formData.append('address', this.contact.address);
             }
 
-            axios.post('/admin/site/contact/update/' + this.contact.contact.id, formData)
+            let zip = this.contact.zipcode.replace(/[^a-zA-Z0-9 ]/g, '');
+            if (zip) {
+                formData.append('zipcode', zip);
+            }
+
+            this.loading = true;
+            axios.post(`/admin/site/contact/update/${this.id}`, formData)
                 .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
-                }).catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
+                    this.alertSuccess('Operação realizada com sucesso!');
+                })
+                .catch(errors => {
+                    this.alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
     }

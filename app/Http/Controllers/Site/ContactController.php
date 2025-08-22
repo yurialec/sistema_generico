@@ -33,12 +33,12 @@ class ContactController extends Controller
 
     public function list()
     {
-        $contacts = $this->contactService->getAll();
+        $contact = $this->contactService->getAll();
 
-        if ($contacts) {
+        if ($contact) {
             return response()->json([
                 'status' => true,
-                'contacts' => $contacts
+                'contact' => $contact
             ], 200);
         } else {
             return response()->json([
@@ -71,16 +71,32 @@ class ContactController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $contact = $this->contactService->getById($id);
-        return view('admin.site.contact.edit', compact('contact'));
+        return view('admin.site.contact.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $contact = $this->contactService->find($id);
+        
+        if ($contact) {
+            return response()->json([
+                'status' => true,
+                'contact' => $contact,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao localizar informações de contato',
+            ], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $contact = $this->contactService->update($id, $request->all());
 

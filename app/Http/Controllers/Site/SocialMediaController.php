@@ -19,7 +19,7 @@ class SocialMediaController extends Controller
      */
     public function index()
     {
-        return view('site.socialmedia.index');
+        return view('admin.site.socialmedia.index');
     }
 
     public function list()
@@ -44,7 +44,7 @@ class SocialMediaController extends Controller
      */
     public function create()
     {
-        return view('site.socialmedia.create');
+        return view('admin.site.socialmedia.create');
     }
 
     /**
@@ -70,16 +70,32 @@ class SocialMediaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $socialmedia = $this->socialMediaService->getById($id);
-        return view('site.socialmedia.edit', compact('socialmedia'));
+        return view('admin.site.socialmedia.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $socialmedia = $this->socialMediaService->find($id);
+
+        if ($socialmedia) {
+            return response()->json([
+                'status' => true,
+                'socialmedia' => $socialmedia,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao localizar informações de contato',
+            ], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $media = $this->socialMediaService->update($id, $request->all());
 
@@ -99,7 +115,7 @@ class SocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(string $id)
+    public function delete($id)
     {
         $media = $this->socialMediaService->delete($id);
 

@@ -16,7 +16,7 @@ export default {
                                         <p class="text-muted mb-4">${mensagem}</p>
                                         <div class="d-flex justify-content-center gap-2">
                                             <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Cancelar</button>
-                                            <button type="button" class="btn btn-danger btn-sm px-3" id="confirmarBtn">Sim</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm px-3" id="confirmarBtn">Sim</button>
                                         </div>
                                         </div>
                                     </div>

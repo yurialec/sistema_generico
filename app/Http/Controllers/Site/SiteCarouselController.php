@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Site\Carousel\StoreCarouselRequest;
 use App\Http\Requests\Site\Carousel\UpdateCarouselRequest;
 use App\Services\Site\CarouselService;
-use Illuminate\Http\Request;
 
 class SiteCarouselController extends Controller
 {
@@ -21,7 +20,7 @@ class SiteCarouselController extends Controller
      */
     public function index()
     {
-        return view('site.carousel.index');
+        return view('admin.site.carousel.index');
     }
 
     public function list()
@@ -46,7 +45,7 @@ class SiteCarouselController extends Controller
      */
     public function create()
     {
-        return view('site.carousel.create');
+        return view('admin.site.carousel.create');
     }
 
     /**
@@ -74,8 +73,24 @@ class SiteCarouselController extends Controller
      */
     public function edit(string $id)
     {
-        $carousel = $this->carouselService->getById($id);
-        return view('site.carousel.edit', compact('carousel'));
+        return view('admin.site.carousel.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $carousel = $this->carouselService->find($id);
+
+        if ($carousel) {
+            return response()->json([
+                'status' => true,
+                'carousel' => $carousel,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar conteudo'
+            ], 500);
+        }
     }
 
     /**

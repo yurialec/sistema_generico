@@ -37,6 +37,7 @@
                             <div class="mb-3">
                                 <label>Url</label>
                                 <input type="text" class="form-control" v-model="menu.url">
+                                <small class="text-muted">Adicionar '#' caso não tenha submenus</small>
                             </div>
                             <div class="d-flex justify-content-between mt-4">
                                 <a :href="urlIndexMenu" class="btn btn-outline-secondary btn-sm">Voltar</a>

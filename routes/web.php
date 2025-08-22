@@ -134,6 +134,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/create', [SiteCarouselController::class, 'create'])->name('site.carousel.create');
                     Route::post('/store', [SiteCarouselController::class, 'store'])->name('site.carousel.store');
                     Route::get('/edit/{id}', [SiteCarouselController::class, 'edit'])->name('site.carousel.edit');
+                    Route::get('/find/{id}', [SiteCarouselController::class, 'find'])->name('site.maintext.find');
                     Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
                     Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
                 });
@@ -159,6 +160,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/create', [ContactController::class, 'create'])->name('site.contact.create');
                     Route::post('/store', [ContactController::class, 'store'])->name('site.contact.store');
                     Route::get('/edit/{id}', [ContactController::class, 'edit'])->name('site.contact.edit');
+                    Route::get('/find/{id}', [ContactController::class, 'find'])->name('site.contact.find');
                     Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
@@ -170,6 +172,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/list', [SocialMediaController::class, 'list'])->name('site.socialmedia.list');
                     Route::get('/create', [SocialMediaController::class, 'create'])->name('site.socialmedia.create');
                     Route::post('/store', [SocialMediaController::class, 'store'])->name('site.socialmedia.store');
+                    Route::get('/find/{id}', [SocialMediaController::class, 'find'])->name('site.contact.find');
                     Route::get('/edit/{id}', [SocialMediaController::class, 'edit'])->name('site.socialmedia.edit');
                     Route::post('/update/{id}', [SocialMediaController::class, 'update'])->name('site.socialmedia.update');
                     Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');

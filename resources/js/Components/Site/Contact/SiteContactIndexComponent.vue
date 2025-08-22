@@ -11,8 +11,8 @@
                     <h5 class="mb-0">Informações Contato</h5>
                 </div>
                 <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
-                    <a v-if="!contact?.id" :href="urlCreateContact" type="button" class="btn btn-sm btn-success"><i
-                            class="bi bi-plus-circle me-1"></i> Cadastrar</a>
+                    <a v-if="!contact?.id" :href="urlCreateContact" type="button" class="btn btn-sm btn-success">
+                        <i class="bi bi-plus-circle me-1"></i> Cadastrar</a>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                             <td class="col-md-3">{{ contact.address }}</td>
                             <td class="col-md-1">{{ contact.zipcode }}</td>
                             <td class="col-md-1">
-                                <a :href="'/admin/site/contact/edit/' + contact.id">
+                                <a :href="urlEditContact.replace('_id', contact.id)">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <button type="button" class="btn" @click="deleteRecord(contact.id)">
@@ -62,6 +62,7 @@ import { Modal } from 'bootstrap';
 export default {
     props: {
         urlCreateContact: String,
+        urlEditContact: String,
     },
     data() {
         return {

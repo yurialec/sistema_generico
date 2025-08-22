@@ -1,7 +1,7 @@
 import './bootstrap';
-import './sidebar';
 import FloatingAlertPlugin from './plugins/floatingAlert';
 import ConfirmPlugin from './plugins/confirm';
+import VueTheMask from 'vue-the-mask';
 
 import { createApp, defineAsyncComponent } from 'vue';
 
@@ -15,5 +15,6 @@ for (const [path, definition] of Object.entries(components)) {
 
 app.use(FloatingAlertPlugin);
 app.use(ConfirmPlugin);
+app.use(VueTheMask);
 
 app.mount('#app');

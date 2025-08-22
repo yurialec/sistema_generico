@@ -1,7 +1,7 @@
 @extends('admin.layouts.app_admin')
 @section('content')
-<site-socialmedia-edit-component
-    social-media-by-id="{{ json_encode($socialmedia) }}"
+<site-social-media-edit-component
+    id="{{ $id }}"
     url-index-social-media="{{ route('site.socialmedia.index') }}">
-</site-socialmedia-edit-component>
+</site-social-media-edit-component>
 @endsection

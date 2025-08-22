@@ -19,7 +19,7 @@ class CarouselService
         return $this->carouselRepository->all();
     }
 
-    public function getById($id)
+    public function find($id)
     {
         return $this->carouselRepository->find($id);
     }

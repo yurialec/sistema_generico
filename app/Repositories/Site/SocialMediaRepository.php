@@ -4,6 +4,8 @@ namespace App\Repositories\Site;
 
 use App\Interfaces\Site\SocialMediaRepositoryInterface;
 use App\Models\Site\SiteSocialMedia;
+use Exception;
+use Log;
 
 class SocialMediaRepository implements SocialMediaRepositoryInterface
 {
@@ -16,34 +18,56 @@ class SocialMediaRepository implements SocialMediaRepositoryInterface
 
     public function all()
     {
-        return $this->socialMedia->get();
+        try {
+            return $this->socialMedia->paginate(10);
+        } catch (Exception $err) {
+            Log::error('Erro ao listar redes sociais', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function find($id)
     {
-        return $this->socialMedia->find($id);
+        try {
+            return $this->socialMedia->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro ao localizar redes sociais', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function create(array $data)
     {
-        return $this->socialMedia->create($data);
+        try {
+            return $this->socialMedia->create($data);
+        } catch (Exception $err) {
+            Log::error('Erro ao cadastrar redes sociais', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function update($id, $data)
-    {
-        $socialMedia = $this->socialMedia->find($id);
-        $socialMedia->update($data);
+    {        
+        try {
+            $socialMedia = $this->socialMedia->find($id);
+            $socialMedia->update($data);
 
-        return $socialMedia;
+            return $socialMedia;
+        } catch (Exception $err) {
+            Log::error('Erro ao atualizar redes sociais', [$err->getMessage()]);
+            return false;
+        }
     }
 
     public function delete($id)
     {
-        $socialMedia = $this->socialMedia->find($id);
-        if ($socialMedia) {
+        try {
+            $socialMedia = $this->socialMedia->find($id);
             $socialMedia->delete();
             return true;
+        } catch (Exception $err) {
+            Log::error('Erro ao deletar redes sociais', [$err->getMessage()]);
+            return false;
         }
-        return false;
     }
 }

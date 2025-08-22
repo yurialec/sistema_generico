@@ -4,108 +4,76 @@
             <div class="card-header bg-light">
                 <h5 class="mb-0">Cadastrar Informações Contato</h5>
             </div>
-        </div>
-        <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden"></span>
+            <div v-if="loading" class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
             </div>
-        </div>
-        <div v-else class="card-body">
-            <div class="d-flex justify-content-center">
-                <form method="POST" @submit.prevent="save" class="col-lg-6" autocomplete="off">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === 'notAllowed'" class="alert alert-warning alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        Você não tem permissão para acessar essa funcionalidade
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="messages in messages.data.errors" :key="messages[0]">
-                            <li>{{ messages[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="loading === true" class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        </button>
-                    </div>
-
-                    <div v-else class="container">
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="form-group mb-3">
-                                    <label>CEP</label>
-                                    <input type="text" class="form-control" @keyup="searchCep()"
-                                        v-model="contact.zipcode" autocomplete="off" v-mask="'########'">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>Estado</label>
-                                    <select class="form-control" v-model="contact.state">
-                                        <option v-for="(name, abbreviation) in states" :key="abbreviation"
-                                            :value="abbreviation">
-                                            {{ name }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>Endereço</label>
-                                    <input type="text" class="form-control" v-model="contact.address"
-                                        autocomplete="off">
+            <div v-else class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save">
+                            <div v-if="loadingZip" class="d-flex justify-content-center">
+                                <button class="btn btn-primary" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div v-else>
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">CEP</label>
+                                            <input type="text" class="form-control" @keyup="searchCep()"
+                                                v-model="contact.zipcode" v-mask="'#####-###'" autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Estado</label>
+                                            <select class="form-select" v-model="contact.state">
+                                                <option v-for="(name, abbreviation) in states" :key="abbreviation"
+                                                    :value="abbreviation">
+                                                    {{ name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Endereço</label>
+                                            <input type="text" class="form-control" v-model="contact.address"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Telefone</label>
+                                            <input type="text" class="form-control" v-model="contact.phone"
+                                                @input="validatePhone" maxlength="11" autocomplete="off">
+                                            <small v-if="validPhone === false" class="text-danger">
+                                                Telefone inválido
+                                            </small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">E-mail</label>
+                                            <input type="email" class="form-control" v-model="contact.email"
+                                                @input="validateEmail" autocomplete="off">
+                                            <small v-if="validEmail === false" class="text-danger">
+                                                E-mail inválido
+                                            </small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Cidade</label>
+                                            <input type="text" class="form-control" v-model="contact.city"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm">
-                                <div class="form-group mb-3">
-                                    <label>Telefone</label>
-                                    <input type="text" class="form-control" v-model="contact.phone"
-                                        @input="validatePhone" maxlength="11" autocomplete="off">
-
-                                    <small v-if="this.validPhone === false" class="text-danger">Telefone
-                                        inválido</small>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>E-mail</label>
-                                    <input type="text" class="form-control" v-model="contact.email"
-                                        @input="validateEmail" autocomplete="off">
-
-                                    <small v-if="this.validEmail === false" class="text-danger">
-                                        E-mail inválido
-                                    </small>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>Cidade</label>
-                                    <input type="text" class="form-control" v-model="contact.city" autocomplete="off">
-                                </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndexContact" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
-
-                    <div class="row mt-5">
-                        <div class="col-sm-6">
-                            <div class="text-start">
-                                <a :href="urlIndexContact" class="btn btn-secondary btn-sm">Voltar</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col text-end">
-                                <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -120,6 +88,8 @@ export default {
     },
     data() {
         return {
+            loading: false,
+            loadingZip: false,
             contact: {
                 phone: '',
                 email: '',
@@ -128,13 +98,10 @@ export default {
                 address: '',
                 zipcode: '',
             },
-            loading: null,
             dataZipCode: null,
             validPhone: null,
             validEmail: null,
             validZipCode: null,
-            alertStatus: null,
-            messages: [],
             states: {
                 'AC': 'Acre',
                 'AL': 'Alagoas',
@@ -168,9 +135,10 @@ export default {
     },
     methods: {
         searchCep() {
-            if (this.contact.zipcode.length == 8) {
-                this.loading = true;
-                axios.get('admin/cep/' + this.contact.zipcode)
+            let zip = this.contact.zipcode.replace(/[^a-zA-Z0-9 ]/g, '');
+            if (zip.length == 8) {
+                this.loadingZip = true;
+                axios.get('cep/' + this.contact.zipcode)
                     .then(response => {
                         this.dataZipCode = response.data;
 
@@ -180,10 +148,10 @@ export default {
                             this.contact.address = this.dataZipCode.logradouro
                             this.contact.zipcode = this.dataZipCode.cep
                         }
-                    }).catch(error =>
-                        console.log(error)
-                    ).finally(() => {
-                        this.loading = false;
+                    }).catch(errors => {
+                        this.alertDanger(errors);
+                    }).finally(() => {
+                        this.loadingZip = false;
                     });
             }
         },
@@ -227,35 +195,15 @@ export default {
             if (!this.validPhone) return;
         },
         save() {
-            let formData = new FormData();
-
-            if (this.contact.phone) {
-                formData.append('phone', this.contact.phone);
-            }
-            if (this.contact.email) {
-                formData.append('email', this.contact.email);
-            }
-            if (this.contact.city) {
-                formData.append('city', this.contact.city);
-            }
-            if (this.contact.state) {
-                formData.append('state', this.contact.state);
-            }
-            if (this.contact.address) {
-                formData.append('address', this.contact.address);
-            }
-            if (this.contact.zipcode) {
-                formData.append('zipcode', this.contact.zipcode);
-            }
-
-            axios.post('/admin/site/contact/store', formData)
+            this.loading = true;
+            axios.post('/admin/site/contact/store', this.contact)
                 .then(response => {
-                    this.alertStatus = true;
-                    this.messages = response.data;
+                    this.alertSuccess('Operação realizada com sucesso!');
                 })
                 .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
+                    this.alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
     }

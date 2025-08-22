@@ -18,7 +18,7 @@ class ContactService
         return $this->contactRepository->all();
     }
 
-    public function getById($id)
+    public function find($id)
     {
         return $this->contactRepository->find($id);
     }
@@ -30,7 +30,6 @@ class ContactService
 
     public function update($id, $data)
     {
-        $contactRepository = $this->contactRepository->find($id);
         return $this->contactRepository->update($id, $data);
     }
 

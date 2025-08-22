@@ -18,7 +18,7 @@ class SocialMediaService
         return $this->socialMediaRepository->all();
     }
 
-    public function getById($id)
+    public function find($id)
     {
         return $this->socialMediaRepository->find($id);
     }
@@ -30,7 +30,6 @@ class SocialMediaService
 
     public function update($id, $data)
     {
-        $socialMediaRepository = $this->socialMediaRepository->find($id);
         return $this->socialMediaRepository->update($id, $data);
     }
 
