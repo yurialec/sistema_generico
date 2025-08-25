@@ -4,6 +4,8 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\MenuRepositoryInterface;
 use App\Models\Admin\Menu;
+use Arr;
+use DB;
 use Exception;
 use Log;
 
@@ -71,14 +73,59 @@ class MenuRepository implements MenuRepositoryInterface
 
     public function update($id, $data)
     {
-        try {
-            $menu = $this->menu->find($id);
-            $menu->update($data);
-            return $menu;
-        } catch (Exception $err) {
-            Log::error('Erro ao editar menu', ['Erro' => $err->getMessage()]);
-            return false;
-        }
+        return DB::transaction(function () use ($id, $data) {
+            $menu = $this->menu->lockForUpdate()->findOrFail($id);
+
+            $menu->fill(Arr::only($data, ['label', 'icon', 'url', 'active', 'order']))->save();
+
+            $incoming = collect($data['children'] ?? []);
+
+            $idsToKeep = [];
+
+            foreach ($incoming as $childData) {
+                $deleteFlag = (bool) Arr::get($childData, '_delete', false);
+
+                if (isset($childData['id'])) {
+                    $child = $menu->children()->find($childData['id']);
+                    if (!$child) {
+                        continue;
+                    }
+
+                    if ($deleteFlag) {
+                        $child->delete();
+                        continue;
+                    }
+
+                    $child->fill(Arr::only($childData, ['label', 'icon', 'url', 'active', 'order']))->save();
+                    $idsToKeep[] = $child->id;
+
+                } else {
+                    if ($deleteFlag) {
+                        continue;
+                    }
+
+                    $created = $menu->children()->create([
+                        'label' => Arr::get($childData, 'label'),
+                        'icon' => Arr::get($childData, 'icon'),
+                        'url' => Arr::get($childData, 'url', '#'),
+                        'active' => Arr::get($childData, 'active', 1),
+                        'order' => Arr::get($childData, 'order'),
+                        'son' => $menu->id,
+                    ]);
+
+                    $idsToKeep[] = $created->id;
+                }
+            }
+
+            if ($data && array_key_exists('children', $data)) {
+                $menu->children()
+                    ->when(!empty($idsToKeep), fn($q) => $q->whereNotIn('id', $idsToKeep))
+                    ->when(empty($idsToKeep), fn($q) => $q)
+                    ->delete();
+            }
+
+            return $menu->load('children');
+        });
     }
 
     public function delete($id)
@@ -117,7 +164,7 @@ class MenuRepository implements MenuRepositoryInterface
 
             $actualMenu->order -= 1;
             $actualMenu->save();
-            
+
             return true;
         } catch (Exception $err) {
             Log::error('Erro ao alterar ordem dos menus', [

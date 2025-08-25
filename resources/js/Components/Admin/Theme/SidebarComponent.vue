@@ -1,7 +1,7 @@
 <template>
     <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
-            <div class="nav">
+            <div class="nav mt-3">
                 <template v-for="(menu, index) in sidebar" :key="menu.id">
                     <div v-if="menu.children && menu.children.length">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

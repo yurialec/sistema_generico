@@ -47,43 +47,7 @@ class MenuService
 
     public function updateMenu($id, $data)
     {
-        $menuCollection = $this->menuRepository->find($id);
-        $menu = $menuCollection->first();
-
-        if (!$menu) {
-            throw new \Exception("Menu não encontrado.");
-        }
-
-        $existingChildren = $menu->children()->get();
-
-        $existingIds = $existingChildren->pluck('id')->toArray();
-
-        $menusToAdd = [];
-        $menusToRemove = [];
-
-        foreach ($data['children'] as $childData) {
-            if (isset($childData['id']) && in_array($childData['id'], $existingIds)) {
-                $child = $existingChildren->where('id', $childData['id'])->first();
-                $child->update($childData);
-            } else {
-                $menusToAdd[] = $childData;
-            }
-        }
-
-        foreach ($existingChildren as $existingChild) {
-            if (!in_array($existingChild->id, array_column($data['children'], 'id'))) {
-                $menusToRemove[] = $existingChild->id;
-                $existingChild->delete();
-            }
-        }
-
-        foreach ($menusToAdd as $menuToAdd) {
-            $menuToAdd['son'] = $menu->id;
-            $menu->children()->create($menuToAdd);
-        }
-
-        $menu->update($data);
-        return $menu;
+        return $this->menuRepository->update($id, $data);
     }
 
     public function deleteMenu($id)
