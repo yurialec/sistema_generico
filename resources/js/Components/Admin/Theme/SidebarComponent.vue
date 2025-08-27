@@ -36,6 +36,11 @@
 
             </div>
         </div>
+        <div class="sb-sidenav-footer">
+            <a href="#">
+                Backup<i class="bi bi-database-down" style="font-size: 2rem; color: cornflowerblue;"></i>
+            </a>
+        </div>
     </nav>
 </template>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -38,9 +39,33 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-    public function logout()
+    protected function authenticated(Request $request, $user)
+    {
+        $user = $user->toArray();
+        $request->session()->put('role', $user['role']['name']);
+
+        $permissions = $this->getPermissions($user['role']['permissions']);
+
+        $request->session()->put('permissions', $permissions);
+
+        return redirect()->intended($this->redirectPath());
+    }
+
+    public function logout(Request $request)
     {
         auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    private function getPermissions(array $permissions)
+    {
+        $data = [];
+        foreach ($permissions as $key) {
+            $data[] = $key['name'];
+        }
+
+        return $data;
     }
 }
