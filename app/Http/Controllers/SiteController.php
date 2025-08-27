@@ -10,24 +10,12 @@ class SiteController extends Controller
 
     public function index()
     {
-        $mainText     = $this->mainText();
-        $carousels    = $this->carousels();
-        $contact      = $this->contactSite();
-        $socialmedias = $this->socialmedias();
-        $about        = $this->aboutSite();
-        
-        return view('site.home', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about'));
-    }
-
-    public function about()
-    {
-        $about = $this->aboutSite();
-        return view('partials.about.index', compact('about'));
-    }
-
-    public function contact()
-    {
+        $mainText = $this->mainText();
+        $carousels = $this->carousels();
         $contact = $this->contactSite();
-        return view('partials.contact.index', compact('contact'));
+        $socialmedias = $this->socialmedias();
+        $about = $this->aboutSite();
+
+        return view('site.home', compact('mainText', 'carousels', 'contact', 'socialmedias', 'about'));
     }
 }

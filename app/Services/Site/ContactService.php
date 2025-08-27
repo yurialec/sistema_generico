@@ -3,6 +3,7 @@
 namespace App\Services\Site;
 
 use App\Repositories\Site\ContactRepository;
+use App\Utils\Formatter;
 
 class ContactService
 {
@@ -25,7 +26,16 @@ class ContactService
 
     public function create($data)
     {
-        return $this->contactRepository->create($data);
+        $dataContact = [
+            "phone" => Formatter::onlyNumbers($data['phone']),
+            "email" => $data['email'],
+            "city" => $data['city'],
+            "state" => $data['state'],
+            "address" => $data['address'],
+            "zipcode" => Formatter::onlyNumbers($data['zipcode']),
+        ];
+
+        return $this->contactRepository->create($dataContact);
     }
 
     public function update($id, $data)

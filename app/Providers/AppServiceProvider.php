@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\FooterComposer;
 use Illuminate\Support\ServiceProvider;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('site.layouts.footer', FooterComposer::class);
     }
 }
