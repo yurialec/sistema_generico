@@ -22,10 +22,6 @@ class StoreCarouselRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|max:100',
-            'text' => 'nullable|string|max:1000',
-            'name_link' => 'nullable|string|max:100|required_with:url_link',
-            'url_link' => 'nullable|string|url|required_with:name_link',
             'image' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
@@ -33,13 +29,6 @@ class StoreCarouselRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.max' => 'O título pode ter no máximo :max caracteres.',
-            'text.max' => 'O texto pode ter no máximo :max caracteres.',
-            'name_link.required_with' => 'O nome do link é obrigatório quando a URL do link está presente.',
-            'name_link.max' => 'O nome do link pode ter no máximo :max caracteres.',
-            'url_link.required_with' => 'A URL do link é obrigatória quando o nome do link está presente.',
-            'url_link.url' => 'A URL do link deve ser um endereço URL válido.',
-            'url_link.max' => 'A URL do link pode ter no máximo :max caracteres.',
             'image.required' => 'A imagem é obrigatória.',
             'image.file' => 'A imagem deve ser um arquivo válido.',
             'image.image' => 'A imagem deve ser um arquivo de imagem válido.',

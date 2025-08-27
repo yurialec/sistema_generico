@@ -13,11 +13,7 @@ return new class extends Migration
     {
         Schema::create('site_carrousel', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 100)->nullable();
-            $table->text('description', 150)->nullable();
             $table->string('image', 255);
-            $table->string('name_link', 100)->nullable();
-            $table->string('url_link', 255)->nullable();
             $table->timestamps();
         });
     }

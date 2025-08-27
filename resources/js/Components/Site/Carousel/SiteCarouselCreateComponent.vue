@@ -17,29 +17,6 @@
                                 <label class="form-label">Imagem</label>
                                 <input type="file" required class="form-control" @change="loadImage">
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Título</label>
-                                <input type="text" class="form-control" v-model="carousel.title">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Texto</label>
-                                <textarea class="form-control" v-model="carousel.description"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Nome Link Externo</label>
-                                <input type="text" class="form-control" v-model="carousel.name_link">
-                                <small v-show="carousel.url_link.length && !carousel.name_link" style="color: red;">
-                                    É necessário inserir o nome do link externo
-                                </small>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Url Link Externo</label>
-                                <input type="text" class="form-control" v-model="carousel.url_link">
-
-                                <small v-show="carousel.name_link.length && !carousel.url_link" style="color: red;">
-                                    É necessário inserir a url do link externo
-                                </small>
-                            </div>
                             <div class="row mt-5">
                                 <div class="col-sm-6">
                                     <div class="text-start">
@@ -71,12 +48,7 @@ export default {
         return {
             loading: false,
             carousel: {
-                title: '',
-                description: '',
                 image: null,
-                text: '',
-                name_link: '',
-                url_link: '',
             },
         };
     },
@@ -86,19 +58,15 @@ export default {
         },
         save() {
             let formData = new FormData();
-            formData.append('title', this.carousel.title);
-            formData.append('description', this.carousel.description);
-            formData.append('name_link', this.carousel.name_link);
-            formData.append('url_link', this.carousel.url_link);
             formData.append('image', this.carousel.image);
 
             this.loading = true;
-
-            axios.post('/admin/site/carousel/store', formData, { headers: { 'Content-Type': 'multipart/form-data' }
+            axios.post('/admin/site/carousel/store', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             }).then(response => {
-                    this.alertSuccess('Operação realizada com sucesso!');
-                    this.clearForm();
-                })
+                this.alertSuccess('Operação realizada com sucesso!');
+                this.clearForm();
+            })
                 .catch(errors => {
                     this.alertDanger(errors);
                 }).finally(() => {
@@ -106,10 +74,6 @@ export default {
                 });
         },
         clearForm() {
-            this.carousel.title = '';
-            this.carousel.description = '';
-            this.carousel.name_link = '';
-            this.carousel.url_link = '';
             this.carousel.image = '';
         }
     }

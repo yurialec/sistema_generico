@@ -12,10 +12,6 @@ class SiteCarousel extends Model
     protected $table = 'site_carrousel';
 
     protected $fillable = [
-        'title',
-        'description',
         'image',
-        'name_link',
-        'url_link',
     ];
 }

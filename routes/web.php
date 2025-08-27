@@ -135,7 +135,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/store', [SiteCarouselController::class, 'store'])->name('site.carousel.store');
                     Route::get('/edit/{id}', [SiteCarouselController::class, 'edit'])->name('site.carousel.edit');
                     Route::get('/find/{id}', [SiteCarouselController::class, 'find'])->name('site.maintext.find');
-                    Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
+                    Route::put('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
                     Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
                 });
             });

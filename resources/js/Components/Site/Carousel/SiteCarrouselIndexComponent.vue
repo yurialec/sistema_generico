@@ -23,23 +23,12 @@
                     <thead>
                         <tr>
                             <th class="col-md-1">Preview</th>
-                            <th class="col-md-2">Título</th>
-                            <th class="col-md-2">Descrição</th>
-                            <th class="col-md-2">Nome Link Externo</th>
-                            <th class="col-md-2">Url Link Externo</th>
                             <th class="col-md-1">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="carousel in carousels.data" :key="carousel.id">
                             <td class="col-md-1"><img :src="'/storage/' + carousel.image" width="80"></td>
-                            <td class="col-md-2">{{ carousel.title }}</td>
-                            <td class="col-md-2"
-                                style="max-width:100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
-                                {{ carousel.description }}
-                            </td>
-                            <td class="col-md-2">{{ carousel.name_link }}</td>
-                            <td class="col-md-2">{{ carousel.url_link }}</td>
                             <td class="col-md-1">
                                 <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal"
                                     data-bs-target="#viewImgModal" @click="viewImage(carousel)">
