@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
@@ -45,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('logout', [LoginController::class, 'logout'])->name('logout');
         Route::get('/profile-view', [UserController::class, 'profileView'])->name('profile.view');
         Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+
+        Route::middleware('acl:keep-config')->group(function () {
+            Route::post('/download-backup', [ConfigController::class, 'downloadBackup'])->name('downloadBackup');
+        });
 
         Route::middleware('acl:keep-users')->group(function () {
             Route::prefix('users')->group(function () {

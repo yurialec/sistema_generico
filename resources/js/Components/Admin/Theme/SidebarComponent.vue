@@ -36,10 +36,13 @@
 
             </div>
         </div>
-        <div class="sb-sidenav-footer">
-            <a href="#">
-                Backup<i class="bi bi-database-down" style="font-size: 2rem; color: cornflowerblue;"></i>
-            </a>
+        <div class="sb-sidenav-footer text-center p-3 border-top">
+            <button v-if="userRole"
+                class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
+                @click="downloadBackup()">
+                <i class="bi bi-database-down fs-4"></i>
+                <span>Backup SQL</span>
+            </button>
         </div>
     </nav>
 </template>
@@ -49,6 +52,7 @@
 export default {
     name: 'Sidebar',
     props: {
+        userRole: String,
     },
     data() {
         return {
@@ -72,6 +76,39 @@ export default {
                 .catch(errors => {
                     this.alertDanger(errors);
                 }).finally(() => {
+                    this.loading = false;
+                });
+        },
+        downloadBackup() {
+            this.loading = true;
+            axios.post('admin/download-backup', {}, {
+                responseType: 'blob'
+            })
+                .then(response => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+
+                    const contentDisposition = response.headers['content-disposition'];
+                    let fileName = 'backup.sql';
+                    if (contentDisposition) {
+                        const fileNameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+                        if (fileNameMatch.length > 1) {
+                            fileName = fileNameMatch[1];
+                        }
+                    }
+
+                    link.setAttribute('download', fileName);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(errors => {
+                    this.alertDanger(errors);
+                })
+                .finally(() => {
                     this.loading = false;
                 });
         }

@@ -1,1 +1,3 @@
-<sidebar-component></sidebar-component>
+<sidebar-component
+    user-role="{{ session('role') }}">
+</sidebar-component>
