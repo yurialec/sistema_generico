@@ -191,3 +191,15 @@ Route::middleware(['auth'])->group(function () {
         return $response->json();
     });
 });
+// === [AUTO] Admin / Feedback ===
+Route::middleware(['auth','acl:keep-feedback'])->prefix('admin/feedback')->group(function () {
+    Route::get('/',                 [App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
+    Route::get('/list',             [App\Http\Controllers\Admin\FeedbackController::class, 'list'])->name('feedback.list');
+    Route::get('/create',           [App\Http\Controllers\Admin\FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/store',           [App\Http\Controllers\Admin\FeedbackController::class, 'store'])->name('feedback.store');
+    Route::get('/edit/{id}',        [App\Http\Controllers\Admin\FeedbackController::class, 'edit'])->name('feedback.edit');
+    Route::get('/find/{id}',        [App\Http\Controllers\Admin\FeedbackController::class, 'find'])->name('feedback.find');
+    Route::post('/update/{id}',     [App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
+    Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\FeedbackController::class, 'delete'])->name('feedback.delete');
+});
+// === [/AUTO] Admin / Feedback ===

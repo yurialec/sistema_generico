@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class MakeModuleCommand extends Command
 {
     protected $signature = 'make:module {namespace} {name}';
-    protected $description = 'Cria Controller, Service, Repository, Interface, Model, Views, adiciona permissão e rotas (CRUD)';
+    protected $description = 'Cria Controller, Service, Repository, Interface, Model, Views, Vue components, permissão e rotas (CRUD)';
 
     public function handle()
     {
@@ -19,8 +19,8 @@ class MakeModuleCommand extends Command
         $name = Str::studly($this->argument('name'));       // Ex: Feedback
 
         // Variantes
-        $camel = Str::camel($name);                 // feedback
-        $kebab = Str::kebab($name);                 // feedback
+        $camel = Str::camel($name);                          // feedback
+        $kebab = Str::kebab($name);                          // feedback
         $tableName = strtolower(Str::snake(Str::pluralStudly($name))); // feedbacks
 
         // Variáveis
@@ -29,10 +29,15 @@ class MakeModuleCommand extends Command
         $varRepository = $camel . 'Repository';
 
         // Views: diretório e namespace
-        $viewDir = strtolower($namespace . '/' . $kebab);   // admin/feedback
-        $viewNamespace = strtolower($namespace . '.' . $kebab);   // admin.feedback
+        $viewDir = strtolower($namespace . '/' . $kebab);    // admin/feedback
+        $viewNamespace = strtolower($namespace . '.' . $kebab);    // admin.feedback
 
-        // Diretórios
+        // Blade layout: segue seu padrão para Admin
+        $bladeLayout = (strtolower($namespace) === 'admin')
+            ? 'admin.layouts.app_admin'
+            : 'layouts.app';
+
+        // Diretórios principais
         $dirs = [
             "app/Http/Controllers/{$namespace}",
             "app/Services/{$namespace}",
@@ -40,13 +45,15 @@ class MakeModuleCommand extends Command
             "app/Interfaces/{$namespace}",
             "app/Models/{$namespace}",
             "resources/views/{$viewDir}",
+            "resources/js/Components/{$namespace}/{$name}", // onde ficarão os .vue
         ];
         foreach ($dirs as $dir) {
             if (!File::exists($dir))
                 File::makeDirectory($dir, 0755, true);
         }
 
-        // ---------------- Templates ----------------
+        // ================== Back-end templates ==================
+
         $controller = <<<PHP
 <?php
 
@@ -200,7 +207,7 @@ class {$name}Repository implements {$name}RepositoryInterface
         try {
             return \$this->{$varModel}
                 ->when(\$term, function (\$query) use (\$term) {
-                    // ajuste seus campos de busca aqui (ex.: 'name')
+                    // ajuste seus campos de busca aqui
                     return \$query->where('id', 'like', '%' . \$term . '%');
                 })
                 ->paginate(10);
@@ -285,45 +292,253 @@ class {$name} extends Model
 }
 PHP;
 
-        // Views placeholder
-        $indexView = <<<BLADE
-@extends('admin.layouts.app_admin')
+        // ================== Views Blade ==================
+        // Tags dos componentes Vue (kebab-case)
+        $indexTag = "{$kebab}-index-component";
+        $createTag = "{$kebab}-create-component";
+        $editTag = "{$kebab}-edit-component";
+
+        $bladeIndex = <<<BLADE
+@extends('{$bladeLayout}')
 @section('content')
-<div class="container">
-    <h1>{$name} - Index</h1>
-</div>
+    <{$indexTag}
+        url-create="{{ route('{$kebab}.create') }}"
+        url-edit="{{ route('{$kebab}.edit', ['id' => '_id']) }}">
+    </{$indexTag}>
 @endsection
 BLADE;
 
-        $createView = <<<BLADE
-@extends('admin.layouts.app_admin')
+        $bladeCreate = <<<BLADE
+@extends('{$bladeLayout}')
 @section('content')
-<div class="container">
-    <h1>{$name} - Create</h1>
-</div>
+    <{$createTag}
+        url-index="{{ route('{$kebab}.index') }}">
+    </{$createTag}>
 @endsection
 BLADE;
 
-        $editView = <<<BLADE
-@extends('admin.layouts.app_admin')
+        $bladeEdit = <<<BLADE
+@extends('{$bladeLayout}')
 @section('content')
-<div class="container">
-    <h1>{$name} - Edit</h1>
-    <p>ID: {{ \$id }}</p>
-</div>
+    <{$editTag}
+        :id="'{{ \$id }}'"
+        url-index="{{ route('{$kebab}.index') }}">
+    </{$editTag}>
 @endsection
 BLADE;
 
-        // ---------------- Grava arquivos ----------------
+        // ================== Vue Components (sem axios; apenas HTML/Bootstrap) ==================
+
+        $vueIndex = <<<VUE
+<template>
+    <div class="card">
+        <div class="card-header py-2">
+            <div class="row align-items-center g-2">
+                <div class="col-md-3 col-12">
+                    <h5 class="mb-0">{$name}</h5>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" v-model="searchFilter" placeholder="Buscar..." />
+                        <button type="button" class="btn btn-sm btn-primary">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3 col-12 text-md-end">
+                    <a :href="urlCreate" class="btn btn-sm btn-success">
+                        <i class="bi bi-plus-circle me-1"></i> Cadastrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-2">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Coluna A</th>
+                            <th>Coluna B</th>
+                            <th>Coluna C</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Placeholder de linha (sem dados ainda) -->
+                        <tr>
+                            <td>1</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>
+                                <a :href="urlEdit.replace('_id', 1)" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger ms-1">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">Sem dados (placeholder)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer py-2">
+            <nav>
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                    <li class="page-item active"><span class="page-link">1</span></li>
+                    <li class="page-item disabled"><span class="page-link">Próximo</span></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        urlCreate: String,
+        urlEdit: String,
+    },
+    data() {
+        return {
+            searchFilter: ''
+        }
+    }
+}
+</script>
+VUE;
+
+        $vueCreate = <<<VUE
+<template>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Cadastrar {$name}</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save" autocomplete="off">
+                            <div class="mb-3">
+                                <label class="form-label">Campo A</label>
+                                <input type="text" class="form-control" placeholder="—">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Campo B</label>
+                                <input type="text" class="form-control" placeholder="—">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Campo C</label>
+                                <input type="text" class="form-control" placeholder="—">
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndex" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm" disabled>Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <small class="text-muted d-block mt-3">* Formulário placeholder (sem integração)</small>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        urlIndex: String,
+    },
+    methods: {
+        save() {
+            // Placeholder: sem integração ainda
+        }
+    }
+}
+</script>
+VUE;
+
+        $vueEdit = <<<VUE
+<template>
+    <div class="container-fluid px-2">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Editar {$name}</h5>
+                <small class="text-muted">ID: {{ id }}</small>
+            </div>
+
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <form @submit.prevent="save" autocomplete="off">
+                            <div class="mb-3">
+                                <label class="form-label">Campo A</label>
+                                <input type="text" class="form-control" placeholder="—">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Campo B</label>
+                                <input type="text" class="form-control" placeholder="—">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Campo C</label>
+                                <input type="text" class="form-control" placeholder="—">
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a :href="urlIndex" class="btn btn-outline-secondary btn-sm">Voltar</a>
+                                <button type="submit" class="btn btn-primary btn-sm" disabled>Atualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <small class="text-muted d-block mt-3">* Formulário placeholder (sem integração)</small>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        id: [String, Number],
+        urlIndex: String,
+    },
+    methods: {
+        save() {
+            // Placeholder: sem integração ainda
+        }
+    }
+}
+</script>
+VUE;
+
+        // ================== Grava arquivos ==================
         $files = [
             "app/Http/Controllers/{$namespace}/{$name}Controller.php" => $controller,
             "app/Services/{$namespace}/{$name}Service.php" => $service,
             "app/Repositories/{$namespace}/{$name}Repository.php" => $repository,
             "app/Interfaces/{$namespace}/{$name}RepositoryInterface.php" => $interface,
             "app/Models/{$namespace}/{$name}.php" => $model,
-            "resources/views/{$viewDir}/index.blade.php" => $indexView,
-            "resources/views/{$viewDir}/create.blade.php" => $createView,
-            "resources/views/{$viewDir}/edit.blade.php" => $editView,
+            "resources/views/{$viewDir}/index.blade.php" => $bladeIndex,
+            "resources/views/{$viewDir}/create.blade.php" => $bladeCreate,
+            "resources/views/{$viewDir}/edit.blade.php" => $bladeEdit,
+            "resources/js/Components/{$namespace}/{$name}/{$name}IndexComponent.vue" => $vueIndex,
+            "resources/js/Components/{$namespace}/{$name}/{$name}CreateComponent.vue" => $vueCreate,
+            "resources/js/Components/{$namespace}/{$name}/{$name}EditComponent.vue" => $vueEdit,
         ];
 
         foreach ($files as $path => $content) {
@@ -343,17 +558,14 @@ BLADE;
 
         $this->line('');
         $this->info("✅ Módulo {$namespace}/{$name} criado com sucesso!");
+        $this->line("→ Vue components criados em resources/js/Components/{$namespace}/{$name}/ (auto-registrados pelo seu app.js).");
     }
 
-    /**
-     * Cria/atualiza a permissão na tabela 'permissions' no padrão:
-     * name: keep-{$kebab}, label: Manter {Headline}
-     */
     protected function upsertPermission(string $kebab): void
     {
         try {
             $name = "keep-{$kebab}";
-            $label = 'Manter ' . Str::headline($kebab); // ex.: feedback -> Feedback | site-about -> Site About
+            $label = 'Manter ' . Str::headline($kebab);
 
             DB::table('permissions')->updateOrInsert(
                 ['name' => $name],
@@ -370,10 +582,6 @@ BLADE;
         }
     }
 
-    /**
-     * Adiciona, se não existir, o bloco de rotas admin/{kebab}
-     * protegido por auth e acl:keep-{kebab}, com nomes como feedback.index
-     */
     protected function appendRoutesToWeb(string $namespace, string $name, string $kebab): void
     {
         $webPath = base_path('routes/web.php');
@@ -382,29 +590,25 @@ BLADE;
             return;
         }
 
-        $routeNameBase = $kebab; // ex.: feedback
-
         $routesBlock = <<<PHP
 
 // === [AUTO] {$namespace} / {$name} ===
 Route::middleware(['auth','acl:keep-{$kebab}'])->prefix('admin/{$kebab}')->group(function () {
-    Route::get('/',                 [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'index'])->name('{$routeNameBase}.index');
-    Route::get('/list',             [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'list'])->name('{$routeNameBase}.list');
-    Route::get('/create',           [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'create'])->name('{$routeNameBase}.create');
-    Route::post('/store',           [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'store'])->name('{$routeNameBase}.store');
-    Route::get('/edit/{id}',        [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'edit'])->name('{$routeNameBase}.edit');
-    Route::get('/find/{id}',        [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'find'])->name('{$routeNameBase}.find');
-    Route::post('/update/{id}',     [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'update'])->name('{$routeNameBase}.update');
-    Route::delete('/delete/{id}',   [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'delete'])->name('{$routeNameBase}.delete');
+    Route::get('/',                 [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'index'])->name('{$kebab}.index');
+    Route::get('/list',             [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'list'])->name('{$kebab}.list');
+    Route::get('/create',           [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'create'])->name('{$kebab}.create');
+    Route::post('/store',           [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'store'])->name('{$kebab}.store');
+    Route::get('/edit/{id}',        [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'edit'])->name('{$kebab}.edit');
+    Route::get('/find/{id}',        [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'find'])->name('{$kebab}.find');
+    Route::post('/update/{id}',     [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'update'])->name('{$kebab}.update');
+    Route::delete('/delete/{id}',   [App\\Http\\Controllers\\{$namespace}\\{$name}Controller::class, 'delete'])->name('{$kebab}.delete');
 });
 // === [/AUTO] {$namespace} / {$name} ===
 
 PHP;
 
         $current = File::get($webPath);
-
-        // Verificações simples para evitar duplicidade
-        $alreadyHasByName = Str::contains($current, "name('{$routeNameBase}.index')");
+        $alreadyHasByName = Str::contains($current, "name('{$kebab}.index')");
         $alreadyHasByCtrl = Str::contains($current, "{$namespace}\\{$name}Controller");
 
         if ($alreadyHasByName || $alreadyHasByCtrl) {
