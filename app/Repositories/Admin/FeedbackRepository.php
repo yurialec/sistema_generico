@@ -19,10 +19,9 @@ class FeedbackRepository implements FeedbackRepositoryInterface
     public function all($term)
     {
         try {
-            return $this->feedback
+            return $this->feedback->with('user')
                 ->when($term, function ($query) use ($term) {
-                    // ajuste seus campos de busca aqui
-                    return $query->where('id', 'like', '%' . $term . '%');
+                    return $query->where('title', 'like', '%' . $term . '%');
                 })
                 ->paginate(10);
         } catch (Exception $err) {
@@ -44,7 +43,24 @@ class FeedbackRepository implements FeedbackRepositoryInterface
     public function create(array $data)
     {
         try {
-            return $this->feedback->create($data);
+
+            if (isset($data['image'])) {
+                $createData['image_path'] = $data['image'];
+            }
+
+            if (isset($data['title'])) {
+                $createData['title'] = $data['title'];
+            }
+
+            if (isset($data['description'])) {
+                $createData['description'] = $data['description'];
+            }
+
+            if (isset($data['user_id'])) {
+                $createData['user_id'] = $data['user_id'];
+            }
+
+            return $this->feedback->create($createData);
         } catch (Exception $err) {
             Log::error('Erro ao cadastrar Feedback', [$err->getMessage()]);
             return false;

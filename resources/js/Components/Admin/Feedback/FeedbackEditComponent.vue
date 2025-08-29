@@ -32,7 +32,6 @@
                         </form>
                     </div>
                 </div>
-                <small class="text-muted d-block mt-3">* Formulário placeholder (sem integração)</small>
             </div>
         </div>
     </div>

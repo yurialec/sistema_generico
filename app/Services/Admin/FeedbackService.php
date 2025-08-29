@@ -2,7 +2,9 @@
 
 namespace App\Services\Admin;
 
+use App\Enums\FeedbackStatus;
 use App\Repositories\Admin\FeedbackRepository;
+use Auth;
 
 class FeedbackService
 {
@@ -25,6 +27,18 @@ class FeedbackService
 
     public function create($data)
     {
+        $data['user_id'] = Auth::id();
+        if (empty($data['status'])) {
+            $data['status'] = FeedbackStatus::OPEN->value;
+        }
+
+        if (!empty($data['image'])) {
+            $image = $data['image'];
+            $image_urn = $image->store('admin/feedback/images', 'public');
+
+            $data['image'] = $image_urn;
+        }
+
         return $this->feedbackRepository->create($data);
     }
 

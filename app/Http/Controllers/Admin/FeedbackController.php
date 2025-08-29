@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Feedback\StoreFeedbackRequest;
 use App\Services\Admin\FeedbackService;
 use Illuminate\Http\Request;
 
@@ -25,9 +26,16 @@ class FeedbackController extends Controller
         $items = $this->feedbackService->getAll($request->input('search'));
 
         if ($items) {
-            return response()->json(['status' => true, 'items' => $items], 200);
+            return response()->json([
+                'status' => true,
+                'items' => $items
+            ], 200);
         }
-        return response()->json(['message' => 'Nenhum registro encontrado.', 'status' => 500]);
+
+        return response()->json([
+            'message' => 'Nenhum registro encontrado.',
+            'status' => 500
+        ]);
     }
 
     public function create()
@@ -35,7 +43,7 @@ class FeedbackController extends Controller
         return view('admin.feedback.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreFeedbackRequest $request)
     {
         $item = $this->feedbackService->create($request->all());
 
