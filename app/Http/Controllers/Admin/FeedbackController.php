@@ -23,7 +23,7 @@ class FeedbackController extends Controller
 
     public function list(Request $request)
     {
-        $items = $this->feedbackService->getAll($request->input('search'));
+        $items = $this->feedbackService->getAll($request->input('term'));
 
         if ($items) {
             return response()->json([
@@ -48,9 +48,15 @@ class FeedbackController extends Controller
         $item = $this->feedbackService->create($request->all());
 
         if ($item) {
-            return response()->json(['status' => true, 'item' => $item], 200);
+            return response()->json([
+                'status' => true,
+                'item' => $item
+            ], 200);
         }
-        return response()->json(['status' => false, 'message' => 'Erro ao cadastrar registro'], 500);
+        return response()->json([
+            'status' => false,
+            'message' => 'Erro ao cadastrar registro'
+        ], 500);
     }
 
     public function edit($id)
@@ -63,9 +69,15 @@ class FeedbackController extends Controller
         $item = $this->feedbackService->find($id);
 
         if ($item) {
-            return response()->json(['status' => true, 'item' => $item], 200);
+            return response()->json([
+                'status' => true,
+                'item' => $item
+            ], 200);
         }
-        return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
+        return response()->json([
+            'status' => false,
+            'message' => 'Registro não encontrado'
+        ], 500);
     }
 
     public function update(Request $request, string $id)

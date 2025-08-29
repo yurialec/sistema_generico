@@ -9,7 +9,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control form-control-sm" v-model="searchFilter"
                             placeholder="Buscar..." />
-                        <button type="button" class="btn btn-sm btn-primary" @click="search">
+                        <button type="button" class="btn btn-sm btn-primary" @click="search()">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -127,9 +127,9 @@ export default {
                 this.getFeedbacks(url);
             }
         },
-        getFeedbacks(url = 'admin/feedback/list') {
+        getFeedbacks(url = 'admin/feedback/list', term = '') {            
             this.loading = true;
-            axios.get(url)
+            axios.post(url, { term })
                 .then(response => {
                     this.feedbacks = response.data.items;
                 })

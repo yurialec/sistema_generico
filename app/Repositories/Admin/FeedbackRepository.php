@@ -33,7 +33,7 @@ class FeedbackRepository implements FeedbackRepositoryInterface
     public function find($id)
     {
         try {
-            return $this->feedback->find($id);
+            return $this->feedback->with('user')->find($id);
         } catch (Exception $err) {
             Log::error('Erro ao localizar registro Feedback', [$err->getMessage()]);
             return false;

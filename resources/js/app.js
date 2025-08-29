@@ -1,6 +1,7 @@
 import './bootstrap';
 import FloatingAlertPlugin from './plugins/floatingAlert';
 import ConfirmPlugin from './plugins/confirm';
+import LoadingOverlayPlugin from './plugins/loadingOverlay';
 import VueTheMask from 'vue-the-mask';
 
 import { createApp, defineAsyncComponent } from 'vue';
@@ -15,6 +16,7 @@ for (const [path, definition] of Object.entries(components)) {
 
 app.use(FloatingAlertPlugin);
 app.use(ConfirmPlugin);
+app.use(LoadingOverlayPlugin);
 app.use(VueTheMask);
 
 app.mount('#app');
