@@ -11,8 +11,8 @@ export default {
           display: none;
           align-items: center;
           justify-content: center;
-          background: rgba(17, 24, 39, 0.45);
-          backdrop-filter: blur(1px);
+          background: rgba(227, 228, 230, 0.45);
+        //   backdrop-filter: blur(1px);
           pointer-events: auto;
           border-radius: 10px;
         }
@@ -23,8 +23,8 @@ export default {
           align-items: center;
           gap: .75rem;
           padding: 1rem 1.25rem;
-          border-radius: .75rem;
-          background: rgba(0,0,0,.35);
+        //   border-radius: .75rem;
+        //   background: rgba(0,0,0,.35);
         }
         .qf-overlay__msg { color: #fff; font-size: .95rem; text-align: center; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
         .qf-spinner {

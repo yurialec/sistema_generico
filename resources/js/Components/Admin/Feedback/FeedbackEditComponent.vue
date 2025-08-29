@@ -4,7 +4,7 @@
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Editar Feedback</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body" >
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-8 col-lg-6">
                         <form @submit.prevent="save" autocomplete="off">
