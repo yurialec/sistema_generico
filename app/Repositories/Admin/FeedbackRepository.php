@@ -4,16 +4,19 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\FeedbackRepositoryInterface;
 use App\Models\Admin\Feedback;
+use App\Models\Admin\FeedbackEvidence;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
 class FeedbackRepository implements FeedbackRepositoryInterface
 {
     protected $feedback;
+    protected $evidences;
 
-    public function __construct(Feedback $feedback)
+    public function __construct(Feedback $feedback, FeedbackEvidence $evidences)
     {
         $this->feedback = $feedback;
+        $this->evidences = $evidences;
     }
 
     public function all($term)
@@ -43,26 +46,41 @@ class FeedbackRepository implements FeedbackRepositoryInterface
     public function create(array $data)
     {
         try {
-
-            if (isset($data['image'])) {
-                $createData['image_path'] = $data['image'];
-            }
+            $feedbackData = [];
+            $feedbackEvidenceData = [];
 
             if (isset($data['title'])) {
-                $createData['title'] = $data['title'];
+                $feedbackData['title'] = $data['title'];
             }
 
             if (isset($data['description'])) {
-                $createData['description'] = $data['description'];
+                $feedbackData['description'] = $data['description'];
             }
 
             if (isset($data['user_id'])) {
-                $createData['user_id'] = $data['user_id'];
+                $feedbackData['user_id'] = $data['user_id'];
             }
 
-            return $this->feedback->create($createData);
-        } catch (Exception $err) {
-            Log::error('Erro ao cadastrar Feedback', [$err->getMessage()]);
+            if (isset($data['status'])) {
+                $feedbackData['status'] = $data['status'];
+            }
+
+
+            if (isset($data['evidences_files'])) {
+                $feedbackData['evidences_files'] = $data['evidences_files'];
+            }
+            
+            $feedback = $this->feedback->create($feedbackData);
+    
+            if ($feedback) {
+                
+            }
+
+        } catch (\Throwable $err) {
+            Log::error('Erro ao cadastrar Feedback', [
+                'message' => $err->getMessage(),
+                'trace' => $err->getTraceAsString(),
+            ]);
             return false;
         }
     }

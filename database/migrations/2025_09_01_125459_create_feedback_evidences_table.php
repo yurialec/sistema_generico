@@ -10,15 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('feedback_evidences', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 150);
-            $table->longText('description');
-            $table->enum('status', ['open', 'done'])->default('open');
+            $table->foreignId('feedback_id')->constrained('feedback')->cascadeOnDelete();
+            $table->enum('type', ['text', 'image', 'pdf']);
+            $table->longText('content')->nullable();
+            $table->string('original_name')->nullable();
+            $table->unsignedBigInteger('size')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->softDeletes();
             $table->timestamps();
-            $table->index(['user_id', 'status']);
+            $table->index(['feedback_id', 'type']);
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('feedback_evidences');
     }
 };

@@ -2,33 +2,53 @@
 
 namespace App\Http\Requests\Admin\Feedback;
 
-use App\Enums\FeedbackStatus;
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use App\Enums\FeedbackStatus;
 
 class StoreFeedbackRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Normaliza inputs antes da validação:
+     * - remove textos vazios em evidences_text[]
+     */
+    protected function prepareForValidation(): void
+    {
+        $texts = $this->input('evidences_text', []);
+        if (is_array($texts)) {
+            $texts = array_values(array_filter(array_map(
+                fn($t) => is_string($t) ? trim($t) : $t,
+                $texts
+            ), fn($t) => !empty($t)));
+        }
+
+        $this->merge([
+            'evidences_text' => $texts,
+        ]);
+    }
+
+    /**
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:150'],
             'description' => ['required', 'string', 'min:10'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:2048'],
             'status' => ['nullable', new Enum(FeedbackStatus::class)],
+
+            // Anexos (múltiplos): imagens/PDF
+            'evidences_files' => ['nullable', 'array', 'max:10'],
+            'evidences_files.*' => ['file', 'mimes:jpg,jpeg,png,webp,gif,pdf', 'max:20480'], // 20 MB por arquivo
+
+            // Evidências de texto (múltiplas)
+            'evidences_text' => ['nullable', 'array', 'max:20'],
+            'evidences_text.*' => ['string', 'min:3', 'max:5000'],
         ];
     }
 
@@ -43,15 +63,31 @@ class StoreFeedbackRequest extends FormRequest
             'description.string' => 'A descrição deve ser um texto.',
             'description.min' => 'A descrição deve ter pelo menos :min caracteres.',
 
-            'image.image' => 'O arquivo enviado deve ser uma imagem válida.',
-            'image.mimes' => 'A imagem deve ser do tipo: :values.',
-            'image.max' => 'A imagem não pode ultrapassar :max kilobytes.',
-
-            'image_path.string' => 'O caminho da imagem deve ser um texto.',
-            'image_path.max' => 'O caminho/URL da imagem deve ter no máximo :max caracteres.',
-            'image_path.url' => 'Informe uma URL válida para a imagem.',
-
             'status.enum' => 'Status inválido. Use "open" ou "done".',
+
+            'evidences_files.array' => 'Os anexos devem ser enviados como uma lista.',
+            'evidences_files.max' => 'Você pode enviar no máximo :max arquivos por feedback.',
+            'evidences_files.*.file' => 'Cada anexo deve ser um arquivo válido.',
+            'evidences_files.*.mimes' => 'Arquivos devem ser do tipo: jpg, jpeg, png, webp, gif ou pdf.',
+            'evidences_files.*.max' => 'Cada arquivo não pode ultrapassar :max kilobytes.',
+
+            'evidences_text.array' => 'As evidências de texto devem ser enviadas como uma lista.',
+            'evidences_text.max' => 'Você pode enviar no máximo :max evidências de texto.',
+            'evidences_text.*.string' => 'Cada evidência de texto deve ser um texto.',
+            'evidences_text.*.min' => 'Cada evidência de texto deve ter ao menos :min caracteres.',
+            'evidences_text.*.max' => 'Cada evidência de texto deve ter no máximo :max caracteres.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'title' => 'título',
+            'description' => 'descrição',
+            'evidences_files' => 'anexos',
+            'evidences_files.*' => 'anexo',
+            'evidences_text' => 'evidências de texto',
+            'evidences_text.*' => 'evidência de texto',
         ];
     }
 }

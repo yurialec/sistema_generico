@@ -28,7 +28,7 @@ export default {
         }
         .qf-overlay__msg { color: #fff; font-size: .95rem; text-align: center; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
         .qf-spinner {
-          width: 48px; height: 48px; border: 4px solid #fff; border-top-color: transparent;
+          width: 48px; height: 48px; border: 4px solid #333; border-top-color: transparent;
           border-radius: 50%; animation: qf-spin .8s linear infinite; box-shadow: 0 0 0 1px rgba(0,0,0,.06) inset;
         }
         @keyframes qf-spin { to { transform: rotate(360deg); } }
