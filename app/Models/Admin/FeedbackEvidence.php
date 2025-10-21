@@ -17,6 +17,7 @@ class FeedbackEvidence extends Model
         'original_name',
         'size',
         'user_id',
+        'path',
     ];
 
     /**

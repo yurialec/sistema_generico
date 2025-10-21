@@ -21,7 +21,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card-body p-2">
             <div class="table-responsive">
                 <table class="table table-sm table-hover text-nowrap">
@@ -30,7 +29,6 @@
                             <th>#</th>
                             <th>Título</th>
                             <th>Descrição</th>
-                            <th>Preview</th>
                             <th>Status</th>
                             <th>Usuário</th>
                             <th>Ações</th>
@@ -44,11 +42,6 @@
                                 {{ feedback.description }}
                             </td>
                             <td>
-                                <div v-if="feedback.image_path">
-                                    <img :src="'/storage/' + feedback.image_path" width="80">
-                                </div>
-                            </td>
-                            <td>
                                 <span :class="`badge text-bg-${feedback.status === 'open' ? 'warning' : 'success'}`">
                                     {{ status(feedback.status) }}
                                 </span>
@@ -56,24 +49,22 @@
                             <td>{{ feedback.user.name }}</td>
                             <td class="text-end">
                                 <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-three-dots-vertical"></i>
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="bi bi-eye me-2"></i> Visualizar
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a v-if="feedback.status === 'open'" class="dropdown-item"
-                                                :href="urlEdit.replace('_id', feedback.id)">
-                                                <i class="bi bi-pencil-square text-warning me-2"></i> Editar
+                                            <a class="dropdown-item" :href="urlEdit.replace('_id', feedback.id)">
+                                                <div v-if="feedback.status === 'open'">
+                                                    <i class="bi bi-pencil-square text-warning me-2"></i>Editar
+                                                </div>
+                                                <div v-else>
+                                                    <i class="bi bi-eye me-2"></i> Visualizar
+                                                </div>
                                             </a>
                                         </li>
                                         <li v-if="feedback.status === 'open'">
-                                            <button class="dropdown-item" @click="changeStatus(feedback.id)">
+                                            <button class="dropdown-item" @click="changeStatus(feedback)">
                                                 <i class="bi bi-check2-circle text-success me-2"></i> Marcar como feito
                                             </button>
                                         </li>
@@ -127,7 +118,7 @@ export default {
                 this.getFeedbacks(url);
             }
         },
-        getFeedbacks(url = 'admin/feedback/list', term = '') {            
+        getFeedbacks(url = 'admin/feedback/list', term = '') {
             this.loading = true;
             axios.post(url, { term })
                 .then(response => {
@@ -150,9 +141,16 @@ export default {
             }
         },
         changeStatus(feedback) {
-
-            console.log(feedback);
-
+            this.loading = true;
+            axios.put(`admin/feedback/update-status-feedback/${feedback.id}`)
+                .then(response => {
+                    feedback.status = response.data.item.status;
+                })
+                .catch(errors => {
+                    this.alertDanger(errors);
+                }).finally(() => {
+                    this.loading = false;
+                });
         }
     }
 }

@@ -197,6 +197,8 @@ Route::middleware(['auth','acl:keep-feedback'])->prefix('admin/feedback')->group
     Route::post('/list',             [App\Http\Controllers\Admin\FeedbackController::class, 'list'])->name('feedback.list');
     Route::get('/create',           [App\Http\Controllers\Admin\FeedbackController::class, 'create'])->name('feedback.create');
     Route::post('/store',           [App\Http\Controllers\Admin\FeedbackController::class, 'store'])->name('feedback.store');
+    Route::put('/update-status-feedback/{feedback}', [App\Http\Controllers\Admin\FeedbackController::class, 'updateStatusFeedback'])->name('feedback.update.status');
+    Route::get('/evidence/{id}/download', [App\Http\Controllers\Admin\FeedbackController::class, 'downloadEvidence'])->name('feedback.update.downloadEvidence');
     Route::get('/edit/{id}',        [App\Http\Controllers\Admin\FeedbackController::class, 'edit'])->name('feedback.edit');
     Route::get('/find/{id}',        [App\Http\Controllers\Admin\FeedbackController::class, 'find'])->name('feedback.find');
     Route::post('/update/{id}',     [App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');

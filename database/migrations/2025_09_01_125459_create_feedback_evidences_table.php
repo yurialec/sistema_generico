@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('feedback_id')->constrained('feedback')->cascadeOnDelete();
             $table->enum('type', ['text', 'image', 'pdf']);
-            $table->longText('content')->nullable();
+            $table->string('path')->nullable();
             $table->string('original_name')->nullable();
             $table->unsignedBigInteger('size')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

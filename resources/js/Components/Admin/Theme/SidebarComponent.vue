@@ -36,14 +36,14 @@
 
             </div>
         </div>
-        <div class="sb-sidenav-footer text-center p-3 border-top">
+        <!-- <div class="sb-sidenav-footer text-center p-3 border-top">
             <button v-if="userRole"
                 class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
                 @click="downloadBackup()">
                 <i class="bi bi-database-down fs-4"></i>
                 <span>Backup SQL</span>
             </button>
-        </div>
+        </div> -->
     </nav>
 </template>
 
