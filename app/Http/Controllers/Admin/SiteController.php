@@ -20,9 +20,9 @@ class SiteController extends Controller
         return view('admin.site.index');
     }
 
-    public function list(Request $request)
+    public function list()
     {
-        $items = $this->siteService->getAll($request->input('search'));
+        $items = $this->siteService->getAll();
 
         if ($items) {
             return response()->json(['status' => true, 'items' => $items], 200);
@@ -30,53 +30,25 @@ class SiteController extends Controller
         return response()->json(['message' => 'Nenhum registro encontrado.', 'status' => 500]);
     }
 
-    public function create()
+    public function edit()
     {
-        return view('admin.site.create');
+        return view('admin.site.edit');
     }
 
-    public function store(Request $request)
+    public function save(Request $request)
     {
-        $item = $this->siteService->create($request->all());
+        $item = $this->siteService->save($request->all());
 
         if ($item) {
-            return response()->json(['status' => true, 'item' => $item], 200);
+            return response()->json([
+                'status' => true,
+                'item' => $item
+            ], 200);
         }
-        return response()->json(['status' => false, 'message' => 'Erro ao cadastrar registro'], 500);
-    }
 
-    public function edit($id)
-    {
-        return view('admin.site.edit', compact('id'));
-    }
-
-    public function find($id)
-    {
-        $item = $this->siteService->find($id);
-
-        if ($item) {
-            return response()->json(['status' => true, 'item' => $item], 200);
-        }
-        return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $item = $this->siteService->update($id, $request->all());
-
-        if ($item) {
-            return response()->json(['status' => true, 'item' => $item], 200);
-        }
-        return response()->json(['status' => false, 'message' => 'Erro ao atualizar registro'], 500);
-    }
-
-    public function delete(string $id)
-    {
-        $deleted = $this->siteService->delete($id);
-
-        if ($deleted) {
-            return response()->json(['status' => true, 'message' => 'Registro excluído com sucesso'], 200);
-        }
-        return response()->json(['status' => false, 'message' => 'Erro ao excluir registro'], 500);
+        return response()->json([
+            'status' => false,
+            'message' => 'Erro ao atualizar registro'
+        ], 500);
     }
 }

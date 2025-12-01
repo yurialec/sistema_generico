@@ -36,7 +36,7 @@
             @include('admin.layouts.sidebar')
         </div>
         <div id="layoutSidenav_content">
-            <main class="p-0">
+            <main class="p-0 mb-3">
                 <div class="container-fluid px-4 mt-4">
                     @if ($errors->has('message'))
                         <div class="alert alert-danger alert-dismissible fade show col-md-4 col-md-offset-4" role="alert"

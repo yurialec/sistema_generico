@@ -124,11 +124,7 @@ Route::middleware(['auth','acl:keep-feedback'])->prefix('admin/feedback')->group
 Route::middleware(['auth','acl:keep-site'])->prefix('admin/site')->group(function () {
     Route::get('/',                 [App\Http\Controllers\Admin\SiteController::class, 'index'])->name('site.index');
     Route::get('/list',             [App\Http\Controllers\Admin\SiteController::class, 'list'])->name('site.list');
-    Route::get('/create',           [App\Http\Controllers\Admin\SiteController::class, 'create'])->name('site.create');
-    Route::post('/store',           [App\Http\Controllers\Admin\SiteController::class, 'store'])->name('site.store');
-    Route::get('/edit/{id}',        [App\Http\Controllers\Admin\SiteController::class, 'edit'])->name('site.edit');
-    Route::get('/find/{id}',        [App\Http\Controllers\Admin\SiteController::class, 'find'])->name('site.find');
-    Route::post('/update/{id}',     [App\Http\Controllers\Admin\SiteController::class, 'update'])->name('site.update');
-    Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\SiteController::class, 'delete'])->name('site.delete');
+    Route::get('/edit',        [App\Http\Controllers\Admin\SiteController::class, 'edit'])->name('site.edit');
+    Route::post('/save',     [App\Http\Controllers\Admin\SiteController::class, 'save'])->name('site.save');
 });
 // === [/AUTO] Admin / Site ===

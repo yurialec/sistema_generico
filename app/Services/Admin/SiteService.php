@@ -13,29 +13,13 @@ class SiteService
         $this->siteRepository = $siteRepository;
     }
 
-    public function getAll($term)
+    public function getAll()
     {
-        return $this->siteRepository->all($term);
+        return $this->siteRepository->all();
     }
 
-    public function find($id)
+    public function save($data)
     {
-        return $this->siteRepository->find($id);
-    }
-
-    public function create($data)
-    {
-        return $this->siteRepository->create($data);
-    }
-
-    public function update($id, $data)
-    {
-        // solicitado: repassar $data sem tratamento
-        return $this->siteRepository->update($id, $data);
-    }
-
-    public function delete($id)
-    {
-        return $this->siteRepository->delete($id);
+        return $this->siteRepository->save($data);
     }
 }
