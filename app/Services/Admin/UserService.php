@@ -49,7 +49,7 @@ class UserService
             $updateData['password'] = Hash::make($data['password']);
         }
 
-        return $this->userRepository->update($id, $data);
+        return $this->userRepository->update($id, $updateData);
     }
 
     public function deleteUser($id)
