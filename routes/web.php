@@ -8,12 +8,6 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Site\ContactController;
-use App\Http\Controllers\Site\LogoController;
-use App\Http\Controllers\Site\MainTextController;
-use App\Http\Controllers\Site\SiteAboutController;
-use App\Http\Controllers\Site\SiteCarouselController;
-use App\Http\Controllers\Site\SocialMediaController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -104,86 +98,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/change-order-menu/{id}', [MenuController::class, 'changeOrderMenu'])->name('menu.changeOrderMenu');
             });
         });
-
-        Route::prefix('site/')->group(function () {
-            Route::middleware('acl:keep-logo')->group(function () {
-                Route::prefix('logo')->group(function () {
-                    Route::get('/', [LogoController::class, 'index'])->name('site.logo.index');
-                    Route::get('/get-logo', [LogoController::class, 'getLogo'])->name('site.logo.getLogo');
-                    Route::get('/create', [LogoController::class, 'create'])->name('site.logo.create');
-                    Route::post('/store', [LogoController::class, 'store'])->name('site.logo.store');
-                    Route::get('/edit/{id}', [LogoController::class, 'edit'])->name('site.logo.edit');
-                    Route::get('/find/{id}', [LogoController::class, 'find'])->name('site.logo.find');
-                    Route::post('/update/{id}', [LogoController::class, 'update'])->name('site.logo.update');
-                    Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
-                });
-            });
-
-            Route::middleware('acl:keep-main-text')->group(function () {
-                Route::prefix('main-text')->group(function () {
-                    Route::get('/', [MainTextController::class, 'index'])->name('site.maintext.index');
-                    Route::get('/get-main-text', [MainTextController::class, 'getMainText'])->name('site.maintext.getMainText');
-                    Route::get('/create', [MainTextController::class, 'create'])->name('site.maintext.create');
-                    Route::post('/store', [MainTextController::class, 'store'])->name('site.maintext.store');
-                    Route::get('/edit/{id}', [MainTextController::class, 'edit'])->name('site.maintext.edit');
-                    Route::get('/find/{id}', [MainTextController::class, 'find'])->name('site.maintext.find');
-                    Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
-                    Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
-                });
-            });
-
-            Route::middleware('acl:keep-carousel')->group(function () {
-                Route::prefix('carousel')->group(function () {
-                    Route::get('/', [SiteCarouselController::class, 'index'])->name('site.carousel.index');
-                    Route::get('/list', [SiteCarouselController::class, 'list'])->name('site.carousel.list');
-                    Route::get('/create', [SiteCarouselController::class, 'create'])->name('site.carousel.create');
-                    Route::post('/store', [SiteCarouselController::class, 'store'])->name('site.carousel.store');
-                    Route::get('/edit/{id}', [SiteCarouselController::class, 'edit'])->name('site.carousel.edit');
-                    Route::get('/find/{id}', [SiteCarouselController::class, 'find'])->name('site.maintext.find');
-                    Route::put('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
-                    Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
-                });
-            });
-
-            Route::middleware('acl:keep-site-about')->group(function () {
-                Route::prefix('site-about')->group(function () {
-                    Route::get('/', [SiteAboutController::class, 'index'])->name('site.about.index');
-                    Route::get('/list', [SiteAboutController::class, 'list'])->name('site.about.list');
-                    Route::get('/create', [SiteAboutController::class, 'create'])->name('site.about.create');
-                    Route::post('/store', [SiteAboutController::class, 'store'])->name('site.about.store');
-                    Route::get('/find/{id}', [SiteAboutController::class, 'find'])->name('site.about.find');
-                    Route::get('/edit/{id}', [SiteAboutController::class, 'edit'])->name('site.about.edit');
-                    Route::post('/update/{id}', [SiteAboutController::class, 'update'])->name('site.about.update');
-                    Route::delete('/delete/{id}', [SiteAboutController::class, 'delete'])->name('site.about.delete');
-                });
-            });
-
-            Route::middleware('acl:keep-contact')->group(function () {
-                Route::prefix('contact')->group(function () {
-                    Route::get('/', [ContactController::class, 'index'])->name('site.contact.index');
-                    Route::get('/list', [ContactController::class, 'list'])->name('site.contact.list');
-                    Route::get('/create', [ContactController::class, 'create'])->name('site.contact.create');
-                    Route::post('/store', [ContactController::class, 'store'])->name('site.contact.store');
-                    Route::get('/edit/{id}', [ContactController::class, 'edit'])->name('site.contact.edit');
-                    Route::get('/find/{id}', [ContactController::class, 'find'])->name('site.contact.find');
-                    Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
-                    Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
-                });
-            });
-
-            Route::middleware('acl:keep-social-media')->group(function () {
-                Route::prefix('social-media')->group(function () {
-                    Route::get('/', [SocialMediaController::class, 'index'])->name('site.socialmedia.index');
-                    Route::get('/list', [SocialMediaController::class, 'list'])->name('site.socialmedia.list');
-                    Route::get('/create', [SocialMediaController::class, 'create'])->name('site.socialmedia.create');
-                    Route::post('/store', [SocialMediaController::class, 'store'])->name('site.socialmedia.store');
-                    Route::get('/find/{id}', [SocialMediaController::class, 'find'])->name('site.contact.find');
-                    Route::get('/edit/{id}', [SocialMediaController::class, 'edit'])->name('site.socialmedia.edit');
-                    Route::post('/update/{id}', [SocialMediaController::class, 'update'])->name('site.socialmedia.update');
-                    Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');
-                });
-            });
-        });
     });
 
     Route::get('/cep/{cep}', function ($cep) {
@@ -205,3 +119,16 @@ Route::middleware(['auth','acl:keep-feedback'])->prefix('admin/feedback')->group
     Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\FeedbackController::class, 'delete'])->name('feedback.delete');
 });
 // === [/AUTO] Admin / Feedback ===
+
+// === [AUTO] Admin / Site ===
+Route::middleware(['auth','acl:keep-site'])->prefix('admin/site')->group(function () {
+    Route::get('/',                 [App\Http\Controllers\Admin\SiteController::class, 'index'])->name('site.index');
+    Route::get('/list',             [App\Http\Controllers\Admin\SiteController::class, 'list'])->name('site.list');
+    Route::get('/create',           [App\Http\Controllers\Admin\SiteController::class, 'create'])->name('site.create');
+    Route::post('/store',           [App\Http\Controllers\Admin\SiteController::class, 'store'])->name('site.store');
+    Route::get('/edit/{id}',        [App\Http\Controllers\Admin\SiteController::class, 'edit'])->name('site.edit');
+    Route::get('/find/{id}',        [App\Http\Controllers\Admin\SiteController::class, 'find'])->name('site.find');
+    Route::post('/update/{id}',     [App\Http\Controllers\Admin\SiteController::class, 'update'])->name('site.update');
+    Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\SiteController::class, 'delete'])->name('site.delete');
+});
+// === [/AUTO] Admin / Site ===
