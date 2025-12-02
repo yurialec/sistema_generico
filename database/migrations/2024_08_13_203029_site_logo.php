@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('site_logo', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

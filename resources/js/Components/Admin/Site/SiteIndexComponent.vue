@@ -41,9 +41,12 @@
                                         <strong>Descrição:</strong>
                                         <span>{{ about.description }}</span>
                                     </div>
-                                    <div>
+                                    <div v-if="logo && logo.image">
                                         <strong>Imagem</strong>
-                                        <img :src="`/storage/${about.image}`" class="d-block rounded" width="200"
+                                        <img
+                                            class="d-block rounded"
+                                            :src="`/storage/${about.image}`"
+                                            width="200"
                                             height="200">
                                     </div>
                                 </div>
@@ -79,7 +82,7 @@
                                 <div class="col-12 col-md-4">
                                     <h6 class="fw-bold mb-2">Carousel</h6>
                                 </div>
-                                <div class="col-12 col-md-8">
+                                <div v-if="carousel > 1" class="col-12 col-md-8">
                                     <div class="mb-1">
                                         <div id="carouselExample" class="carousel slide d-flex justify-content-center">
                                             <div class="carousel-inner">
@@ -111,9 +114,13 @@
                                 <div class="col-12 col-md-4">
                                     <h6 class="fw-bold mb-2">Logo</h6>
                                 </div>
-                                <div class="col-12 col-md-8">
-                                    <img :src="`/storage/${logo.image}`" class="d-block rounded" width="400"
-                                        height="200">
+                                <div class="col-12 col-md-8" v-if="logo && logo.image">
+                                    <img
+                                        class="d-block rounded"
+                                        :src="`/storage/${logo.image}`"
+                                        width="400"
+                                        height="200"
+                                    >
                                 </div>
                             </div>
                             <hr>

@@ -12,39 +12,54 @@
                     <div class="card-body">
                         <ul class="nav justify-content-center mb-4">
                             <li v-for="(label, idx) in steps" :key="idx" class="mx-1">
-                                <button class="btn rounded-pill px-3 py-1 fw-semibold" :class="step === idx ? 'btn-primary' : 'btn-outline-primary'" @click="step = idx">
+                                <button class="btn rounded-pill px-3 py-1 fw-semibold"
+                                    :class="step === idx ? 'btn-primary' : 'btn-outline-primary'" @click="step = idx">
                                     {{ idx + 1 }}
                                 </button>
                             </li>
                         </ul>
+
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8 col-lg-7">
+                                <!-- STEP 0 - SOBRE NÓS -->
                                 <div v-if="step === 0">
                                     <h5 class="mb-3 fw-semibold">Sobre Nós</h5>
+
                                     <div class="mb-3">
                                         <label class="form-label">Título</label>
                                         <input type="text" class="form-control" v-model="about.title">
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Descrição</label>
                                         <textarea class="form-control" v-model="about.description" rows="5"></textarea>
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Imagem</label>
                                         <input type="file" class="form-control" @change="handleImage($event, 'about')">
-                                        <div class="text-center mt-3">
+
+                                        <div class="text-center mt-3" v-if="about.imagePreview || about.oldImage">
                                             <img :src="about.imagePreview || (about.oldImage ? `/storage/${about.oldImage}` : null)"
-                                                v-if="about.imagePreview || about.oldImage" class="rounded border"
+                                                class="rounded border"
                                                 style="max-width: 260px; max-height: 260px; object-fit: contain;">
+                                            <button type="button" class="btn btn-outline-danger btn-sm mt-2"
+                                                @click="clearImage('about')">
+                                                Remover imagem
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- STEP 1 - CAROUSEL -->
                                 <div v-if="step === 1">
                                     <h5 class="mb-3 fw-semibold">Carrousel</h5>
+
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold">Adicionar novas imagens</label>
                                         <input type="file" class="form-control" multiple @change="addCarouselImages">
                                     </div>
+
                                     <div class="row g-3 mt-3">
                                         <div v-for="img in carousel" :key="img.id || img.tempId"
                                             class="col-6 col-md-4 col-lg-3">
@@ -62,8 +77,11 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- STEP 2 - CONTATO -->
                                 <div v-if="step === 2">
                                     <h5 class="mb-3 fw-semibold">Contato</h5>
+
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">Telefone</label>
@@ -91,61 +109,92 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- STEP 3 - LOGO -->
                                 <div v-if="step === 3">
                                     <h5 class="mb-3 fw-semibold">Logo</h5>
+
                                     <input type="file" class="form-control" @change="handleImage($event, 'logo')">
-                                    <div class="text-center mt-3">
+
+                                    <div class="text-center mt-3" v-if="logo.imagePreview || logo.oldImage">
                                         <img :src="logo.imagePreview || (logo.oldImage ? `/storage/${logo.oldImage}` : null)"
-                                            v-if="logo.imagePreview || logo.oldImage" class="rounded border"
+                                            class="rounded border"
                                             style="max-width:220px;max-height:220px;object-fit:contain;">
+                                        <button type="button" class="btn btn-outline-danger btn-sm mt-2"
+                                            @click="clearImage('logo')">
+                                            Remover logo
+                                        </button>
                                     </div>
                                 </div>
+
+                                <!-- STEP 4 - TEXTO PRINCIPAL -->
                                 <div v-if="step === 4">
                                     <h5 class="mb-3 fw-semibold">Texto Principal</h5>
+
                                     <div class="mb-3">
                                         <label class="form-label">Título</label>
                                         <input type="text" class="form-control" v-model="main.title">
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Texto</label>
                                         <textarea class="form-control" v-model="main.text" rows="3"></textarea>
                                     </div>
                                 </div>
+
+                                <!-- STEP 5 - REDES SOCIAIS -->
                                 <div v-if="step === 5">
                                     <h5 class="mb-3 fw-semibold">Redes Sociais</h5>
+
                                     <div class="mb-3">
                                         <label class="form-label">Nome</label>
                                         <input type="text" class="form-control" v-model="socialTemp.name">
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">URL</label>
                                         <input type="text" class="form-control" v-model="socialTemp.url">
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Ícone</label>
                                         <input type="text" class="form-control" v-model="socialTemp.icon">
                                     </div>
+
                                     <div class="text-center mb-3">
-                                        <button class="btn btn-success btn-sm" @click="addSocial">Adicionar</button>
+                                        <button class="btn btn-success btn-sm" @click="addSocial">
+                                            Adicionar
+                                        </button>
                                     </div>
+
                                     <ul class="list-group">
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
                                             v-for="i in social" :key="i.tempId">
-                                            <span><i :class="i.icon"></i> {{ i.name }} → {{ i.url }}</span>
-                                            <button class="btn btn-danger btn-sm"
-                                                @click="removeSocial(i.tempId)">Remover</button>
+                                            <span>
+                                                <i :class="i.icon"></i>
+                                                {{ i.name }} → {{ i.url }}
+                                            </span>
+                                            <button class="btn btn-danger btn-sm" @click="removeSocial(i.tempId)">
+                                                Remover
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
+
+                                <!-- NAVEGAÇÃO -->
                                 <div class="mt-4 d-flex justify-content-between">
                                     <button class="btn btn-outline-primary" :disabled="step === 0" @click="step--">
                                         <i class="bi bi-chevron-left"></i> Anterior
                                     </button>
+
                                     <button v-if="step < steps.length - 1" class="btn btn-primary" @click="step++">
                                         Próximo <i class="bi bi-chevron-right"></i>
                                     </button>
-                                    <button v-else class="btn btn-success" @click="save">
-                                        <i class="bi bi-check-circle"></i> Salvar
+
+                                    <button v-else class="btn btn-success" @click="save" :disabled="loading">
+                                        <i class="bi bi-check-circle"></i>
+                                        <span v-if="!loading">Salvar</span>
+                                        <span v-else>Salvando...</span>
                                     </button>
                                 </div>
                             </div>
@@ -166,14 +215,19 @@ export default {
         return {
             step: 0,
             steps: [1, 2, 3, 4, 5, 6],
+            loading: false,
+
             about: {
                 title: "",
                 description: "",
                 oldImage: null,
                 image: null,
-                imagePreview: null
+                imagePreview: null,
+                removeImage: false,
             },
+
             carousel: [],
+
             contact: {
                 phone: "",
                 email: "",
@@ -182,28 +236,31 @@ export default {
                 address: "",
                 zipcode: ""
             },
+
             logo: {
                 oldImage: null,
                 image: null,
-                imagePreview: null
+                imagePreview: null,
+                removeImage: false,
             },
+
             main: {
                 title: "",
                 text: ""
             },
+
             socialTemp: {
                 name: "",
                 url: "",
                 icon: ""
             },
+
             social: [],
         };
     },
-
     mounted() {
         this.find();
     },
-
     methods: {
         find() {
             axios.get('/admin/site/list')
@@ -218,6 +275,7 @@ export default {
                     }));
 
                     this.contact = response.data.items.contatct;
+
                     this.logo.oldImage = response.data.items.logo.image;
                     this.main = response.data.items.main;
 
@@ -227,10 +285,9 @@ export default {
                         url: s.url,
                         icon: s.icon
                     }));
-
                 })
                 .catch(error => {
-                    this.alertDanger(errors);
+                    this.alertDanger(error);
                 });
         },
         handleImage(e, target) {
@@ -242,11 +299,28 @@ export default {
             if (target === 'about') {
                 this.about.image = file;
                 this.about.imagePreview = preview;
+                this.about.removeImage = false;
             }
 
             if (target === 'logo') {
                 this.logo.image = file;
                 this.logo.imagePreview = preview;
+                this.logo.removeImage = false;
+            }
+        },
+        clearImage(target) {
+            if (target === 'about') {
+                this.about.image = null;
+                this.about.imagePreview = null;
+                this.about.oldImage = null;
+                this.about.removeImage = true;
+            }
+
+            if (target === 'logo') {
+                this.logo.image = null;
+                this.logo.imagePreview = null;
+                this.logo.oldImage = null;
+                this.logo.removeImage = true;
             }
         },
         addCarouselImages(e) {
@@ -277,15 +351,26 @@ export default {
             this.social = this.social.filter(s => s.tempId !== id);
         },
         save() {
+            this.loading = true;
 
             const form = new FormData();
 
-
             form.append("about_title", this.about.title);
             form.append("about_description", this.about.description);
-            if (this.about.image) form.append("about_image", this.about.image);
 
-            if (this.logo.image) form.append("logo_image", this.logo.image);
+            if (this.about.image) {
+                form.append("about_image", this.about.image);
+            }
+            if (this.about.removeImage) {
+                form.append("about_image_remove", 1);
+            }
+
+            if (this.logo.image) {
+                form.append("logo_image", this.logo.image);
+            }
+            if (this.logo.removeImage) {
+                form.append("logo_image_remove", 1);
+            }
 
             Object.entries(this.contact).forEach(([k, v]) => {
                 form.append(`contact_${k}`, v);
@@ -310,7 +395,8 @@ export default {
                 })
                 .catch(errors => {
                     this.alertDanger(errors);
-                }).finally(() => {
+                })
+                .finally(() => {
                     this.loading = false;
                 });
         }

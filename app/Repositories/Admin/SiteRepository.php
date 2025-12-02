@@ -12,6 +12,7 @@ use App\Models\Site\SiteSocialMedia;
 use DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Storage;
 
 class SiteRepository implements SiteRepositoryInterface
 {
@@ -65,43 +66,79 @@ class SiteRepository implements SiteRepositoryInterface
 
         try {
 
+            $normalize = function ($value, bool $nullAsEmptyString = false) {
+                if (is_string($value)) {
+                    $value = trim($value);
+
+                    if ($value === '' || strtolower($value) === 'null') {
+                        return $nullAsEmptyString ? '' : null;
+                    }
+
+                    return $value;
+                }
+
+                if ($value === null) {
+                    return $nullAsEmptyString ? '' : null;
+                }
+
+                return $value;
+            };
+
             $about = $this->about->first() ?? new SiteAbout();
-            $about->title = $data['about_title'] ?? $about->title;
-            $about->description = $data['about_description'] ?? $about->description;
+
+            if (array_key_exists('about_title', $data)) {
+                $about->title = $normalize($data['about_title']);
+            }
+
+            if (array_key_exists('about_description', $data)) {
+                $about->description = $normalize($data['about_description']);
+            }
+
+            $removeAboutImage = !empty($data['about_image_remove']);
 
             if (!empty($data['about_image'])) {
+                if (!empty($about->image)) {
+                    Storage::disk('public')->delete($about->image);
+                }
+
                 $file = $data['about_image'];
                 $path = $file->store('site/about', 'public');
                 $about->image = $path;
+            } elseif ($removeAboutImage && !empty($about->image)) {
+                Storage::disk('public')->delete($about->image);
+                $about->image = null;
             }
 
             $about->save();
 
-            $logo = $this->logo->first() ?? new SiteLogo();
-
-            if (!empty($data['logo_image'])) {
-                $file = $data['logo_image'];
-                $path = $file->store('site/logo', 'public');
-                $logo->image = $path;
-            }
-
-            $logo->save();
-
             $contact = $this->contatct->first() ?? new SiteContact();
 
-            $contact->phone = $data['contact_phone'] ?? $contact->phone;
-            $contact->email = $data['contact_email'] ?? $contact->email;
-            $contact->city = $data['contact_city'] ?? $contact->city;
-            $contact->state = $data['contact_state'] ?? $contact->state;
-            $contact->address = $data['contact_address'] ?? $contact->address;
-            $contact->zipcode = $data['contact_zipcode'] ?? $contact->zipcode;
+            $fieldsMap = [
+                'contact_phone' => 'phone',
+                'contact_email' => 'email',
+                'contact_city' => 'city',
+                'contact_state' => 'state',
+                'contact_address' => 'address',
+                'contact_zipcode' => 'zipcode',
+            ];
+
+            foreach ($fieldsMap as $inputKey => $attr) {
+                if (array_key_exists($inputKey, $data)) {
+                    $contact->{$attr} = $normalize($data[$inputKey]);
+                }
+            }
 
             $contact->save();
 
             $main = $this->mainText->first() ?? new MainText();
 
-            $main->title = $data['main_title'] ?? $main->title;
-            $main->text = $data['main_text'] ?? $main->text;
+            if (array_key_exists('main_title', $data)) {
+                $main->title = $normalize($data['main_title']);
+            }
+
+            if (array_key_exists('main_text', $data)) {
+                $main->text = $normalize($data['main_text']);
+            }
 
             $main->save();
 
@@ -144,9 +181,9 @@ class SiteRepository implements SiteRepositoryInterface
             if (is_array($social)) {
                 foreach ($social as $item) {
                     $this->socialMedia->newQuery()->create([
-                        'name' => $item['name'] ?? '',
-                        'url' => $item['url'] ?? '',
-                        'icon' => $item['icon'] ?? '',
+                        'name' => $normalize($item['name'] ?? null, true),
+                        'url' => $normalize($item['url'] ?? null, true),
+                        'icon' => $normalize($item['icon'] ?? null, true),
                     ]);
                 }
             }

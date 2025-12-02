@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('site_carrousel', function (Blueprint $table) {
             $table->id();
-            $table->string('image', 255);
+            $table->string('image', 255)->nullable();
             $table->timestamps();
         });
     }
